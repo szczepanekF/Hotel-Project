@@ -1,0 +1,11 @@
+/home/student/CLionProjects/POBI/introduction/build/CMakeFiles/rebuild_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/CMakeFiles/test.dir
+/home/student/CLionProjects/POBI/introduction/build/CMakeFiles/edit_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/program/CMakeFiles/rebuild_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/program/CMakeFiles/edit_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/program/CMakeFiles/Program.dir
+/home/student/CLionProjects/POBI/introduction/build/program/CMakeFiles/test.dir
+/home/student/CLionProjects/POBI/introduction/build/library/CMakeFiles/rebuild_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/library/CMakeFiles/edit_cache.dir
+/home/student/CLionProjects/POBI/introduction/build/library/CMakeFiles/MathLibrary.dir
+/home/student/CLionProjects/POBI/introduction/build/library/CMakeFiles/test.dir
