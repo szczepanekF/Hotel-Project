@@ -25,6 +25,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_VERBOSE_MAKEFILE TRUE) 
 #Uwzględnij podprojekt znajdujący się w podkatalogu program. Musi być w nim pliki CMakeLists.txt
 add_subdirectory(program)
+add_subdirectory(library)
 #Włączenie testów powoduje pojawienie się celu test w makefiles
 enable_testing()
-add_subdirectory(library)
+
