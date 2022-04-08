@@ -3,7 +3,7 @@ project(Library)
 
 set(SOURCE_FILES
 
-        src/model/Client.cpp)
+        src/model/Client.cpp src/model/Address.cpp include/model/Vehicle.h src/model/Vehicle.cpp include/model/Rent.h src/model/Rent.cpp)
 #Utwórz bibliotekę typu STATIC, SHARED albo MODULE ze wskazanych źródeł
 add_library(Library ${SOURCE_FILES})
 
@@ -19,7 +19,7 @@ include_directories(
 set(SOURCE_TEST_FILES
 
 
-        test/master.cpp test/ClientTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
+        test/master.cpp test/ClientTest.cpp test/AddressTest.cpp test/VehicleTest.cpp test/RentTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
 
 add_executable (LibraryTest ${SOURCE_TEST_FILES})
 
