@@ -3,7 +3,7 @@ project(Library)
 
 set(SOURCE_FILES
     src/math_helpers.cpp
-        src/model/Client.cpp include/model/Client.h )
+        src/model/Client.cpp include/model/Client.h include/model/Address.h src/model/Address.cpp include/model/Vehicle.h src/model/Vehicle.cpp src/model/Rent.cpp include/model/Rent.h)
 #Utwórz bibliotekę typu STATIC, SHARED albo MODULE ze wskazanych źródeł
 add_library(Library ${SOURCE_FILES})
 
@@ -17,7 +17,7 @@ include_directories(
 )
 
 set(SOURCE_TEST_FILES
-        test/ClientTest.cpp test/master.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
+        test/ClientTest.cpp test/master.cpp test/AddressTest.cpp test/VehicleTest.cpp test/RentTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
 
 add_executable (LibraryTest ${SOURCE_TEST_FILES})
 #dołącz bibliotekę z testowanymi klasami oraz bibliotekę boost.test do programu testów

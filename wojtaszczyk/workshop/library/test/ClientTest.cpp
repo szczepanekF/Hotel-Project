@@ -1,28 +1,78 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
+#include "model/Address.h"
 
-BOOST_AUTO_TEST_SUITE(TestSuiteClient)
+struct TestSuiteClientFixture {
+    const std::string testFirstName = "Jon";
+    const std::string testLastName = "Arbuckle";
+    const std::string testPersonalID = "0123456789";
+    Address *testaddress1;
+    Address *testaddress2;
 
-    BOOST_AUTO_TEST_CASE(AssertionsTests) {
-        BOOST_TEST(1.0/3.0 == 0.333,  boost::test_tools::tolerance(0.01));
-        BOOST_TEST(true);
+    TestSuiteClientFixture() {
+        testaddress1 = new Address("London", "Accacia Avenue", "22");
+        testaddress2 = new Address("London", "Rue Morgue", "13");
     }
-    BOOST_AUTO_TEST_CASE(ClientConstructorTest){
-        Client c1("Milosz","Wojtaszczyk","242567");
-        BOOST_TEST(c1.GetClientFirstName().compare("Milosz")==0);
-        BOOST_TEST(c1.GetClientLastName().compare("Wojtaszczyk")==0);
-        BOOST_TEST(c1.GetClientPersonalID().compare("242567")==0);
 
+    ~TestSuiteClientFixture() {
+        delete testaddress1;
+        delete testaddress2;
+    }
+
+};
+
+BOOST_FIXTURE_TEST_SUITE(TestSuiteClient, TestSuiteClientFixture)
+
+    BOOST_AUTO_TEST_CASE(ParameterConstrutorTest) {
+
+        Client c(testFirstName, testLastName, testPersonalID, testaddress1);
+        BOOST_TEST(c.GetClientFirstName().compare(testFirstName )==0);
+        BOOST_TEST(c.GetClientLastName().compare(testLastName)==0);
+        BOOST_TEST(c.GetClientPersonalID().compare(testPersonalID)==0);
+        BOOST_TEST(testaddress1 == c.GetClientAddress());
+        BOOST_TEST(c.GetClient_RentNumber()==0);
     }
     BOOST_AUTO_TEST_CASE(ClientSetterTests){
-        Client c1("Milosz","Wojtaszczyk","242567");
-        c1.SetClientFirstName("Abraham");
-        c1.SetClientLastName("Gold");
-        BOOST_TEST(c1.GetClientFirstName().compare("Abraham")==0);
-        BOOST_TEST(c1.GetClientLastName().compare("Gold")==0);
-        c1.SetClientFirstName(" ");
-        c1.SetClientLastName(" ");
-        BOOST_TEST(c1.GetClientFirstName().compare("Abraham")==0);
-        BOOST_TEST(c1.GetClientLastName().compare("Gold")==0);
+        Client c(testFirstName, testLastName, testPersonalID, testaddress1);
+        Address* pusty=NULL;
+        c.SetClientFirstName("Abraham");
+        c.SetClientLastName("Gold");
+        c.SetClientAddress(testaddress2);
+        BOOST_TEST(c.GetClientFirstName().compare("Abraham")==0);
+        BOOST_TEST(c.GetClientLastName().compare("Gold")==0);
+        BOOST_TEST(testaddress2== c.GetClientAddress());
+        c.SetClientFirstName(" ");
+        c.SetClientLastName(" ");
+        c.SetClientAddress(pusty);
+        BOOST_TEST(c.GetClientFirstName().compare("Abraham")==0);
+        BOOST_TEST(c.GetClientLastName().compare("Gold")==0);
+        BOOST_TEST(testaddress2 == c.GetClientAddress());
     }
+
 BOOST_AUTO_TEST_SUITE_END()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
