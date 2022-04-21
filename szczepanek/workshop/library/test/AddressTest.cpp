@@ -11,23 +11,4 @@ BOOST_AUTO_TEST_SUITE(TestSuiteAddress)
         BOOST_TEST(a.get_number().compare("3")==0);
     }
 
-
-   /* BOOST_AUTO_TEST_CASE(AddressCitySetterTests) {
-        Address a("a","b","c");
-        a.set_city("x");
-        BOOST_TEST(a.get_city().compare("x")==0);
-    }
-    BOOST_AUTO_TEST_CASE(AddressStreetSetterTests) {
-        Address a("a","b","c");
-        a.set_street("x");
-        BOOST_TEST(a.get_street().compare("x")==0);
-    }
-    BOOST_AUTO_TEST_CASE(AddressNumberSetterTests) {
-        Address a("a","b","c");
-        a.set_number("x");
-        BOOST_TEST(a.get_number().compare("x")==0);
-    }
-    */
-
-
 BOOST_AUTO_TEST_SUITE_END()

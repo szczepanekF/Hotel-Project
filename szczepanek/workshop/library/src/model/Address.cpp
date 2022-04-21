@@ -1,5 +1,5 @@
 #include "model/Address.h"
-#include <iostream>
+
 
 using namespace std;
 
@@ -26,18 +26,3 @@ using namespace std;
     {
         return number;
     }
-/*
-    void Address::set_city(std::string new_city)
-    {
-         city = new_city;
-    }
-
-    void Address::set_street(std::string new_street)
-    {
-        street = new_street;
-    }
-
-    void Address::set_number(std::string new_number)
-    {
-        number = new_number;
-    }*/

@@ -3,7 +3,14 @@ project(Library)
 
 set(SOURCE_FILES
 
-        src/model/Client.cpp src/model/Address.cpp include/model/Vehicle.h src/model/Vehicle.cpp include/model/Rent.h src/model/Rent.cpp)
+        src/model/Client.cpp src/model/Address.cpp include/model/Vehicle.h src/model/Vehicle.cpp include/model/Rent.h
+        src/model/Rent.cpp include/typedefs.h include/repositories/ClientRepository.h
+        include/repositories/VehicleRepository.h include/repositories/RentRepository.h src/repositories/ClientRepository.cpp
+        src/repositories/VehicleRepository.cpp src/repositories/RentRepository.cpp include/repositories/StorageContainer.h
+        src/repositories/StorageContainer.cpp
+        include/model/Bicycle.h include/model/MotorVehicle.h include/model/Moped.h include/model/Car.h
+        src/model/Bicycle.cpp
+        src/model/MotorVehicle.cpp src/model/Moped.cpp src/model/Car.cpp include/model/ClientType.h src/model/ClientType.cpp include/model/Diamond.h include/model/Platinum.h include/model/Gold.h include/model/Silver.h include/model/Bronze.h include/model/Default.h src/model/Diamond.cpp src/model/Platinum.cpp src/model/Gold.cpp src/model/Silver.cpp src/model/Bronze.cpp src/model/Default.cpp "include/managers/ClientManager.h" src/managers/ClientManager.cpp src/managers/VehicleManager.cpp include/managers/VehicleManager.h include/managers/RentManager.h src/managers/RentManager.cpp)
 #Utwórz bibliotekę typu STATIC, SHARED albo MODULE ze wskazanych źródeł
 add_library(Library ${SOURCE_FILES})
 
@@ -19,7 +26,7 @@ include_directories(
 set(SOURCE_TEST_FILES
 
 
-        test/master.cpp test/ClientTest.cpp test/AddressTest.cpp test/VehicleTest.cpp test/RentTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
+        test/master.cpp test/ClientTest.cpp test/AddressTest.cpp test/VehicleTest.cpp test/RentTest.cpp test/ClientRepositoryTest.cpp test/VehicleRepositoryTest.cpp test/RentRepositoryTest.cpp test/StorageContainerTest.cpp test/BicycleTest.cpp test/MopedTest.cpp test/CarTest.cpp test/ClientManagerTest.cpp)  # tu w przyszłości będą dodawane pliki źródłowe testów
 
 add_executable (LibraryTest ${SOURCE_TEST_FILES})
 

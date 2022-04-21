@@ -10,22 +10,24 @@ class Vehicle {
 private:
     std::string plateNumber;
     unsigned int basePrice;
-    bool rented=false;
+    bool archive=false;
 
 public:
     Vehicle(const std::string &init_plateNumber,const unsigned int &init_basePrice);
-
-    const std::string getVehicleInfo() const;
+    virtual ~Vehicle()=0;
+    virtual const std::string getVehicleInfo() const;
 
 
     const std::string &get_plateNumber() const;
     const unsigned int &get_basePrice() const;
-    const bool &isRented() const;
+    const bool &isArchive() const;
 
-    void set_plateNumber(std::string const new_plateNumber);
-    void set_basePrice(unsigned int const new_basePrice);
-    void set_rented(bool const new_rented);
+    void set_plateNumber(std::string const &new_plateNumber);
+    void set_basePrice(unsigned int const &new_basePrice);
+    void set_archive(bool const &new_archive);
 
+
+    virtual double get_ActualRentalPrice() const;
 };
 
 #endif //CARRENTAL_VEHICLE_H

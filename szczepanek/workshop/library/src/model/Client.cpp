@@ -1,9 +1,4 @@
-//
-// Created by student on 17.03.2022.
-//
-
 #include "model/Client.h"
-#include "model/Address.h"
 #include <iostream>
 
 
@@ -16,25 +11,34 @@ using namespace std;
     }
     Client:: ~Client()
     {
-        //delete address;
+        //ddress;
     }
 
-    Client::Client(const string &Initial_FirstName,const string &Initial_LastName,const string &Initial_PersonalID, Address *init_address)
-        :FirstName(Initial_FirstName),LastName(Initial_LastName),PersonalID(Initial_PersonalID),address(init_address)
+    Client::Client(const string &Initial_FirstName,const string &Initial_LastName,const string &Initial_PersonalID, AddressPtr init_address,
+                   ClientTypePtr init_clientType)
+        :FirstName(Initial_FirstName),LastName(Initial_LastName),PersonalID(Initial_PersonalID),address(init_address),
+         clientType(init_clientType)
         {
-            currentRents.clear();
+//            currentRents.clear();
         }
-    string Client::getClientInfo()
+    string Client::getClientInfo() const
     {
-        return "Client "+FirstName+" "+LastName+" "+PersonalID + " " + address->getAddressInfo();
+        return "Client "+clientType->getTypeInfo()+FirstName+" "+LastName+" "+PersonalID + " " + address->getAddressInfo();
     }
-    void Client::getFullClientInfo()
-    {
-        cout<<getClientInfo()<<"|| Rents: \n";
-        int x = get_rentNumber();
-        for(int i=0;i<x;i++)
-            cout<<get_currentRent(i)->get_vehicle()->getVehicleInfo()<<'\n';
-    }
+//    string Client::getFullClientInfo() const
+//    {
+//        stringstream ss;
+//        ss <<getClientInfo();
+//
+//
+//        int x = get_rentNumber();
+//        if(x>0)
+//        ss<<"\nRents: \n";
+//        for(int i=0;i<x;i++)
+//            ss<<get_currentRent(i)->get_vehicle()->getVehicleInfo()<<'\n';
+//        string s = ss.str();
+//        return s;
+//    }
     const string &Client::getfirstName() const
     {
         return FirstName;
@@ -49,27 +53,27 @@ using namespace std;
         return PersonalID;
     }
 
-    const Address *Client::get_address() const
+    const AddressPtr Client::get_address() const
     {
         return address;
     }
 
-    const unsigned int Client::get_rentNumber() const
-    {
-        return currentRents.size();
-    }
-    const Rent *Client::get_currentRent(unsigned int i) const
-    {
-        if (i < currentRents.size()){
-            return currentRents[i];
-        }
-        return NULL;
-    }
-
-    void Client::remove_currentRent(Rent *rent)
-    {
-        currentRents.erase(remove(currentRents.begin(),currentRents.end(),rent));
-    }
+//    const unsigned int Client::get_rentNumber() const
+//    {
+//        return currentRents.size();
+//    }
+//    const RentPtr Client::get_currentRent(const unsigned int &i) const
+//    {
+//        if (i < currentRents.size()){
+//            return currentRents[i];
+//        }
+//        return NULL;
+//    }
+//
+//    void Client::remove_currentRent(RentPtr rent)
+//    {
+//        currentRents.erase(remove(currentRents.begin(),currentRents.end(),rent),currentRents.end());
+//    }
 
 
     void Client::setfirstName(string const &Changed_FirstName)
@@ -84,11 +88,32 @@ using namespace std;
             LastName=Changed_LastName;
     }
 
-    void Client::set_address(Address *new_address)
+    void Client::set_address(AddressPtr new_address)
     {
             if(new_address!=NULL) address=new_address;
     }
-    void Client::AddRent(Rent *new_rent)
+//    void Client::AddRent(RentPtr new_rent)
+//    {
+//            currentRents.push_back(new_rent);
+//    }
+
+    void Client::set_clientType(ClientTypePtr new_clientType)
     {
-            currentRents.push_back(new_rent);
+        clientType=new_clientType;
     }
+
+    const double Client::applyDiscount(const double &price) const {
+        return clientType->applyDiscount(price);
+    }
+
+    const unsigned int Client::getMaxVehicles() const {
+        return clientType->getMaxVehicles();
+    }
+
+bool Client::isArchive() const {
+    return archive;
+}
+
+void Client::setArchive(bool archive) {
+    Client::archive = archive;
+}
