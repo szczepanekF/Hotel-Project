@@ -2,9 +2,9 @@
 #include "model/Vehicle.h"
 #include "model/Client.h"
 
-Rent::Rent(const unsigned int &InitialID,Client *Initial_client,Vehicle *Initial_vehicle,const pt::ptime &InitialbeginTime)
+Rent::Rent(const unsigned int &InitialID,ClientPtr Initial_client,VehiclePtr Initial_vehicle,const pt::ptime &InitialbeginTime)
 :id(InitialID),client(Initial_client),vehicle(Initial_vehicle){
-    client->AddNewRent(this);
+    client->addNewRent(this);
     vehicle->setRetend(true);
     if(InitialbeginTime==pt::not_a_date_time){
         beginTime=pt::second_clock::local_time();
@@ -13,20 +13,20 @@ Rent::Rent(const unsigned int &InitialID,Client *Initial_client,Vehicle *Initial
         beginTime=InitialbeginTime;
     }
 }
-std::string Rent::GetRentInfo() const {
+std::string Rent::getRentInfo() const {
     std::stringstream ss;
     ss <<beginTime<<" "<<endTime;
-    return std::to_string(id)+ " "+client->GetClientInfo()+" "+vehicle->GetVehicleInfo()+" "+ss.str();
+    return std::to_string(id) + " " + client->getClientInfo() + " " + vehicle->getVehicleInfo() + " " + ss.str();
 }
-const unsigned int &Rent::GetRentID() const {
+const unsigned int &Rent::getRentID() const {
     return id;
 }
 
-Client *Rent::GetRentClient() const {
+ClientPtr Rent::getRentClient() const {
     return client;
 }
 
-Vehicle *Rent::GetRentVehicle() const {
+VehiclePtr Rent::getRentVehicle() const {
     return vehicle;
 }
 
@@ -55,7 +55,7 @@ void Rent::endRent(const pt::ptime &InitialendTime) {
         }
         vehicle->setRetend(false);
         client->removeClientRent(this);
-        rentCost=vehicle->GetVehiclebasePrice()*this->getRentDays();
+        rentCost= vehicle->getVehiclebasePrice() * this->getRentDays();
 
     }
 
@@ -85,6 +85,6 @@ void Rent::endRent(const pt::ptime &InitialendTime) {
     }
 
 }
-unsigned int Rent::getRentCost() const {
+const unsigned int &Rent::getRentCost() const {
     return rentCost;
 }

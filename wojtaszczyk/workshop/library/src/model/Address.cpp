@@ -7,16 +7,16 @@ Address::Address(const std::string &Initialcity,const std::string &Initialstreet
     :city(Initialcity), street(Initialstreet), number(Initialnumber){
 
 }
-string Address::GetAddressInfo() const{
+string Address::getAddressInfo() const{
     return city+ " "+street+" "+number;
 }
-const string &Address::GetAddresscity() const {
+const string &Address::getAddresscity() const {
     return city;
 }
-const string &Address::GetAddressnumber() const{
+const string &Address::getAddressnumber() const{
     return number;
 }
-const string &Address::GetAddressstreet() const{
+const string &Address::getAddressstreet() const{
     return street;
 }
 

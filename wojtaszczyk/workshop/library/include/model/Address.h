@@ -12,10 +12,10 @@ private:
 public:
     Address(const std::string &Initialcity, const std::string &Initialstreet, const std::string &Initialnumber);
 
-    std::string GetAddressInfo() const;
-    const std::string &GetAddresscity() const;
-    const std::string &GetAddressstreet() const;
-    const std::string &GetAddressnumber() const;
+    std::string getAddressInfo() const;
+    const std::string &getAddresscity() const;
+    const std::string &getAddressstreet() const;
+    const std::string &getAddressnumber() const;
 
 
 

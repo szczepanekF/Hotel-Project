@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "typedef.h"
+#include <algorithm>
+#include <boost/date_time.hpp>
 
 
 class Rent;
@@ -15,25 +18,25 @@ private:
     std::string FirstName;
     std::string LastName;
     std::string PersonalID;
-    Address*  ClientAddress;
-    std::vector <Rent*> currentRents;
+    AddressPtr  ClientAddress;
+    std::vector <RentPtr> currentRents;
     Client();
 public:
-    std::string GetClientInfo() const;
-    Client(const std::string &Initial_FirstName, const std::string &Initial_LastName, const std::string &Initial_PersonalID,Address* Initial_adres);
+    std::string getClientInfo() const;
+    Client(const std::string &Initial_FirstName, const std::string &Initial_LastName, const std::string &Initial_PersonalID,AddressPtr Initial_adres);
     ~Client();
-    const std::string &GetClientFirstName() const;
-    const std::string &GetClientLastName() const;
-    const std::string &GetClientPersonalID() const;
-    Address* GetClientAddress() const;
-    void SetClientFirstName(const std::string &Changed_FirstName);
-    void SetClientLastName(const std::string &Changed_LastName);
-    void SetClientAddress(Address* ChangedAddress );
-    void AddNewRent(Rent* NewRent);
-    unsigned int GetClient_RentNumber() const;
-    Rent* GetClientRent(const unsigned int &i) const;
-    void GetFullClientInfo() const;
-    void removeClientRent(Rent *rent);
+    const std::string &getClientFirstName() const;
+    const std::string &getClientLastName() const;
+    const std::string &getClientPersonalID() const;
+    AddressPtr getClientAddress() const;
+    void setClientFirstName(const std::string &Changed_FirstName);
+    void setClientLastName(const std::string &Changed_LastName);
+    void setClientAddress(AddressPtr ChangedAddress );
+    void addNewRent(RentPtr NewRent);
+    unsigned int getClient_RentNumber() const;
+    RentPtr getClientRent(const unsigned int &i) const;
+    std::string getFullClientInfo() const;
+    void removeClientRent(RentPtr rent);
 };
 
 

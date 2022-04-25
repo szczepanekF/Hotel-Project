@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp>
-#include "model/Vehicle.h"
+#include "model/Bicycle.h"
 
 struct TestSuiteVehicleFixture {
     const std::string testplateNumber= "Jon";
@@ -22,20 +22,20 @@ struct TestSuiteVehicleFixture {
 BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicle, TestSuiteVehicleFixture)
 
     BOOST_AUTO_TEST_CASE(VehicleConstructorTest){
-      Vehicle v1(testplateNumber, testbasePrice);
-        BOOST_TEST(v1.GetVehicleplateNumber().compare(testplateNumber)==0);
-        BOOST_TEST(v1.GetVehiclebasePrice()==testbasePrice);
+      Bicycle v1(testplateNumber, testbasePrice);
+        BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber) == 0);
+        BOOST_TEST(v1.getVehiclebasePrice() == testbasePrice);
         BOOST_TEST(v1.isRetend()==0);
     }
     BOOST_AUTO_TEST_CASE(VehicleSetterTests){
-        Vehicle v1(testplateNumber, testbasePrice);
-        v1.SetVehiclebasePrcie(testbasePrice1);
-        v1.SetVehicleplateNumber(testplateNumber1);
+        Bicycle v1(testplateNumber, testbasePrice);
+        v1.setVehiclebasePrcie(testbasePrice1);
+        v1.setVehicleplateNumber(testplateNumber1);
 
-        BOOST_TEST(v1.GetVehicleplateNumber().compare(testplateNumber1)==0);
-        BOOST_TEST(v1.GetVehiclebasePrice()==testbasePrice1);
-        v1.SetVehicleplateNumber("");
-        BOOST_TEST(v1.GetVehicleplateNumber().compare(testplateNumber1)==0);
+        BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber1) == 0);
+        BOOST_TEST(v1.getVehiclebasePrice() == testbasePrice1);
+        v1.setVehicleplateNumber("");
+        BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber1) == 0);
     }
 
 

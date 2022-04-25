@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Rent.h"
-#include "model/Vehicle.h"
+#include "model/Bicycle.h"
 #include "model/Client.h"
 #include "model/Address.h"
 
@@ -18,7 +18,7 @@ struct TestSuiteRentFixture {
     TestSuiteRentFixture() {
         testaddress1 = new Address("London", "Accacia Avenue", "22");
         testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress1);
-        testVehicle= new Vehicle(testplateNumber,testbasePrice);
+        testVehicle= new Bicycle(testplateNumber,testbasePrice);
     }
 
     ~TestSuiteRentFixture() {
@@ -36,13 +36,13 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
 
     Rent r(ID,testClient,testVehicle,then);
 
-        for(unsigned int i=0;i<r.GetRentClient()->GetClient_RentNumber();i++)
+        for(unsigned int i=0;i< r.getRentClient()->getClient_RentNumber(); i++)
        {
-            BOOST_TEST(r.GetRentClient()->GetClientRent(i)!= nullptr);
+            BOOST_TEST(r.getRentClient()->getClientRent(i) != nullptr);
        }
-        BOOST_TEST(r.GetRentVehicle()->isRetend()==true);
-        BOOST_TEST(r.GetRentVehicle()==testVehicle);
-        BOOST_TEST(r.GetRentClient()==testClient);
+        BOOST_TEST(r.getRentVehicle()->isRetend() == true);
+        BOOST_TEST(r.getRentVehicle() == testVehicle);
+        BOOST_TEST(r.getRentClient() == testClient);
         BOOST_TEST(r.getEndTime()==pt::not_a_date_time);
         BOOST_TEST_REQUIRE(!r.getBeginTime().is_not_a_date_time());
         BOOST_TEST(r.getBeginTime()==then);
@@ -108,10 +108,10 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
 
         Rent *r = new Rent(ID,testClient ,testVehicle, pt::not_a_date_time);
 
-        unsigned int i=r->GetRentClient()->GetClient_RentNumber();
+        unsigned int i= r->getRentClient()->getClient_RentNumber();
         r->endRent(pt::not_a_date_time);
-        BOOST_TEST(r->GetRentVehicle()->isRetend()==0);
-        BOOST_TEST(i-1==r->GetRentClient()->GetClient_RentNumber());
+        BOOST_TEST(r->getRentVehicle()->isRetend() == 0);
+        BOOST_TEST(i-1== r->getRentClient()->getClient_RentNumber());
         delete r;
 
     }
@@ -168,7 +168,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
         Rent *r = new Rent(ID,testClient ,testVehicle, then);
         pt::ptime end=pt::ptime(gr::date(2015,5,14),pt::hours(9)+pt::minutes(0)+pt::seconds(0));
         r->endRent(end);
-        BOOST_TEST(r->getRentCost()=2*testbasePrice);
+        BOOST_TEST(r->getRentCost()==2*testbasePrice);
         delete r;
 
     }
@@ -177,8 +177,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
         Rent *r = new Rent(ID,testClient ,testVehicle, then);
         pt::ptime end=pt::ptime(gr::date(2015,5,14),pt::hours(9)+pt::minutes(0)+pt::seconds(0));
         r->endRent(end);
-        unsigned int i=r->getRentCost();
-        r->GetRentVehicle()->SetVehiclebasePrcie(testbasePrice+5);
+        const unsigned int i=r->getRentCost();
+        r->getRentVehicle()->setVehiclebasePrcie(testbasePrice + 5);
         BOOST_TEST(r->getRentCost()==i);
         delete r;
 

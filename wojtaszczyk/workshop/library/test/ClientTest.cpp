@@ -26,27 +26,27 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClient, TestSuiteClientFixture)
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTest) {
 
         Client c(testFirstName, testLastName, testPersonalID, testaddress1);
-        BOOST_TEST(c.GetClientFirstName().compare(testFirstName )==0);
-        BOOST_TEST(c.GetClientLastName().compare(testLastName)==0);
-        BOOST_TEST(c.GetClientPersonalID().compare(testPersonalID)==0);
-        BOOST_TEST(testaddress1 == c.GetClientAddress());
-        BOOST_TEST(c.GetClient_RentNumber()==0);
+        BOOST_TEST(c.getClientFirstName().compare(testFirstName ) == 0);
+        BOOST_TEST(c.getClientLastName().compare(testLastName) == 0);
+        BOOST_TEST(c.getClientPersonalID().compare(testPersonalID) == 0);
+        BOOST_TEST(testaddress1 == c.getClientAddress());
+        BOOST_TEST(c.getClient_RentNumber() == 0);
     }
     BOOST_AUTO_TEST_CASE(ClientSetterTests){
         Client c(testFirstName, testLastName, testPersonalID, testaddress1);
         Address* pusty=NULL;
-        c.SetClientFirstName("Abraham");
-        c.SetClientLastName("Gold");
-        c.SetClientAddress(testaddress2);
-        BOOST_TEST(c.GetClientFirstName().compare("Abraham")==0);
-        BOOST_TEST(c.GetClientLastName().compare("Gold")==0);
-        BOOST_TEST(testaddress2== c.GetClientAddress());
-        c.SetClientFirstName(" ");
-        c.SetClientLastName(" ");
-        c.SetClientAddress(pusty);
-        BOOST_TEST(c.GetClientFirstName().compare("Abraham")==0);
-        BOOST_TEST(c.GetClientLastName().compare("Gold")==0);
-        BOOST_TEST(testaddress2 == c.GetClientAddress());
+        c.setClientFirstName("Abraham");
+        c.setClientLastName("Gold");
+        c.setClientAddress(testaddress2);
+        BOOST_TEST(c.getClientFirstName().compare("Abraham") == 0);
+        BOOST_TEST(c.getClientLastName().compare("Gold") == 0);
+        BOOST_TEST(testaddress2== c.getClientAddress());
+        c.setClientFirstName(" ");
+        c.setClientLastName(" ");
+        c.setClientAddress(pusty);
+        BOOST_TEST(c.getClientFirstName().compare("Abraham") == 0);
+        BOOST_TEST(c.getClientLastName().compare("Gold") == 0);
+        BOOST_TEST(testaddress2 == c.getClientAddress());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

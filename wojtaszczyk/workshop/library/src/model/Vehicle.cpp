@@ -1,23 +1,24 @@
 #include "model/Vehicle.h"
 
+
 Vehicle::Vehicle(const std::string &Initial_plateNUmber,const unsigned int &Initial_basePrice)
 :plateNumber(Initial_plateNUmber),basePrice(Initial_basePrice){
 }
 
- std::string Vehicle::GetVehicleInfo() const {
+ std::string Vehicle::getVehicleInfo() const {
     return std::to_string(basePrice)+" "+plateNumber;
 }
-const unsigned int &Vehicle::GetVehiclebasePrice() const {
+const unsigned int &Vehicle::getVehiclebasePrice() const {
     return basePrice;
 }
-const std::string &Vehicle::GetVehicleplateNumber() const {
+const std::string &Vehicle::getVehicleplateNumber() const {
     return plateNumber;
 }
-void Vehicle::SetVehicleplateNumber(const std::string &ChangedplateNumber) {
+void Vehicle::setVehicleplateNumber(const std::string &ChangedplateNumber) {
     if (ChangedplateNumber!="")
         plateNumber=ChangedplateNumber;
 }
-void Vehicle::SetVehiclebasePrcie(const unsigned int &ChangedbasePrice) {
+void Vehicle::setVehiclebasePrcie(const unsigned int &ChangedbasePrice) {
     basePrice=ChangedbasePrice;
 }
 
@@ -26,4 +27,12 @@ bool Vehicle::isRetend() const {
 }
 void Vehicle::setRetend(bool changedretend) {
     Vehicle::retend = changedretend;
+}
+
+double Vehicle::getActualRentalPrice() const {
+    return getVehiclebasePrice();
+}
+
+Vehicle::~Vehicle() {
+
 }
