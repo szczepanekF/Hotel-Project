@@ -60,11 +60,20 @@ std::vector<RentPtr> RentRepository::findBy(RentPredicate predicate) const
     return found;
 }
 
-bool testtrue1(const RentPtr ptr)
-{
-    return true;
-}
+//bool testtrue1(const RentPtr ptr)
+//{
+//    return true;
+//}
 std::vector<RentPtr> RentRepository::findAll() const
 {
-    return findBy(testtrue1);
+    return findBy([](RentPtr)->bool{return true;});
+}
+
+
+
+RentPtr RentRepository::getVehicleRent(VehiclePtr vehicle) const {
+    vector<RentPtr> found=findBy([vehicle](RentPtr ptr){return ptr->get_vehicle()==vehicle;});
+    if(found.size() == 0)
+        return nullptr;
+    return found[0];
 }

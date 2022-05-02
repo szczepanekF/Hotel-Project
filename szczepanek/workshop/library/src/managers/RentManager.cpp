@@ -12,37 +12,16 @@
 using namespace std;
 
 std::vector<RentPtr> RentManager::getAllClientRents(ClientPtr client) const {
-    RentPredicate rentClient = [client](RentPtr ptr)
-            {
-        return ptr->get_client()==client;
-    };
-    vector<RentPtr> found;
-    for (unsigned int i = 0; i < currentRents.size_rentList(); i++) {
-        RentPtr rent = currentRents.get_rent(i);
-        if (rent != nullptr && rentClient(rent)) {
-            found.push_back(rent);
-        }
-    }
-//    for (unsigned int i = 0; i < archiveRents.size_rentList(); i++) {
-//        RentPtr rent = archiveRents.get_rent(i);
-//        if (rent != nullptr && rentClient(rent)) {
-//            found.push_back(rent);
-//        }
-//    }
-    return found;
+    return currentRents.findBy([client](RentPtr ptr){return ptr->get_client()==client;});
 }
 
 
 RentPtr RentManager::getVehicleRent(VehiclePtr vehicle) const {
-    RentPredicate rentVehicle = [vehicle](RentPtr ptr)
-    {
-        return ptr->get_vehicle()==vehicle;
-    };
-    vector<RentPtr> found;
-    found = currentRents.findBy(rentVehicle);
-    if(found.size() == 0)
-        return nullptr;
-    return found[0];
+//    vector<RentPtr> found=currentRents.findBy([vehicle](RentPtr ptr){return ptr->get_vehicle()==vehicle;});
+//    if(found.size() == 0)
+//        return nullptr;
+//    return found[0];
+    return currentRents.getVehicleRent(vehicle);
 }
 
 std::vector<RentPtr> RentManager::findRents(RentPredicate predicate) const {
@@ -53,24 +32,28 @@ std::vector<RentPtr> RentManager::findAllRents() const {
     return currentRents.findAll();
 }
 
-double RentManager::checkClientRentBalance(ClientPtr client) const
+unsigned int RentManager::checkClientRentBalance(ClientPtr client) const
 {
-    double Balance=0;
-    RentPredicate rentClient = [client](RentPtr ptr)
-    {
-        return ptr->get_client()==client;
-    };
+    unsigned int Balance= 0 ;
+
+//    RentPredicate rentClient = [client](RentPtr ptr)
+//    {
+//        return ptr->get_client()==client;
+//    };
     vector<RentPtr> found;
-    found = currentRents.findBy(rentClient);
+    found = archiveRents.findBy([client](RentPtr ptr){return ptr->get_client()==client;});
     for(int i=0; i < found.size(); i++)
     {
         Balance += found[i]->get_rentCost();
     }
+
     return Balance;
+
 }
 
 RentPtr RentManager::rentVehicle(const unsigned int &init_id, ClientPtr init_client, VehiclePtr init_vehicle,
                                  pt::ptime init_beginTime) {
+    if(init_client == nullptr || init_vehicle == nullptr) return nullptr;
     if(init_client->isArchive() || init_vehicle->isArchive())
         return nullptr;
     if(getAllClientRents(init_client).size() >= init_client->getMaxVehicles())
@@ -90,12 +73,14 @@ void RentManager::returnVehicle(VehiclePtr vehicle)
     if(rent == nullptr)
         return;
     rent->endRent();
-    currentRents.remove_rent(rent);
+
     archiveRents.add_rent(rent);
+    currentRents.remove_rent(rent);
 }
 
 void RentManager::changeClientType(ClientPtr client)
 {
+    if(client == nullptr) return;
     double balance = checkClientRentBalance(client);
     ClientTypePtr type;
     if(balance >=0 && balance <100){

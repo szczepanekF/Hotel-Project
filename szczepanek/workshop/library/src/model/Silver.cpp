@@ -1,6 +1,8 @@
 #include "model/Silver.h"
 
 const double Silver::applyDiscount(const double &price) const {
+    if(price < 6)
+        return price;
     return 6;
 }
 

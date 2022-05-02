@@ -4,9 +4,9 @@
 #include "typedefs.h"
 
 struct TestSuiteVehicleFixture{
-    std::string plates = "12345";
+    const std::string plates = "12345";
     const unsigned int nr = 5050;
-    std::string plates2 = "abcdef";
+    const std::string plates2 = "abcdef";
     const unsigned int nr2 = 1;
 
 };

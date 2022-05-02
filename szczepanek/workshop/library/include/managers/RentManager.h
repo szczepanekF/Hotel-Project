@@ -12,7 +12,7 @@ public:
     RentPtr getVehicleRent(VehiclePtr vehicle) const;
     std::vector<RentPtr> findRents(RentPredicate predicate) const;
     std::vector<RentPtr> findAllRents() const;
-    double checkClientRentBalance(ClientPtr client) const;
+    unsigned int checkClientRentBalance(ClientPtr client) const;
     RentPtr rentVehicle(const unsigned int &init_id,ClientPtr init_client,VehiclePtr init_vehicle,pt::ptime init_beginTime);
     void returnVehicle(VehiclePtr vehicle);
     void changeClientType(ClientPtr client);

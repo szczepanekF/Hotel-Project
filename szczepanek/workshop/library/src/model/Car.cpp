@@ -12,7 +12,7 @@ Car::Car(const std::string &initPlateNumber, const unsigned int &initBasePrice,
 Car::~Car() {}
 
 double Car::get_ActualRentalPrice() const {
-    return MotorVehicle::get_ActualRentalPrice()*segment/10.0;
+    return MotorVehicle::get_ActualRentalPrice()* (segment/10.0);
 }
 
 const std::string Car::getVehicleInfo() const

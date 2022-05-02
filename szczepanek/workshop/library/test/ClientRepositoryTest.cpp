@@ -1,6 +1,9 @@
 #include <boost/test/unit_test.hpp>
 #include "repositories/StorageContainer.h"
 #include "model/Default.h"
+#include "model/Gold.h"
+
+
 
 struct TestSuiteClientRepositoryFixture {
     StorageContainerPtr S=std::make_shared<StorageContainer>() ;
@@ -8,13 +11,17 @@ struct TestSuiteClientRepositoryFixture {
     ClientPtr testclient1;
     ClientPtr testclient2;
     ClientTypePtr pt1;
+    ClientTypePtr pt2;
+
 
     TestSuiteClientRepositoryFixture() {
 //        S = std::make_shared<StorageContainer>();
         pt1 = std::make_shared<Default>();
+        pt2 = std::make_shared<Gold>();
+
         testaddress1 = std::make_shared<Address>("nowy","adres","123");
         testclient1 = std::make_shared<Client>("klient","testowy","444",testaddress1,pt1);
-        testclient2 = std::make_shared<Client>("klient2","testpid","444",testaddress1,pt1);
+        testclient2 = std::make_shared<Client>("klient2","testpid","444",testaddress1,pt2);
 
    }
     ~TestSuiteClientRepositoryFixture() {
@@ -51,6 +58,22 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository,TestSuiteClientRepositoryFixt
         S->get_clientRepository().add_client(testclient1);
         BOOST_TEST(S->get_clientRepository().findByPersonalId("444") == testclient1);
         BOOST_TEST(S->get_clientRepository().findByPersonalId("") == nullptr);
+        S->get_clientRepository().add_client(testclient2);
+        BOOST_TEST(S->get_clientRepository().findByPersonalId("444") == testclient1);
+
+    }
+    BOOST_AUTO_TEST_CASE(FindByTest) {
+
+
+        S->get_clientRepository().add_client(testclient2);
+        BOOST_TEST(S->get_clientRepository().findBy([](const ClientPtr ptr){return ptr->getMaxVehicles()>1;})[0] == testclient2);
+        BOOST_TEST(S->get_clientRepository().findBy([](const ClientPtr ptr){return ptr->getMaxVehicles()>1;}).size() == 1);
+
+        BOOST_TEST(S->get_clientRepository().findAll()[2] == testclient2);
+        BOOST_TEST(S->get_clientRepository().findAll()[0] == S->get_clientRepository().get_client(0));
+        BOOST_TEST(S->get_clientRepository().findAll()[1] == S->get_clientRepository().get_client(1));
+        BOOST_TEST(S->get_clientRepository().findAll().size() == 3);
+
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -41,7 +41,7 @@ void Vehicle::set_basePrice(const unsigned int &new_basePrice)
 {
     basePrice = new_basePrice;
 }
-void Vehicle::set_archive(bool const &new_archive)
+void Vehicle::setArchive(bool const &new_archive)
 {
     archive = new_archive;
 }

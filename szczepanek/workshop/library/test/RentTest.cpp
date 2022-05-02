@@ -50,6 +50,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
         BOOST_TEST(a->get_client()==testclient1);
         BOOST_TEST(a->get_vehicle()==testvehicle1);
         BOOST_TEST(a->get_rentCost()==0);
+        BOOST_TEST(a->get_beginTime()==pt::second_clock::local_time());
+
 //        BOOST_TEST(testclient1->get_rentNumber()==1);
 //        BOOST_TEST(testclient1->get_currentRent(0)==a);
 //        BOOST_TEST(testvehicle1->isRented()==true);

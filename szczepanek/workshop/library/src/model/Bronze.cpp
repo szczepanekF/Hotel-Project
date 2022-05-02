@@ -1,6 +1,8 @@
 #include "model/Bronze.h"
 
 const double Bronze::applyDiscount(const double &price) const {
+    if(price < 3)
+        return price;
     return 3;
 }
 

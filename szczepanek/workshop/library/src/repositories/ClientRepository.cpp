@@ -68,27 +68,27 @@ vector<ClientPtr> ClientRepository::findBy(ClientPredicate predicate) const {
     }
     return found;
 }
-bool testtrue1(const ClientPtr ptr)
-{
-    return true;
-}
+
 std::vector <ClientPtr> ClientRepository::findAll() const
 {
-   return findBy(testtrue1);
+   return findBy([](ClientPtr)->bool{return true;});
 }
 
 
-
+//bool testpredicate1(const ClientPtr ptr)
+//{
+//    return ptr->getMaxVehicles()>1;
+//}
 
 
 
 ClientPtr ClientRepository::findByPersonalId(const std::string &personalID) const
 {
-    ClientPredicate clientpid = [personalID](ClientPtr ptr)
-    {
-        return ptr->getpersonalID()==personalID;
-    };
-    vector<ClientPtr> found = findBy(clientpid);
+//    ClientPredicate clientpid = [personalID](ClientPtr ptr)
+//    {
+//        return ptr->getpersonalID()==personalID;
+//    };
+    vector<ClientPtr> found = findBy([personalID](ClientPtr ptr){return ptr->getpersonalID()==personalID;});
 
     if(found.size()==0)
         return nullptr;

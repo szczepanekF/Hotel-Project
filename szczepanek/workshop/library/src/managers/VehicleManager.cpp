@@ -43,8 +43,8 @@ VehiclePtr VehicleManager::registerCar(const std::string &initPlateNumber, const
 
 void VehicleManager::unregisterVehicle(VehiclePtr vehicleptr)
 {
-    if(getVehicle(vehicleptr->get_plateNumber()) ==vehicleptr)
-        vehicleptr->set_archive(true);
+    if(vehicleptr != nullptr && getVehicle(vehicleptr->get_plateNumber()) ==vehicleptr)
+        vehicleptr->setArchive(true);
 }
 
 std::vector<VehiclePtr> VehicleManager::findVehicles(VehiclePredicate predicate) const

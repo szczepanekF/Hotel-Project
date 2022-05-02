@@ -24,7 +24,7 @@ public:
 
     void set_plateNumber(std::string const &new_plateNumber);
     void set_basePrice(unsigned int const &new_basePrice);
-    void set_archive(bool const &new_archive);
+    void setArchive(bool const &new_archive);
 
 
     virtual double get_ActualRentalPrice() const;

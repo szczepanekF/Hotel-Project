@@ -27,7 +27,8 @@ public:
     const unsigned int size_rentList() const;
 
     std::vector<RentPtr> findBy(RentPredicate predicate) const;
-
     std::vector<RentPtr> findAll() const;
+
+    RentPtr getVehicleRent(VehiclePtr vehicle) const;
 };
 #endif //CARRENTAL_RENTREPOSITORY_H

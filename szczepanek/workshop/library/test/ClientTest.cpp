@@ -111,6 +111,12 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClient, TestSuiteClientFixture)
         BOOST_TEST(a.applyDiscount(1000) == 400);
         BOOST_TEST(a.getMaxVehicles()== 10);
     }
+    BOOST_AUTO_TEST_CASE(ClientarchiveTests) {
+        Client a(testFirstName, testLastName, testPersonalID, testaddress1,pt6);
+        a.setArchive(true);
+        BOOST_TEST(a.isArchive()==true);
+
+    }
 
 
 BOOST_AUTO_TEST_SUITE_END()

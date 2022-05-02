@@ -61,23 +61,23 @@ std::vector<VehiclePtr> VehicleRepository::findBy(VehiclePredicate predicate) co
     }
     return found;
 }
-bool testtrue1(const VehiclePtr ptr)
-{
-    return true;
-}
+//bool testtrue1(const VehiclePtr ptr)
+//{
+//    return true;
+//}
 
 std::vector<VehiclePtr> VehicleRepository::findAll() const
 {
-    return findBy(testtrue1);
+    return findBy([](VehiclePtr)->bool{return true;});
 }
 
 VehiclePtr VehicleRepository::findByPlateNumber(const std::string &plateNumber) const
 {
-    VehiclePredicate vehiclePlatenumber = [plateNumber](VehiclePtr ptr)
-    {
-        return ptr->get_plateNumber()==plateNumber;
-    };
-    vector<VehiclePtr> found = findBy(vehiclePlatenumber);
+//    VehiclePredicate vehiclePlatenumber = [plateNumber](VehiclePtr ptr)
+//    {
+//        return ptr->get_plateNumber()==plateNumber;
+//    };
+    vector<VehiclePtr> found = findBy([plateNumber](VehiclePtr ptr)->bool{return ptr->get_plateNumber()==plateNumber;});
 
     if(found.size()==0)
         return nullptr;

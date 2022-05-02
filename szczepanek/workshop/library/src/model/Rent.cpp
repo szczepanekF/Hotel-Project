@@ -84,7 +84,7 @@ void Rent::endRent(pt::ptime new_endTime)
 //        vehicle->set_rented(false);
 
 //        client->remove_currentRent(this);
-        rentCost=get_rentDays()*vehicle->get_ActualRentalPrice()-client->applyDiscount(get_rentDays()*vehicle->get_ActualRentalPrice());
+            rentCost=( get_rentDays() * vehicle->get_ActualRentalPrice()) - client->applyDiscount(get_rentDays()*vehicle->get_ActualRentalPrice());
 //        vehicle->set_archive(true);
     }
 

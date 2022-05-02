@@ -21,7 +21,7 @@ ClientPtr ClientManager::registerClient(const std::string &Initial_FirstName, co
 
 void ClientManager::unregisterClient(ClientPtr clientptr)
 {
-    if(getClient(clientptr->getpersonalID()) == clientptr)
+    if(clientptr != nullptr && getClient(clientptr->getpersonalID()) == clientptr)
         clientptr->setArchive(true);
 }
 
