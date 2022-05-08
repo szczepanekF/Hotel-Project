@@ -24,10 +24,10 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteBicycle, TestSuiteBicycleFixture)
 
 
     BOOST_AUTO_TEST_CASE(BicyclePriceTests){
-       testVehicle= new Bicycle(testplateNumber, testbasePrice);
+       testVehicle= std::make_shared<Bicycle>(testplateNumber, testbasePrice);
 
         BOOST_TEST(testVehicle->getActualRentalPrice()==21);
-        delete testVehicle;
+
     }
 
 

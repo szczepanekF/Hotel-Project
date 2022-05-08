@@ -15,10 +15,11 @@ using namespace std;
     }
     string Client::getClientInfo() const
     {
-        return "Client "+FirstName+" "+LastName+" "+PersonalID+" "+ ClientAddress->getAddressInfo();
+        return "Client "+FirstName+" "+LastName+" "+PersonalID+" "+ ClientAddress->getAddressInfo()+" "+clientType->getTypeInfo();
     }
-    Client::Client(const std::string &Initial_FirstName, const std::string &Initial_LastName,const std::string &Initial_PersonalID, AddressPtr Initial_address)
-        :FirstName(Initial_FirstName),LastName(Initial_LastName),PersonalID(Initial_PersonalID),ClientAddress(Initial_address)
+    Client::Client(const std::string &Initial_FirstName, const std::string &Initial_LastName,
+                   const std::string &Initial_PersonalID, AddressPtr Initial_adres,const ClientTypePtr &Initial_Type)
+        :FirstName(Initial_FirstName),LastName(Initial_LastName),PersonalID(Initial_PersonalID),ClientAddress(Initial_adres),clientType(Initial_Type)
         {
 
         }
@@ -53,31 +54,24 @@ using namespace std;
         if (ChangedAddress!=nullptr)
             ClientAddress=ChangedAddress;
     }
-    void Client::addNewRent(RentPtr NewRent) {
-        currentRents.push_back(NewRent);
-    }
 
-unsigned int Client::getClient_RentNumber() const{
-    return currentRents.size();
+void Client::setClientType(const ClientTypePtr &clientType) {
+    Client::clientType = clientType;
 }
 
-RentPtr Client::getClientRent(const unsigned int &i) const{
-    return currentRents[i];
+unsigned int Client::getMaxVehicles() const {
+    return clientType->getMaxVehilces();
 }
 
-string Client::getFullClientInfo() const {
-    std::stringstream ss;
-
-    unsigned int i= this->getClient_RentNumber();
-    ss << this->getClientInfo() << endl;
-    for (unsigned int x=0;x<i;x++)
-    {
-       ss << this->getClientRent(x)->getRentInfo() << endl;
-    }
-    return ss.str();
+double Client::applyDiscount(double price) const {
+    return clientType->applyDiscount(price);
 }
-void Client::removeClientRent(RentPtr rent) {
 
-    currentRents.erase(remove(currentRents.begin(),currentRents.end(),rent),currentRents.end());
-
+bool Client::isArchive() const {
+    return archive;
 }
+
+void Client::setArchive(bool archive) {
+    Client::archive = archive;
+}
+

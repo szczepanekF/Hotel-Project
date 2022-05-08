@@ -14,6 +14,7 @@ public:
     virtual ~VehicleRepository();
     std::vector<VehiclePtr> findBy(VehiclePredicate predicate) const;
     std::vector<VehiclePtr> findAll() const;
+    VehiclePtr findByPlate(const std::string &Plate) const;
 };
 
 bool allVehiclepredicate(const VehiclePtr ptr);

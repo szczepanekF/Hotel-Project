@@ -2,7 +2,7 @@
 
 
 VehiclePtr VehicleRepository::get(const unsigned int &i) const {
-    if (i<=this->size() && i>=0){
+    if (i<this->size() && i>=0){
         return VehicleRepo[i];}
     else
         return nullptr;
@@ -16,7 +16,7 @@ void VehicleRepository::add(VehiclePtr vehicle) {
 
 void VehicleRepository::remove(VehiclePtr vehicle) {
     VehicleRepo.erase(std::remove(VehicleRepo.begin(),VehicleRepo.end(),vehicle),VehicleRepo.end());
-    delete vehicle;
+
 }
 
 std::string VehicleRepository::report() const {
@@ -34,11 +34,7 @@ unsigned int VehicleRepository::size() const {
 }
 
 VehicleRepository::~VehicleRepository() {
-    for(int i=0;i<size();i++)
-    {
-        VehiclePtr v=get(i);
-        delete v;
-    }
+
 
 }
 
@@ -55,6 +51,16 @@ std::vector<VehiclePtr> VehicleRepository::findBy(VehiclePredicate predicate) co
 
 std::vector<VehiclePtr> VehicleRepository::findAll() const {
     return findBy(allVehiclepredicate);
+}
+
+VehiclePtr VehicleRepository::findByPlate(const std::string &Plate) const {
+    for (unsigned int i = 0; i < size(); i++) {
+        VehiclePtr vehicle = get(i);
+        if (vehicle != nullptr && vehicle->getVehicleplateNumber()==Plate) {
+            return vehicle;
+        }
+    }
+    return nullptr;
 }
 
 bool allVehiclepredicate(const VehiclePtr ptr) {

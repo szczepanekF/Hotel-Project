@@ -21,14 +21,6 @@ void Vehicle::setVehicleplateNumber(const std::string &ChangedplateNumber) {
 void Vehicle::setVehiclebasePrcie(const unsigned int &ChangedbasePrice) {
     basePrice=ChangedbasePrice;
 }
-
-bool Vehicle::isRetend() const {
-    return retend;
-}
-void Vehicle::setRetend(bool changedretend) {
-    Vehicle::retend = changedretend;
-}
-
 double Vehicle::getActualRentalPrice() const {
     return getVehiclebasePrice();
 }

@@ -7,10 +7,6 @@
 namespace pt = boost::posix_time;
 namespace gr = boost::gregorian;
 
-class Vehicle;
-class Client;
-
-class Client;
 
 class Rent {
 private:

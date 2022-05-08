@@ -4,8 +4,8 @@
 
 Rent::Rent(const unsigned int &InitialID,ClientPtr Initial_client,VehiclePtr Initial_vehicle,const pt::ptime &InitialbeginTime)
 :id(InitialID),client(Initial_client),vehicle(Initial_vehicle){
-    client->addNewRent(this);
-    vehicle->setRetend(true);
+
+
     if(InitialbeginTime==pt::not_a_date_time){
         beginTime=pt::second_clock::local_time();
     }
@@ -53,10 +53,8 @@ void Rent::endRent(const pt::ptime &InitialendTime) {
         {
             endTime=InitialendTime;
         }
-        vehicle->setRetend(false);
-        client->removeClientRent(this);
         rentCost= vehicle->getVehiclebasePrice() * this->getRentDays();
-
+        rentCost=rentCost-client->applyDiscount(rentCost);
     }
 
 

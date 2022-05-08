@@ -26,21 +26,17 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteCar, TestSuiteCarFixture)
 
 
     BOOST_AUTO_TEST_CASE(CarPriceTests){
-        testVehicle= new Car(testplateNumber, testbasePrice,engine1,A);
+        testVehicle= std::make_shared<Car>(testplateNumber, testbasePrice,engine1,A);
         BOOST_TEST(testVehicle->getActualRentalPrice()==20);
-        testVehicle2= new Car(testplateNumber, testbasePrice,engine1,B);
+        testVehicle2= std::make_shared<Car>(testplateNumber, testbasePrice,engine1,B);
         BOOST_TEST(testVehicle2->getActualRentalPrice()==22);
-        testVehicle3= new Car(testplateNumber, testbasePrice,engine1,C);
+        testVehicle3= std::make_shared<Car>(testplateNumber, testbasePrice,engine1,C);
         BOOST_TEST(testVehicle3->getActualRentalPrice()==24);
-        testVehicle4= new Car(testplateNumber, testbasePrice,engine1,D);
+        testVehicle4= std::make_shared<Car>(testplateNumber, testbasePrice,engine1,D);
         BOOST_TEST(testVehicle4->getActualRentalPrice()==26);
-        testVehicle5= new Car(testplateNumber, testbasePrice,engine1,E);
+        testVehicle5= std::make_shared<Car>(testplateNumber, testbasePrice,engine1,E);
         BOOST_TEST(testVehicle5->getActualRentalPrice()==30);
-        delete testVehicle;
-        delete testVehicle3;
-        delete testVehicle2;
-        delete testVehicle4;
-        delete testVehicle5;
+
     }
 
 

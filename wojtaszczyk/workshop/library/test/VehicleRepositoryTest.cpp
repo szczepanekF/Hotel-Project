@@ -13,16 +13,15 @@ struct TestSuiteVehicleRepositoryFixture {
 
 
     TestSuiteVehicleRepositoryFixture() {
-        // testaddress1 = new Address("London", "Accacia Avenue", "22");
-        //testaddress2 = new Address("London", "Rue Morgue", "13");
 
-        testVehicleX= new Bicycle(testplateNumberX,testbasePriceX);
+
+        testVehicleX= std::make_shared<Bicycle>(testplateNumberX,testbasePriceX);
 
     }
 
     ~TestSuiteVehicleRepositoryFixture() {
 
-        delete testVehicleX;
+
 
 
     }
@@ -43,7 +42,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicleRepository, TestSuiteVehicleRepositoryF
         BOOST_TEST(S.getVehicleRepository().get(-1)==nullptr);
     }
     BOOST_AUTO_TEST_CASE(AddTest){
-        testVehicle = new Bicycle(testplateNumberX, testbasePriceX);
+        testVehicle = std::make_shared<Bicycle>(testplateNumberX, testbasePriceX);
         S.getVehicleRepository().add(testVehicle);
         BOOST_TEST(S.getVehicleRepository().size() == 2);
         BOOST_TEST(S.getVehicleRepository().get(1)->getVehicleInfo()==testVehicle->getVehicleInfo());
@@ -52,7 +51,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicleRepository, TestSuiteVehicleRepositoryF
 
     }
     BOOST_AUTO_TEST_CASE(RemoveTest){
-        testVehicle = new Bicycle(testplateNumberX, testbasePriceX);
+        testVehicle = std::make_shared<Bicycle>(testplateNumberX, testbasePriceX);
         S.getVehicleRepository().add(testVehicle);
         S.getVehicleRepository().remove(testVehicle);
         BOOST_TEST(S.getVehicleRepository().size() == 1);
@@ -65,7 +64,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicleRepository, TestSuiteVehicleRepositoryF
 
     }
     BOOST_AUTO_TEST_CASE(findALLTest){
-        testVehicle = new Bicycle(testplateNumberX, testbasePriceX);
+        testVehicle = std::make_shared<Bicycle>(testplateNumberX, testbasePriceX);
         S.getVehicleRepository().add(testVehicle);
         BOOST_TEST(S.getVehicleRepository().findAll().size()==2);
         BOOST_TEST(S.getVehicleRepository().findAll()[1]->getVehicleInfo()==testVehicle->getVehicleInfo());
@@ -73,7 +72,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicleRepository, TestSuiteVehicleRepositoryF
 
     }
     BOOST_AUTO_TEST_CASE(findByTest){
-        testVehicle = new Bicycle(testplateNumberX, 25);
+        testVehicle = std::make_shared<Bicycle>(testplateNumberX, 25);
         S.getVehicleRepository().add(testVehicle);
         BOOST_TEST(S.getVehicleRepository().findBy(vehiclebaseprice25).size()==1);
         BOOST_TEST(S.getVehicleRepository().findBy(vehiclebaseprice25)[0]->getVehicleInfo()==testVehicle->getVehicleInfo());

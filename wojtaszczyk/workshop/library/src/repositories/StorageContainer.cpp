@@ -11,10 +11,12 @@ StorageContainer::StorageContainer() {
     ClientPtr testClient;
     VehiclePtr testVehicle;
     RentPtr testRent;
-    testaddress1 = new Address("London", "Accacia Avenue", "22");
-    testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress1);
-    testVehicle= new Bicycle(testplateNumber,testbasePrice);
-    testRent=new Rent(1,testClient,testVehicle,pt::not_a_date_time);
+    ClientTypePtr testType;
+    testType= std::make_shared<Default>();
+    testaddress1 = std::make_shared<Address>("London", "Accacia Avenue", "22");
+    testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress1,testType);
+    testVehicle= std::make_shared<Bicycle>(testplateNumber,testbasePrice);
+    testRent=std::make_shared<Rent>(1,testClient,testVehicle,pt::not_a_date_time);
     clientRepository.add(testClient);
     vehicleRepository.add(testVehicle);
     rentRepository.add(testRent);
@@ -33,6 +35,6 @@ StorageContainer::StorageContainer() {
 }
 
 StorageContainer::~StorageContainer() {
-AddressPtr a=getClientRepository().get(0)->getClientAddress();
-delete a;
+
+
 }

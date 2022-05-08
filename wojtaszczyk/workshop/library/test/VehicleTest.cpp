@@ -25,7 +25,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicle, TestSuiteVehicleFixture)
       Bicycle v1(testplateNumber, testbasePrice);
         BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber) == 0);
         BOOST_TEST(v1.getVehiclebasePrice() == testbasePrice);
-        BOOST_TEST(v1.isRetend()==0);
+      //  BOOST_TEST(v1.isRetend()==0);
     }
     BOOST_AUTO_TEST_CASE(VehicleSetterTests){
         Bicycle v1(testplateNumber, testbasePrice);

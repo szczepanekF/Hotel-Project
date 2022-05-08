@@ -25,23 +25,21 @@ struct TestSuiteRentRepositoryFixture {
     VehiclePtr testVehicleX;
     RentPtr testRentX;
     ClientPtr testClient2;
+    ClientTypePtr testType;
+
 
 
 
     TestSuiteRentRepositoryFixture() {
-       // testaddress1 = new Address("London", "Accacia Avenue", "22");
-        //testaddress2 = new Address("London", "Rue Morgue", "13");
-        testaddress1X = new Address("London", "Accacia Avenue", "22");
-        testClientX= new Client(testFirstNameX, testLastNameX, testPersonalIDX, testaddress1X);
-        testVehicleX= new Bicycle(testplateNumberX,testbasePriceX);
-        testRentX=new Rent(1,testClientX,testVehicleX,pt::not_a_date_time);
+        testType= std::make_shared<Default>();
+        testaddress1X = std::make_shared<Address>("London", "Accacia Avenue", "22");
+        testClientX= std::make_shared<Client>(testFirstNameX, testLastNameX, testPersonalIDX, testaddress1X,testType);
+        testVehicleX= std::make_shared<Bicycle>(testplateNumberX,testbasePriceX);
+        testRentX=std::make_shared<Rent>(1,testClientX,testVehicleX,pt::not_a_date_time);
     }
 
     ~TestSuiteRentRepositoryFixture() {
-        delete testaddress1X;
-        delete testClientX;
-        delete testVehicleX;
-        delete testRentX;
+
 
     }
 
@@ -57,29 +55,27 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRentRepository, TestSuiteRentRepositoryFixture
     BOOST_AUTO_TEST_CASE(GetTest){
 
         BOOST_TEST(S.getRentRepository().get(0)->getRentInfo()==testRentX->getRentInfo());
-        BOOST_TEST(S.getRentRepository().get(1)== nullptr);
+        BOOST_TEST(S.getRentRepository().get(2)== nullptr);
         BOOST_TEST(S.getRentRepository().get(-1)==nullptr);
 }
     BOOST_AUTO_TEST_CASE(AddTest){
-        testaddress2 = new Address("London", "Rue Morgue", "13");
-        testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress2);
-        testVehicle= new Bicycle(testplateNumber, testbasePrice);
-        testRent= new Rent(2,testClient,testVehicle,pt::not_a_date_time);
+        testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
+        testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress2,testType);
+        testVehicle= std::make_shared<Bicycle>(testplateNumber, testbasePrice);
+        testRent= std::make_shared<Rent>(2,testClient,testVehicle,pt::not_a_date_time);
 
         S.getRentRepository().add(testRent);
         BOOST_TEST(S.getRentRepository().size() == 2);
         BOOST_TEST(S.getRentRepository().get(1)->getRentInfo()==testRent->getRentInfo());
         S.getRentRepository().add(nullptr);
         BOOST_TEST(S.getRentRepository().size() == 2);
-        delete testaddress2;
-        delete testClient;
-        delete testVehicle;
+
 }
     BOOST_AUTO_TEST_CASE(RemoveTest){
-        testaddress2 = new Address("London", "Rue Morgue", "13");
-        testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress2);
-        testVehicle= new Bicycle(testplateNumber, testbasePrice);
-        testRent= new Rent(2,testClient,testVehicle,pt::not_a_date_time);
+        testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
+        testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress2,testType);
+        testVehicle= std::make_shared<Bicycle>(testplateNumber, testbasePrice);
+        testRent= std::make_shared<Rent>(2,testClient,testVehicle,pt::not_a_date_time);
         S.getRentRepository().add(testRent);
         S.getRentRepository().remove(nullptr);
         BOOST_TEST(S.getRentRepository().size() == 2);
@@ -87,39 +83,33 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRentRepository, TestSuiteRentRepositoryFixture
         BOOST_TEST(S.getRentRepository().size() == 1);
         BOOST_TEST(S.getRentRepository().get(0)->getRentInfo()==testRentX->getRentInfo());
 
-        delete testaddress2;
-        delete testClient;
-        delete testVehicle;
+
 
 }
     BOOST_AUTO_TEST_CASE(findALLTest){
-        testaddress2 = new Address("London", "Rue Morgue", "13");
-        testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress2);
-        testVehicle= new Bicycle(testplateNumber, testbasePrice);
-        testRent= new Rent(2,testClient,testVehicle,pt::not_a_date_time);
+        testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
+        testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress2,testType);
+        testVehicle= std::make_shared<Bicycle>(testplateNumber, testbasePrice);
+        testRent= std::make_shared<Rent>(2,testClient,testVehicle,pt::not_a_date_time);
         S.getRentRepository().add(testRent);
 
         BOOST_TEST(S.getRentRepository().findAll().size()==2);
         BOOST_TEST(S.getRentRepository().findAll()[1]->getRentInfo()==testRent->getRentInfo());
 
-        delete testaddress2;
-        delete testClient;
-        delete testVehicle;
+     ;
 
     }
     BOOST_AUTO_TEST_CASE(findByTest){
-        testaddress2 = new Address("London", "Rue Morgue", "13");
-        testClient= new Client(testFirstName, testLastName, testPersonalID, testaddress2);
-        testVehicle= new Bicycle(testplateNumber, testbasePrice);
-        testRent= new Rent(2,testClient,testVehicle,pt::not_a_date_time);
+        testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
+        testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress2,testType);
+        testVehicle= std::make_shared<Bicycle>(testplateNumber, testbasePrice);
+        testRent= std::make_shared<Rent>(2,testClient,testVehicle,pt::not_a_date_time);
         S.getRentRepository().add(testRent);
 
         BOOST_TEST(S.getRentRepository().findBy(rentID1).size()==1);
         BOOST_TEST(S.getRentRepository().findBy(rentID1)[0]->getRentInfo()==testRent->getRentInfo());
 
-        delete testaddress2;
-        delete testClient;
-        delete testVehicle;
+
 
     }
 

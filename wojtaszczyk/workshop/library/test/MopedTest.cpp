@@ -26,15 +26,13 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteMoped, TestSuiteMopedFixture)
 
 
     BOOST_AUTO_TEST_CASE(MopedPriceTests){
-        testVehicle= new Moped(testplateNumber, testbasePrice,engine1);
+        testVehicle= std::make_shared<Moped>(testplateNumber, testbasePrice,engine1);
         BOOST_TEST(testVehicle->getActualRentalPrice()==20);
-        testVehicle2= new Moped(testplateNumber, testbasePrice,engine2);
+        testVehicle2= std::make_shared<Moped>(testplateNumber, testbasePrice,engine2);
         BOOST_TEST(testVehicle2->getActualRentalPrice()==25);
-        testVehicle3= new Moped(testplateNumber, testbasePrice,engine3);
+        testVehicle3= std::make_shared<Moped>(testplateNumber, testbasePrice,engine3);
         BOOST_TEST(testVehicle3->getActualRentalPrice()==30);
-        delete testVehicle;
-        delete testVehicle3;
-        delete testVehicle2;
+
     }
 
 

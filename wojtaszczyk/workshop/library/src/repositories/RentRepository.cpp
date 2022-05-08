@@ -1,7 +1,7 @@
 #include "repositories/RentRepository.h"
 
 RentPtr RentRepository::get(const unsigned int &i) const {
-    if (i<=this->size() && i>=0){
+    if (i<this->size() && i>=0){
         return RentRepo[i];}
     else
         return nullptr;
@@ -15,7 +15,7 @@ void RentRepository::add(RentPtr rent) {
 
 void RentRepository::remove(RentPtr rent) {
     RentRepo.erase(std::remove(RentRepo.begin(),RentRepo.end(),rent),RentRepo.end());
-    delete rent;
+
 }
 
 std::string RentRepository::report() const {
@@ -33,11 +33,6 @@ unsigned int RentRepository::size() const {
 }
 
 RentRepository::~RentRepository() {
-    for(int i=0;i<size();i++)
-    {
-        RentPtr r=get(i);
-        delete r;
-    }
 
 }
 

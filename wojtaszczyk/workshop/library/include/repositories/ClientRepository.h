@@ -10,13 +10,14 @@ private:
     std::vector<ClientPtr> ClientRepo;
 public:
     ClientPtr get(const unsigned int &i) const;
-    void add(ClientPtr client) ;
+    void add(ClientPtr client)  ;
     void remove(ClientPtr client);
     std::string report() const;
     unsigned int size() const;
     virtual ~ClientRepository();
     std::vector<ClientPtr> findBy(ClientPredicate predicate) const;
     std::vector<ClientPtr> findAll() const;
+    ClientPtr findByPersonalID(const std::string &ID)const;
 
 };
 bool allClientpredicate(const ClientPtr ptr);
