@@ -18,7 +18,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_FLAGS_DEBUG "-g3 -gdwarf-4")
 set(CMAKE_CXX_FLAGS_DEBUG "-g3 -gdwarf-4")
 #Ustaw nazwę projektu i język na C++
-project(Hotel)
+project(HotelProject)
 enable_language(CXX)
 #W specjalnym pliku compile_commands.json można podejrzeć wszystkie operacje kompilatora wraz z parametrami, 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) 
