@@ -5,9 +5,9 @@ StorageContainer::StorageContainer() {
     const std::string testLastName = "Arbuckle";
     const std::string testPersonalID = "0123456789";
     AddressPtr testaddress1;
-    const unsigned int ID=11;
     const std::string testplateNumber= "Jon";
     const unsigned int  testbasePrice = 21;
+    boost::uuids::uuid ID={1};
     ClientPtr testClient;
     VehiclePtr testVehicle;
     RentPtr testRent;
@@ -16,7 +16,7 @@ StorageContainer::StorageContainer() {
     testaddress1 = std::make_shared<Address>("London", "Accacia Avenue", "22");
     testClient= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress1,testType);
     testVehicle= std::make_shared<Bicycle>(testplateNumber,testbasePrice);
-    testRent=std::make_shared<Rent>(1,testClient,testVehicle,pt::not_a_date_time);
+    testRent=std::make_shared<Rent>(ID,testClient,testVehicle,pt::not_a_date_time);
     clientRepository.add(testClient);
     vehicleRepository.add(testVehicle);
     rentRepository.add(testRent);

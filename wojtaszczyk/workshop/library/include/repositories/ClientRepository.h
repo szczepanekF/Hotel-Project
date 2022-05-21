@@ -2,23 +2,24 @@
 #define CARRENTAL_CLIENTREPOSITORY_H
 #include "model/Client.h"
 #include <vector>
+#include "Repository.h"
 
 
-
-class ClientRepository {
-private:
-    std::vector<ClientPtr> ClientRepo;
-public:
-    ClientPtr get(const unsigned int &i) const;
-    void add(ClientPtr client)  ;
-    void remove(ClientPtr client);
-    std::string report() const;
-    unsigned int size() const;
-    virtual ~ClientRepository();
-    std::vector<ClientPtr> findBy(ClientPredicate predicate) const;
-    std::vector<ClientPtr> findAll() const;
-    ClientPtr findByPersonalID(const std::string &ID)const;
-
+class ClientRepository:public Repository<Client,ClientException> {
+//public:
+//    template<class P> std::vector<ClientPtr> find(const P &predicate) const
+//    {
+//        std::vector<ClientPtr> result;
+//        for(int i = 0; i<size(); ++i)
+//        {
+//            ClientPtr rent = objects[i];
+//            if(predicate(rent))
+//            {
+//                result.push_back(rent);
+//            }
+//        }
+//        return result;
+//    }
 };
 bool allClientpredicate(const ClientPtr ptr);
 bool clientID1(const ClientPtr ptr);

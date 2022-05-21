@@ -46,14 +46,20 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClient, TestSuiteClientFixture)
         BOOST_TEST(c.getClientFirstName().compare("Abraham") == 0);
         BOOST_TEST(c.getClientLastName().compare("Gold") == 0);
         BOOST_TEST(testaddress2== c.getClientAddress());
-        c.setClientFirstName(" ");
-        c.setClientLastName(" ");
-        c.setClientAddress(pusty);
+        BOOST_CHECK_THROW(ClientPtr client= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, nullptr, testType),std::logic_error);
+        BOOST_CHECK_THROW(ClientPtr client= std::make_shared<Client>("", testLastName, testPersonalID, testaddress1, testType),std::logic_error);
+        BOOST_CHECK_THROW(ClientPtr client= std::make_shared<Client>(testFirstName, "", testPersonalID, testaddress1, testType),std::logic_error);
+        BOOST_CHECK_THROW(ClientPtr client= std::make_shared<Client>(testFirstName, testLastName, "", testaddress1, testType),std::logic_error);
+        BOOST_CHECK_THROW(ClientPtr client= std::make_shared<Client>(testFirstName, testLastName, testPersonalID, testaddress1, nullptr),std::logic_error);
+        BOOST_CHECK_THROW(c.setClientFirstName(""),std::logic_error);
+        BOOST_CHECK_THROW(c.setClientLastName(""),std::logic_error);
+        BOOST_CHECK_THROW(c.setClientAddress(pusty),std::logic_error);
         c.setArchive(true);
         BOOST_TEST(c.isArchive() == 1);
         BOOST_TEST(c.getClientFirstName().compare("Abraham") == 0);
         BOOST_TEST(c.getClientLastName().compare("Gold") == 0);
         BOOST_TEST(testaddress2 == c.getClientAddress());
+        BOOST_CHECK_THROW(c.setClientType(nullptr),std::logic_error);
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestBronze){
 

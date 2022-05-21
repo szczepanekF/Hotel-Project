@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <boost/date_time.hpp>
 #include "ClientType.h"
+#include "exceptions/ClientException.h"
+#include <regex>
 
 
 class Rent;
@@ -40,8 +42,27 @@ public:
     double applyDiscount(double price) const;
     void setArchive(bool archive);
     bool isArchive() const;
+    std::string getInfo() const;
+    const std::string &getId() const;
 };
-
+class FirstNamePredicate {
+private:
+    std::regex pattern;
+public:
+    FirstNamePredicate( const std::string &pattern1) : pattern(pattern1) {}
+    bool operator()(const ClientPtr &ptr) const{
+        return std::regex_match(ptr->getClientFirstName(),pattern);
+    }
+};
+class LastNamePredicate {
+private:
+    std::regex pattern;
+public:
+    LastNamePredicate(const std::string &pattern1) : pattern(pattern1) {}
+    bool operator()(const ClientPtr &ptr) const{
+        return std::regex_match(ptr->getClientLastName(),pattern);
+    }
+};
 
 
 

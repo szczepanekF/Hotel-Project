@@ -34,27 +34,44 @@ double RentManager::checkClientRentBalance(const ClientPtr &ptr) const {
     return s;
 }
 
-RentPtr RentManager::rentVehicle(const unsigned int &InitialID, const ClientPtr &cptr, const VehiclePtr &vptr,const pt::ptime &InitialbeginTime) {
+RentPtr RentManager::rentVehicle(const ClientPtr &cptr, const VehiclePtr &vptr,const pt::ptime &InitialbeginTime) {
     if(!cptr->isArchive() && findAllClientRents(cptr).size()< cptr->getMaxVehicles() && findVehicleRent(vptr) == nullptr){
-        RentPtr rent=std::make_shared<Rent>(InitialID,cptr,vptr,InitialbeginTime);
+        boost::uuids::uuid ID=boost::uuids::random_generator()();
+        while(currentRents->findBy([ID](const RentPtr &ptr)->bool{return ptr->getId()==ID;}).size()!=0 && archiveRents->findBy([ID](const RentPtr &ptr)->bool{return ptr->getId()==ID;}).size()!=0){
+            ID=boost::uuids::random_generator()();
+        }
+        RentPtr rent=std::make_shared<Rent>(ID,cptr,vptr,InitialbeginTime);
         currentRents->add(rent);
         return rent;
     }
     else{
-        return nullptr;
+       if(cptr->isArchive()){
+           throw ClientException("Archive Error");
+       }
+       else if(!(findAllClientRents(cptr).size()< cptr->getMaxVehicles())){
+           throw ClientException("Too many cars Error");
+       }
+       else if(findVehicleRent(vptr) != nullptr){
+           throw RentException("Vehicle Already Taken Error");
+       }
+       return nullptr;
     }
 }
 
 void RentManager::returnVehicle(const VehiclePtr &vptr) {
-    if(!(findVehicleRent(vptr)== nullptr)){
+    if((findVehicleRent(vptr)!= nullptr)){
         RentPtr rent=findVehicleRent(vptr);
         rent->endRent(pt::not_a_date_time);
         currentRents->remove(rent);
         archiveRents->add(rent);
-    }
+    }else
+        throw RentException("no Vehicle Error");
 }
 
 void RentManager::changeClientType(const ClientPtr &ptr) {
+    if(ptr== nullptr){
+        throw RentException("null Argument Error");
+    }
     double s= checkClientRentBalance(ptr);
     ClientTypePtr type;
     if(s>=0&&s<100){

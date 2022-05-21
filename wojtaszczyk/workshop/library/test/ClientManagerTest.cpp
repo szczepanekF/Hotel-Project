@@ -50,6 +50,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager, TestSuiteClientManagerFixture)
         BOOST_TEST(ptr==CM.findAllClients()[0]);
         ClientPredicate f=[](ClientPtr ptr)->bool{return ptr->getClientPersonalID()=="12";};
         BOOST_TEST(CM.findClients(f).size()==1);
+        BOOST_CHECK_THROW(CM.unregisterClient("11"),std::logic_error);
+        BOOST_TEST(CM.findClients(f).size()==1);
         CM.unregisterClient("12");
         BOOST_TEST(ptr->isArchive()==true);
         BOOST_TEST(CM.findClients(f).size()==0);

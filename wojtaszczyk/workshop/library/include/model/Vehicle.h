@@ -1,5 +1,3 @@
-
-
 #ifndef CARRENTAL_VEHICLE_H
 #define CARRENTAL_VEHICLE_H
 #include <iostream>
@@ -7,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <boost/date_time.hpp>
-
+#include "exceptions/VehicleException.h"
 
 class Vehicle{
 private:
@@ -23,6 +21,8 @@ public:
     virtual std::string getVehicleInfo() const;
     virtual double getActualRentalPrice() const;
     virtual ~Vehicle()=0;
+    std::string getInfo() const;
+    const std::string &getId() const;
 };
 
 

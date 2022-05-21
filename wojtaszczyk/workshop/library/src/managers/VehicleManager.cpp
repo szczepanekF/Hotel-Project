@@ -1,7 +1,7 @@
 #include "managers/VehicleManager.h"
 
 VehiclePtr VehicleManager::getVehicle(const std::string &Plate) const {
-    return currentVehicles->findByPlate(Plate);
+    return currentVehicles->findById(Plate);
 }
 
 VehiclePtr VehicleManager::registerMoped(const std::string &Initial_Plate, const unsigned int &BasePrice,

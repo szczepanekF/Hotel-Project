@@ -10,7 +10,7 @@ struct TestSuiteRentFixture {
     const std::string testLastName = "Arbuckle";
     const std::string testPersonalID = "0123456789";
     AddressPtr testaddress1;
-    const unsigned int ID=11;
+    boost::uuids::uuid ID={11};
     const std::string testplateNumber= "Jon";
     const unsigned int  testbasePrice = 50;
     ClientPtr testClient;
@@ -48,6 +48,9 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRent, TestSuiteRentFixture)
         BOOST_TEST(r.getEndTime()==pt::not_a_date_time);
         BOOST_TEST_REQUIRE(!r.getBeginTime().is_not_a_date_time());
         BOOST_TEST(r.getBeginTime()==then);
+
+        BOOST_CHECK_THROW(RentPtr rent=std::make_shared<Rent>(ID,nullptr,testVehicle,then),std::logic_error);
+        BOOST_CHECK_THROW(RentPtr rent=std::make_shared<Rent>(ID,testClient,nullptr,then),std::logic_error);
 
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestDefaultBeginTime) {

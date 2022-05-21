@@ -26,6 +26,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteMoped, TestSuiteMopedFixture)
 
 
     BOOST_AUTO_TEST_CASE(MopedPriceTests){
+        BOOST_CHECK_THROW(VehiclePtr testVehicle8= std::make_shared<Moped>(testplateNumber, testbasePrice,0),std::logic_error);
         testVehicle= std::make_shared<Moped>(testplateNumber, testbasePrice,engine1);
         BOOST_TEST(testVehicle->getActualRentalPrice()==20);
         testVehicle2= std::make_shared<Moped>(testplateNumber, testbasePrice,engine2);

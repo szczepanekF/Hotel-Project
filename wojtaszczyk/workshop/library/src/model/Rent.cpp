@@ -2,8 +2,8 @@
 #include "model/Vehicle.h"
 #include "model/Client.h"
 
-Rent::Rent(const unsigned int &InitialID,ClientPtr Initial_client,VehiclePtr Initial_vehicle,const pt::ptime &InitialbeginTime)
-:id(InitialID),client(Initial_client),vehicle(Initial_vehicle){
+Rent::Rent(const boost::uuids::uuid &InitialID, ClientPtr Initial_client, VehiclePtr Initial_vehicle, const pt::ptime &InitialbeginTime)
+try:id(InitialID),client(Initial_client),vehicle(Initial_vehicle){
 
 
     if(InitialbeginTime==pt::not_a_date_time){
@@ -12,15 +12,25 @@ Rent::Rent(const unsigned int &InitialID,ClientPtr Initial_client,VehiclePtr Ini
     else{
         beginTime=InitialbeginTime;
     }
+    if(boost::uuids::to_string(InitialID).empty()){
+        throw RentException("Bad ID Error");
+    }
+    if(Initial_client==nullptr){
+        throw RentException("null Client Error");
+    }
+    if(Initial_vehicle==nullptr){
+        throw RentException("null Vehicle Error");
+    }
+}catch(const RentException &e){
+    std::cout<<e.what()<<'\n';
 }
+
 std::string Rent::getRentInfo() const {
     std::stringstream ss;
     ss <<beginTime<<" "<<endTime;
-    return std::to_string(id) + " " + client->getClientInfo() + " " + vehicle->getVehicleInfo() + " " + ss.str();
+    return boost::uuids::to_string(id) + " " + client->getClientInfo() + " " + vehicle->getVehicleInfo() + " " + ss.str();
 }
-const unsigned int &Rent::getRentID() const {
-    return id;
-}
+
 
 ClientPtr Rent::getRentClient() const {
     return client;
@@ -53,7 +63,7 @@ void Rent::endRent(const pt::ptime &InitialendTime) {
         {
             endTime=InitialendTime;
         }
-        rentCost= vehicle->getVehiclebasePrice() * this->getRentDays();
+        rentCost= vehicle->getVehiclebasePrice() * getRentDays();
         rentCost=rentCost-client->applyDiscount(rentCost);
     }
 
@@ -85,4 +95,12 @@ void Rent::endRent(const pt::ptime &InitialendTime) {
 }
 const unsigned int &Rent::getRentCost() const {
     return rentCost;
+}
+
+std::string Rent::getInfo() const {
+    return getRentInfo();
+}
+
+const boost::uuids::uuid &Rent::getId() const {
+    return id;
 }

@@ -1,7 +1,7 @@
 #include "managers/ClientManager.h"
 
 ClientPtr ClientManager::getClient(const std::string &ID) const {
-    return currentClients->findByPersonalID(ID);
+    return currentClients->findById(ID);
 }
 
 ClientPtr ClientManager::registerClient(const std::string &Initial_FirstName, const std::string &Initial_LastName,
@@ -19,7 +19,10 @@ ClientPtr ClientManager::registerClient(const std::string &Initial_FirstName, co
 }
 
 void ClientManager::unregisterClient(const std::string &ID) {
-    getClient(ID)->setArchive(true);
+    if(currentClients->findById(ID)==nullptr)
+        throw ClientException("No Client Error");
+    else
+         getClient(ID)->setArchive(true);
 }
 
 std::vector<ClientPtr> ClientManager::findClients(ClientPredicate predicate) const {

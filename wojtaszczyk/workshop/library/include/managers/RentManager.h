@@ -12,7 +12,7 @@ public:
     std::vector<RentPtr> findRents(RentPredicate predicate) const;
     std::vector<RentPtr> findAllRents() const;
     double checkClientRentBalance(const ClientPtr &ptr) const;
-    RentPtr rentVehicle(const unsigned int &InitialID,const ClientPtr &cptr,const VehiclePtr &vptr,const pt::ptime &InitialbeginTime);
+    RentPtr rentVehicle(const ClientPtr &cptr,const VehiclePtr &vptr,const pt::ptime &InitialbeginTime);
     void returnVehicle(const VehiclePtr &vptr);
     void changeClientType(const ClientPtr &ptr);
 

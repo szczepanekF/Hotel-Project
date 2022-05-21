@@ -11,7 +11,8 @@ struct TestSuiteClientRepositoryFixture {
     ClientPtr testClient;
 
     const std::string testFirstNameX = "Jon";
-    const std::string testLastNameX = "Arbuckle";
+    const std::string testFirstName3 = "Alan";
+    const std::string testLastNameX = "Sand";
     const std::string testPersonalIDX = "0123456789";
     AddressPtr testaddress1X;
     ClientPtr testClientX;
@@ -44,8 +45,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository, TestSuiteClientRepositoryFix
     BOOST_AUTO_TEST_CASE(GetTest){
 
         BOOST_TEST(S.getClientRepository().get(0)->getClientInfo()==testClientX->getClientInfo());
-        BOOST_TEST(S.getClientRepository().get(1)== nullptr);
-        BOOST_TEST(S.getClientRepository().get(-1)==nullptr);
+        BOOST_CHECK_THROW(S.getClientRepository().get(1),std::logic_error);
+        BOOST_CHECK_THROW(S.getClientRepository().get(-1),std::logic_error);
 }
     BOOST_AUTO_TEST_CASE(AddTest){
         testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
@@ -53,7 +54,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository, TestSuiteClientRepositoryFix
         S.getClientRepository().add(testClient);
         BOOST_TEST(S.getClientRepository().size() == 2);
         BOOST_TEST(S.getClientRepository().get(1)->getClientInfo()==testClient->getClientInfo());
-        S.getClientRepository().add(nullptr);
+        BOOST_CHECK_THROW(S.getClientRepository().add(nullptr),std::logic_error);
         BOOST_TEST(S.getClientRepository().size() == 2);
 
 }
@@ -66,7 +67,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository, TestSuiteClientRepositoryFix
         S.getClientRepository().remove(testClient);
         BOOST_TEST(S.getClientRepository().size() == 2);
         BOOST_TEST(S.getClientRepository().get(1)->getClientInfo()==testClient2->getClientInfo());
-        S.getClientRepository().remove(nullptr);
+        BOOST_CHECK_THROW(S.getClientRepository().remove(nullptr),std::logic_error);
         BOOST_TEST(S.getClientRepository().size() == 2);
 
 
@@ -82,9 +83,11 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository, TestSuiteClientRepositoryFix
 }
     BOOST_AUTO_TEST_CASE(findByTest){
         testaddress2 = std::make_shared<Address>("London", "Rue Morgue", "13");
-        testClient= std::make_shared<Client>(testFirstName, testLastName, "1", testaddress2,testType);
+        testClient= std::make_shared<Client>(testFirstName3, testLastNameX, "1", testaddress2,testType);
         S.getClientRepository().add(testClient);
 
+        BOOST_TEST(S.getClientRepository().findBy(FirstNamePredicate("A.*")).size()==1);
+        BOOST_TEST(S.getClientRepository().findBy(LastNamePredicate("S.*")).size()==1);
         BOOST_TEST(S.getClientRepository().findBy(clientID1).size()==1);
         BOOST_TEST(S.getClientRepository().findBy(clientID1)[0]->getClientInfo()==testClient->getClientInfo());
 
@@ -95,8 +98,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientRepository, TestSuiteClientRepositoryFix
         testClient = std::make_shared<Client>(testFirstName, testLastName, "1", testaddress2, testType);
         S.getClientRepository().add(testClient);
 
-        BOOST_TEST(S.getClientRepository().findByPersonalID("1") == testClient);
-        BOOST_TEST(S.getClientRepository().findByPersonalID("51") == nullptr);
+        BOOST_TEST(S.getClientRepository().findById("1") == testClient);
+        BOOST_TEST(S.getClientRepository().findById("51") == nullptr);
     }
 
 

@@ -3,13 +3,7 @@
 #include "managers/RentManager.h"
 
 struct TestSuiteRentManagerFixture {
-    const std::string testFirstName = "Jan";
-    const std::string testLastName = "Arbuckle";
-    const std::string testPersonalID = "0123456789";
-    AddressPtr testaddress1;
-    AddressPtr testaddress2;
-    StorageContainer S;
-    ClientPtr testClient;
+
     const std::string testplateNumberX= "JJ";
     const unsigned int  testbasePriceX = 50;
 
@@ -50,39 +44,34 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRentManager, TestSuiteRentManagerFixture)
 
     BOOST_AUTO_TEST_CASE(rentTest){
     RentPtr ptr;
-    ptr=RM.rentVehicle(1,testClientX,testVehicleX,pt::not_a_date_time);
+    ptr=RM.rentVehicle(testClientX,testVehicleX,pt::not_a_date_time);
     BOOST_TEST(RM.findAllRents().size()==1);
     BOOST_TEST(RM.findVehicleRent(testVehicleX)==ptr);
-    ptr=RM.rentVehicle(1,testClientX,testVehicle2,pt::not_a_date_time);
+    BOOST_CHECK_THROW(ptr=RM.rentVehicle(testClientX,testVehicle2,pt::not_a_date_time),std::logic_error);
     BOOST_TEST(RM.findAllRents().size()==1);
-    BOOST_TEST(ptr==nullptr);
+    //BOOST_TEST(ptr==nullptr);
     BOOST_TEST(RM.findAllClientRents(testClientX).size()==1);
-    ptr=RM.rentVehicle(2,testClientX,testVehicle2,pt::not_a_date_time);
-    BOOST_TEST(ptr==nullptr);
+    BOOST_CHECK_THROW(ptr=RM.rentVehicle(testClientX,testVehicle2,pt::not_a_date_time),std::logic_error);
+    //BOOST_TEST(ptr==nullptr);
     BOOST_TEST(RM.findAllRents().size()==1);
     testType= std::make_shared<Gold>();
     testClientX->setClientType(testType);
-    ptr=RM.rentVehicle(2,testClientX,testVehicle2,pt::not_a_date_time);
+    ptr=RM.rentVehicle(testClientX,testVehicle2,pt::not_a_date_time);
     BOOST_TEST(RM.findAllRents().size()==2);
     BOOST_TEST(RM.findVehicleRent(testVehicle2)==ptr);
     BOOST_TEST(RM.findAllClientRents(testClientX).size()==2);
-    RentPredicate f =[](RentPtr ptr)->bool{return ptr->getRentID()==5; };
-    BOOST_TEST(RM.findRents(f).size()==0);
-    RentPredicate f2 =[](RentPtr ptr)->bool{return ptr->getRentID()==2; };
-    BOOST_TEST(RM.findRents(f2).size()==1);
-    BOOST_TEST(RM.findRents(f2)[0]->getRentInfo()==ptr->getRentInfo());
-    ptr=RM.rentVehicle(3,testClientX,testVehicle2,pt::not_a_date_time);
-    BOOST_TEST(ptr==nullptr);
+
+    BOOST_CHECK_THROW(ptr=RM.rentVehicle(testClientX,testVehicle2,pt::not_a_date_time),std::logic_error);
+    //BOOST_TEST(ptr==nullptr);
     BOOST_TEST(RM.findAllRents().size()==2);
     testClientX->setArchive(true);
-    ptr=RM.rentVehicle(3,testClientX,testVehicle3,pt::not_a_date_time);
-    BOOST_TEST(ptr==nullptr);
+    BOOST_CHECK_THROW(ptr=RM.rentVehicle(testClientX,testVehicle3,pt::not_a_date_time),std::logic_error);
+    //BOOST_TEST(ptr==nullptr);
     BOOST_TEST(RM.findAllRents().size()==2);
     testClientX->setArchive(false);
     RM.returnVehicle(testVehicleX);
     BOOST_TEST(RM.findAllRents().size()==1);
-
-
+    BOOST_CHECK_THROW(RM.returnVehicle(nullptr),std::logic_error);
 
 
 

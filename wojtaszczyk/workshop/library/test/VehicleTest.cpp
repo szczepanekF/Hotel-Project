@@ -25,6 +25,9 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicle, TestSuiteVehicleFixture)
       Bicycle v1(testplateNumber, testbasePrice);
         BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber) == 0);
         BOOST_TEST(v1.getVehiclebasePrice() == testbasePrice);
+        BOOST_CHECK_THROW(VehiclePtr vehicle= std::make_shared<Bicycle>(testplateNumber,0),std::logic_error);
+        BOOST_CHECK_THROW(VehiclePtr vehicle= std::make_shared<Bicycle>("",testbasePrice),std::logic_error);
+
       //  BOOST_TEST(v1.isRetend()==0);
     }
     BOOST_AUTO_TEST_CASE(VehicleSetterTests){
@@ -34,7 +37,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteVehicle, TestSuiteVehicleFixture)
 
         BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber1) == 0);
         BOOST_TEST(v1.getVehiclebasePrice() == testbasePrice1);
-        v1.setVehicleplateNumber("");
+        BOOST_CHECK_THROW(v1.setVehiclebasePrcie(0),std::logic_error);
+        BOOST_CHECK_THROW(v1.setVehicleplateNumber(""),std::logic_error);
         BOOST_TEST(v1.getVehicleplateNumber().compare(testplateNumber1) == 0);
     }
 

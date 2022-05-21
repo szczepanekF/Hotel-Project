@@ -1,8 +1,14 @@
 #include "model/MotorVehicle.h"
 
 MotorVehicle::MotorVehicle(const std::string &initialPlateNUmber, const unsigned int &initialBasePrice,
-                           const unsigned int &engineDisplacement) : Vehicle(initialPlateNUmber, initialBasePrice),
-                                                              engineDisplacement(engineDisplacement) {}
+                           const unsigned int &engineDisplacement) try: Vehicle(initialPlateNUmber, initialBasePrice),
+                                                              engineDisplacement(engineDisplacement) {
+    if (engineDisplacement <= 0) {
+    throw VehicleException("Bad Engine Error");
+}
+}catch(const VehicleException &e){
+    std::cout<<e.what()<<'\n';
+}
 
 double MotorVehicle::getActualRentalPrice() const {
     double x;
