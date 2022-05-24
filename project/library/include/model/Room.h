@@ -42,7 +42,7 @@ public:
 
 
 };
-typedef std::shared_ptr<Room> RoomPtr;
+
 
 
 #endif //INC_6_ROOM_H
