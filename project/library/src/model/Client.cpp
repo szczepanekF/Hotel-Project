@@ -84,5 +84,5 @@ bool Client::acceptDiscount() const {
 }
 
 std::string Client::getInfo() const {
-    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getPersonalId() + " o rachunku rownym: " + std::to_string(getBill());
+    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getPersonalId() + " bill equal: " + std::to_string(getBill());
 }

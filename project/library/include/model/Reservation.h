@@ -40,8 +40,8 @@ public:
 
     std::string getInfo() const;
     int getReservationDays() const;
-    double calculateReservationCost() const;
-    void setTotalReservationCost(double totalReservationCost);
+    void calculateReservationCost();
+//    void setTotalReservationCost(double totalReservationCost);
 };
 
 
