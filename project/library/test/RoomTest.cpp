@@ -2,6 +2,7 @@
 #include "model/Room.h"
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
+#include "exceptions/RoomError.h"
 using namespace std;
 namespace btt = boost::test_tools;
 struct TestSuiteRoomFixture{
@@ -40,6 +41,25 @@ BOOST_AUTO_TEST_CASE(RoomConstructorTest)
     BOOST_TEST(room2.getBedCount() == bedcount1);
     BOOST_TEST(room2.getExtraBonus() == A);
 }
+    BOOST_AUTO_TEST_CASE(RoomConstructorTestExceptions)
+    {
+
+        BOOST_CHECK_THROW(RoomWithoutTerrace room2(0,baseprice1,bedcount1,A),RoomError);
+        BOOST_CHECK_EXCEPTION(RoomWithoutTerrace room2(0,baseprice1,bedcount1,A),RoomError,
+                              [] (const RoomError &e){return e.information().compare("ERROR Wrong room number")==0;});
+        BOOST_CHECK_THROW(RoomWithoutTerrace room2(num1,0,bedcount1,A),RoomError);
+        BOOST_CHECK_EXCEPTION(RoomWithoutTerrace room2(num1,0,bedcount1,A),RoomError,
+                              [] (const RoomError &e){return e.information().compare("ERROR Wrong base price")==0;});
+        BOOST_CHECK_THROW(RoomWithoutTerrace room2(num1,baseprice1,0,A),RoomError);
+        BOOST_CHECK_EXCEPTION(RoomWithoutTerrace room2(num1,baseprice1,0,A),RoomError,
+                              [] (const RoomError &e){return e.information().compare("ERROR Wrong bed count")==0;});
+
+
+        BOOST_CHECK_THROW(RoomWithTerrace room2(num1,baseprice1,bedcount1,A,0),RoomError);
+        BOOST_CHECK_EXCEPTION(RoomWithTerrace room2(num1,baseprice1,bedcount1,A,0),RoomError,
+                              [] (const RoomError &e){return e.information().compare("Error Wrong terrace surface")==0;});
+    }
+
 BOOST_AUTO_TEST_CASE(RoomGetPricePerNightTest)
 {
     RoomWithoutTerrace room(num1,baseprice1,bedcount1,A);
@@ -59,7 +79,7 @@ BOOST_AUTO_TEST_CASE(RoomSetBedCountTest)
     RoomWithoutTerrace room(num1,baseprice1,bedcount1,A);
     room.setBedCount(bedcount2);
     BOOST_TEST(room.getBedCount() == bedcount2);
-    room.setBedCount(bedcount3);
+    BOOST_CHECK_THROW(room.setBedCount(bedcount3),RoomError);
     BOOST_TEST(room.getBedCount() == bedcount2);
 }
 BOOST_AUTO_TEST_CASE(RoomWithTerraceFinalPriceTest)

@@ -13,8 +13,8 @@ private:
     bool archive;
     double bill;
 public:
-    Client(const std::string &firtsName, const std::string &lastName, const std::string &personalId,
-           const ClientTypePtr &clientType);
+    Client(const std::string &initial_firtsName, const std::string &initial_lastName, const std::string &initial_personalId,
+           const ClientTypePtr &initial_clientType);
     virtual ~Client();
     const std::string &getFirstName() const;
     const std::string &getLastName() const;
@@ -22,11 +22,11 @@ public:
     const ClientTypePtr &getClientType() const;
     bool isArchive() const;
     double getBill() const;
-    void setFirstName(const std::string &firtsName);
-    void setLastName(const std::string &lastName);
-    void setClientType(const ClientTypePtr &clientType);
-    void setArchive(bool archive);
-    void setBill(double bill);
+    void setFirstName(const std::string &initial_firtsName);
+    void setLastName(const std::string &initial_lastName);
+    void setClientType(const ClientTypePtr &initial_clientType);
+    void setArchive(bool initial_archive);
+    void setBill(double initial_bill);
     int getMaxDays() const;
     bool acceptDiscount() const;
     std::string getInfo() const;

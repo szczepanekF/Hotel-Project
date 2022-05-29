@@ -4,7 +4,7 @@ project(Library)
 set(SOURCE_FILES
     include/model/Client.h src/model/Client.cpp
         include/model/typedefs.h src/model/ClientType.cpp include/model/ClientType.h src/model/shortTerm.cpp include/model/shortTerm.h src/model/Standard.cpp include/model/Standard.h src/model/longTerm.cpp include/model/longTerm.h
-        include/model/Room.h include/model/RoomWithoutTerrace.h include/model/RoomWithTerrace.h src/model/Room.cpp src/model/RoomWithTerrace.cpp src/model/RoomWithoutTerrace.cpp src/model/Reservation.cpp include/model/Reservation.h)
+        include/model/Room.h include/model/RoomWithoutTerrace.h include/model/RoomWithTerrace.h src/model/Room.cpp src/model/RoomWithTerrace.cpp src/model/RoomWithoutTerrace.cpp src/model/Reservation.cpp include/model/Reservation.h src/exceptions/HotelError.cpp include/exceptions/HotelError.h src/exceptions/ClientError.cpp include/exceptions/ClientError.h src/exceptions/ReservationError.cpp include/exceptions/ReservationError.h src/exceptions/RoomError.cpp include/exceptions/RoomError.h)
 #Utwórz bibliotekę typu STATIC, SHARED albo MODULE ze wskazanych źródeł
 add_library(Library ${SOURCE_FILES})
 

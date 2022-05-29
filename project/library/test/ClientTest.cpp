@@ -4,6 +4,8 @@
 #include "model/shortTerm.h"
 #include "model/Standard.h"
 #include "model/longTerm.h"
+#include "exceptions/ClientError.h"
+
 
 
 BOOST_AUTO_TEST_SUITE(TestSuiteClient)
@@ -13,12 +15,29 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
 
         Client c("Jan","ktos","242567",T1);
         BOOST_TEST(c.getFirstName()=="Jan");
-        BOOST_TEST(c.getLastName()=="ktos");
+        BOOST_TEST(c.getLastName().compare("ktos")==0);
         BOOST_TEST(c.getPersonalId()=="242567");
         BOOST_TEST(c.isArchive()==0);
         BOOST_TEST(c.getBill()==0);
         BOOST_TEST(c.getMaxDays()==2);
         BOOST_TEST(c.acceptDiscount()==0);
+    }
+    BOOST_AUTO_TEST_CASE(ParameterConstrutorTestExceptions) {
+        ClientTypePtr T1=std::make_shared<shortTerm>();
+
+        BOOST_CHECK_THROW(Client c("","ktos","242567",T1),ClientError);
+        BOOST_CHECK_EXCEPTION(Client c("","ktos","242567",T1),ClientError,
+                            [] (const ClientError &e){return e.information().compare("ERROR Empty first name")==0;});
+        BOOST_CHECK_THROW(Client c("Jan","","242567",T1),ClientError);
+        BOOST_CHECK_EXCEPTION(Client c("Jan","","242567",T1),ClientError,
+                              [] (const ClientError &e){return e.information().compare("ERROR Empty last name")==0;});
+        BOOST_CHECK_THROW(Client c("Jan","ktos","",T1),ClientError);
+        BOOST_CHECK_EXCEPTION(Client c("Jan","ktos","",T1),ClientError,
+                              [] (const ClientError &e){return e.information().compare("ERROR Empty personalId")==0;});
+        BOOST_CHECK_THROW(Client c("Jan","ktos","242567",nullptr),ClientError);
+        BOOST_CHECK_EXCEPTION(Client c("Jan","ktos","242567",nullptr),ClientError,
+                              [] (const ClientError &e){return e.information().compare("ERROR Null client type")==0;});
+
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestNotDefaultAndClientTypes) {
         ClientTypePtr T2=std::make_shared<Standard>();
@@ -58,6 +77,14 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         c.setClientType(T2);
         BOOST_TEST(c.getClientType()->getClientTypeInfo()==T3->getClientTypeInfo());
         BOOST_TEST(c.getBill()==400);
+
+    }
+    BOOST_AUTO_TEST_CASE(SetterTestExceptions) {
+        ClientTypePtr T1=std::make_shared<shortTerm>();
+        Client c("Jan","ktos","242567",T1);
+        BOOST_CHECK_THROW(c.setClientType(nullptr),ClientError);
+        BOOST_CHECK_THROW(c.setFirstName(""),ClientError);
+        BOOST_CHECK_THROW(c.setLastName(""),ClientError);
 
     }
 

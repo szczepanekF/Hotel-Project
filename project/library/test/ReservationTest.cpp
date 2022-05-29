@@ -5,6 +5,11 @@
 #include "model/Standard.h"
 //#include "model/longTerm.h"
 #include "model/RoomWithoutTerrace.h"
+#include "exceptions/ReservationError.h"
+#include "exceptions/RoomError.h"
+#include "exceptions/ClientError.h"
+#include "exceptions/HotelError.h"
+
 struct ReservationFixture {
     ClientTypePtr testType=std::make_shared<Standard>();
     ClientPtr testClient;
@@ -38,17 +43,27 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
 
 
     }
+    BOOST_AUTO_TEST_CASE(ParameterConstrutorTestExceptions) {
 
-    BOOST_AUTO_TEST_CASE(CalculateTotalReservationCostDefault) {
-        Reservation res(testClient,testRoom,testGuestCount,testId,testBeginTime,testEndTime);
-        double temp =res.getTotalReservationCost();
-        BOOST_TEST(res.getTotalReservationCost()==temp);
-        testRoom->setExtraBonus(E);
-        BOOST_TEST(res.getTotalReservationCost()==temp);
-        res.calculateReservationCost();
-        BOOST_TEST(res.getTotalReservationCost()!=temp);
+        BOOST_CHECK_THROW(Reservation res(nullptr,testRoom,testGuestCount,testId,testBeginTime,testEndTime),ClientError);
+        BOOST_CHECK_EXCEPTION(Reservation res(nullptr,testRoom,testGuestCount,testId,testBeginTime,testEndTime),ClientError,
+                              [](const HotelError &e){return e.information().compare("ERROR Null client")==0;});
+        BOOST_CHECK_THROW(Reservation res(testClient,nullptr,testGuestCount,testId,testBeginTime,testEndTime),RoomError);
+        BOOST_CHECK_EXCEPTION(Reservation res(testClient,nullptr,testGuestCount,testId,testBeginTime,testEndTime),RoomError,
+                              [](const HotelError &e){return e.information().compare("Error Null room")==0;});
+        BOOST_CHECK_THROW(Reservation res(testClient,testRoom,0,testId,testBeginTime,testEndTime),ReservationError);
+        BOOST_CHECK_EXCEPTION(Reservation res(testClient,testRoom,0,testId,testBeginTime,testEndTime),ReservationError,
+                              [](const HotelError &e){return e.information().compare("ERROR Wrong guest count")==0;});
+        BOOST_CHECK_THROW(Reservation res(testClient,testRoom,testGuestCount,testId,pt::not_a_date_time,testEndTime),ReservationError);
+        BOOST_CHECK_EXCEPTION(Reservation res(testClient,testRoom,testGuestCount,testId,pt::not_a_date_time,testEndTime),ReservationError,
+                              [](const HotelError &e){return e.information().compare("Error Begin time not given")==0;});
+        BOOST_CHECK_THROW(Reservation res(testClient,testRoom,3,testId,testBeginTime,testEndTime),ReservationError);
+        BOOST_CHECK_EXCEPTION(Reservation res(testClient,testRoom,3,testId,testBeginTime,testEndTime),ReservationError,
+                              [](const HotelError &e){return e.information().compare("Error Too many guests")==0;});
 
-}
+
+    }
+    
 
 
 
