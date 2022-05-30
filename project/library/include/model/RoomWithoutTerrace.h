@@ -8,12 +8,9 @@
 
 class RoomWithoutTerrace: public Room {
 public:
-    RoomWithoutTerrace(int roomNumber, double basePricePerNight, int bedCount, extraBonusType extraBonus);
-
+    RoomWithoutTerrace(int roomNumber, double basePricePerNight, int bedCount);
     ~RoomWithoutTerrace() override;
-
     std::string getInfo() const override;
-
     double getFinalPricePerNight() const override;
 };
 

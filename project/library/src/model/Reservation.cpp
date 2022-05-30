@@ -11,10 +11,12 @@
 #include "exceptions/RoomError.h"
 #include "exceptions/ClientError.h"
 
-Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, int initial_guestCount, const ud::uuid &initial_id,
-                         const pt::ptime &initial_beginTime, const pt::ptime &initial_endTime)
+Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, unsigned int initial_guestCount,
+                         const ud::uuid &initial_id, const pt::ptime &initial_beginTime,
+                         unsigned int initial_reservationDays,
+                         extraBonusType initial_bonus)
                          : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
-                           beginTime(initial_beginTime), endTime(initial_endTime)
+                           beginTime(initial_beginTime), reservationsDays(initial_reservationDays),extraBonus(initial_bonus)
 {
     if(initial_client == nullptr){
         throw ClientError("ERROR Null client");
@@ -28,8 +30,8 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
     if(initial_beginTime == pt::not_a_date_time){
        throw ReservationError("Error Begin time not given");
     }
-    if(initial_endTime == pt::not_a_date_time || initial_endTime < initial_beginTime){
-        throw ReservationError("Error End time not given");
+    if(initial_reservationDays <=0 || initial_reservationDays>initial_client->getMaxDays()){
+        throw ReservationError("Error Wrong reservation days");
     }
     if(initial_guestCount > initial_room->getBedCount())
     {
@@ -48,7 +50,7 @@ const RoomPtr &Reservation::getRoom() const {
     return room;
 }
 
-int Reservation::getGuestCount() const {
+unsigned int Reservation::getGuestCount() const {
     return guestCount;
 }
 
@@ -60,8 +62,13 @@ const pt::ptime &Reservation::getBeginTime() const {
     return beginTime;
 }
 
-const pt::ptime &Reservation::getEndTime() const {
-    return endTime;
+ pt::ptime Reservation::getEndTime() const {
+   pt::ptime ideal(getBeginTime().date(),pt::hours(12));
+   if(ideal>getBeginTime()){
+       return ideal+pt::hours((getReservationDays()-1)*24);
+   }else{
+       return ideal+pt::hours(getReservationDays()*24);
+   }
 }
 
 double Reservation::getTotalReservationCost() const {
@@ -77,23 +84,31 @@ std::string Reservation::getInfo() const {
     std::stringstream ss;
     ss<<"\n--------------------------------------------------------------------------------------------------\n";
     ss<<"Reservation id: "<<ud::to_string(id)<<", number of guests: "<<guestCount;
-    ss<<"\nFrom: "<<beginTime<<"  To: "<<endTime;
+    ss<<"\nFrom: "<<beginTime<<"  To: "<<getEndTime();
     ss<<"\nClient info: "<<client->getInfo();
     ss<<"\nRoom info: "<<room->getInfo();
+    ss<<"\nExtra bonuses: "<<getExtraBonus()<<" Final price per night: "<<getPricePerNight();
     ss<<"\n--------------------------------------------------------------------------------------------------\n";
     return ss.str();
 }
 
-int Reservation::getReservationDays() const {
-
-    pt::time_period period(beginTime,endTime);
-//    if(endTime-beginTime<=pt::seconds(59))
-//        return 0;
-//    else
-    return period.length().hours()/24 + 1;
+unsigned int Reservation::getReservationDays() const {
+    return reservationsDays;
 }
 
 double Reservation::calculateBaseReservationCost() {
-    double s= client->getBill()+room->getFinalPricePerNight()*getReservationDays();
+    double s= client->getBill()+getPricePerNight()*getReservationDays();
     return s;
+}
+
+extraBonusType Reservation::getExtraBonus() const {
+    return extraBonus;
+}
+
+void Reservation::setExtraBonus(extraBonusType extraBonus) {
+    Reservation::extraBonus = extraBonus;
+}
+
+double Reservation::getPricePerNight() const {
+    return room->getFinalPricePerNight()+getExtraBonus();
 }

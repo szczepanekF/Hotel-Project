@@ -3,8 +3,8 @@
 #include "model/Room.h"
 #include "exceptions/RoomError.h"
 #include <sstream>
-Room::Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, extraBonusType initial_extraBonus)
-try: roomNumber(initial_roomNumber), basePricePerNight(initial_basePricePerNight), bedCount(initial_bedCount), extraBonus(initial_extraBonus) {
+Room::Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount)
+try: roomNumber(initial_roomNumber), basePricePerNight(initial_basePricePerNight), bedCount(initial_bedCount) {
     if(initial_basePricePerNight<=0){
         throw RoomError("ERROR Wrong base price");
     }
@@ -26,16 +26,10 @@ int Room::getRoomNumber() const {
 double Room::getBasePricePerNight() const {
     return basePricePerNight;
 }
-double Room::getPricePerNight() const {
-    return basePricePerNight+extraBonus;
-}
+
 
 int Room::getBedCount() const {
     return bedCount;
-}
-
-extraBonusType Room::getExtraBonus() const {
-    return extraBonus;
 }
 
 //void Room::setBasePricePerNight(double initial_basePricePerNight) {
@@ -50,11 +44,8 @@ void Room::setBedCount(int initial_bedCount) {
 
 std::string Room::getInfo() const {
     std::stringstream ss;
-    ss<<"Room number: "<<roomNumber<<", bed count: "<<bedCount<<", base price per night: "<<basePricePerNight
-    <<", extra bonuses: "<<extraBonus;
+    ss<<"Room number: "<<roomNumber<<", bed count: "<<bedCount<<", base price per night: "<<basePricePerNight;
+   // <<", extra bonuses: "<<extraBonus;
     return ss.str();
 }
 
-void Room::setExtraBonus(extraBonusType initial_extraBonus) {
-    Room::extraBonus = initial_extraBonus;
-}

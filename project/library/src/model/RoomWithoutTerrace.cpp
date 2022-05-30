@@ -11,9 +11,8 @@ std::string RoomWithoutTerrace::getInfo() const {
 }
 
 double RoomWithoutTerrace::getFinalPricePerNight() const {
-    return getPricePerNight();
+    return getBasePricePerNight();
 }
 
-RoomWithoutTerrace::RoomWithoutTerrace(int roomNumber, double basePricePerNight, int bedCount,
-                                       extraBonusType extraBonus) : Room(roomNumber, basePricePerNight, bedCount,
-                                                                         extraBonus) {}
+RoomWithoutTerrace::RoomWithoutTerrace(int roomNumber, double basePricePerNight, int bedCount)
+: Room(roomNumber, basePricePerNight, bedCount) {}

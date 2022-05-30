@@ -10,9 +10,7 @@ class RoomWithTerrace: public Room{
 private:
     double terraceSurface;
 public:
-    RoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, extraBonusType initial_extraBonus,
-                    double initial_terraceSurface);
-
+    RoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,double initial_terraceSurface);
     std::string getInfo() const override;
     double getTerraceSurface() const;
     double getFinalPricePerNight() const override;
