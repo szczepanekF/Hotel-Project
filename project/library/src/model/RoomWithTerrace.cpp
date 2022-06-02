@@ -3,14 +3,16 @@
 //
 
 #include "model/RoomWithTerrace.h"
+#include "exceptions/RoomError.h"
 #include <sstream>
-RoomWithTerrace::RoomWithTerrace(int roomNumber, double basePricePerNight, int bedCount, extraBonusType extraBonus,
-                                 double terraceSurface) : Room(roomNumber, basePricePerNight, bedCount, extraBonus),
-                                                          terraceSurface(terraceSurface) {}
+RoomWithTerrace::RoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, extraBonusType initial_extraBonus,
+                                 double initial_terraceSurface) try: Room(initial_roomNumber, initial_basePricePerNight, initial_bedCount, initial_extraBonus),
+                                                                     terraceSurface(initial_terraceSurface) {
+    if(initial_terraceSurface<=0){
+        throw RoomError("Error Wrong terrace surface");
+    }}catch (const RoomError &e){}
 
-RoomWithTerrace::~RoomWithTerrace() {
-
-}
+RoomWithTerrace::~RoomWithTerrace() = default;
 
 std::string RoomWithTerrace::getInfo() const {
     std::stringstream ss;

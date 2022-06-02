@@ -9,17 +9,17 @@
 #include <vector>
 #include <functional>
 
-//template<class T,class P>
-template<class T>
-class Repository
+template<class T,class P> class Repository
 {
 protected:
     std::vector<std::shared_ptr<T>> objects;
 public:
-    virtual ~Repository()=0;
+    Repository(){};
+    virtual ~Repository(){};
+
     virtual std::shared_ptr<T> get(unsigned int i) const
     {
-//        if(i>size() || i<0) throw P("INVALID NUMBER");
+       if(i>=size() || i<0) throw P("ERROR Invalid index");
 
         return objects[i];
     };
@@ -31,7 +31,7 @@ public:
 
     void remove(std::shared_ptr<T> ptr)
     {
-//        if(ptr == nullptr) throw P("NULLPTR ERROR");
+        if(ptr == nullptr) throw P("ERROR Null pointer");
 
         objects.erase(std::remove(objects.begin(),objects.end(),ptr),objects.end());
     };
@@ -39,7 +39,7 @@ public:
 
     virtual void add(std::shared_ptr<T> ptr)
     {
-//        if(ptr==nullptr) throw P("NULLPTR ERROR");
+        if(ptr==nullptr) throw P("ERROR Null pointer");
 
         objects.push_back(ptr);
     };
@@ -56,7 +56,7 @@ public:
     virtual std::vector<std::shared_ptr<T>> findAll() const{
         return findBy([](std::shared_ptr<T>)->bool{return true;});
     };
-//    virtual ~Repository()=0;
+
     template<class I> std::shared_ptr<T> findById(I id) const{
         for (unsigned int i = 0; i < size(); i++) {
             std::shared_ptr<T> object = get(i);

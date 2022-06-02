@@ -25,8 +25,8 @@ private:
 public:
 
 
-    Reservation(const ClientPtr &client, const RoomPtr &room, int guestCount, const ud::uuid &id,
-                const pt::ptime &beginTime, const pt::ptime &endTime);
+    Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, int initial_guestCount, const ud::uuid &initial_id,
+                const pt::ptime &initial_beginTime, const pt::ptime &initial_endTime);
 
     ~Reservation();
 
@@ -40,8 +40,8 @@ public:
 
     std::string getInfo() const;
     int getReservationDays() const;
-    void calculateReservationCost();
-//    void setTotalReservationCost(double totalReservationCost);
+    double calculateBaseReservationCost();
+    void setTotalReservationCost(double initial_totalReservationCost);
 };
 
 

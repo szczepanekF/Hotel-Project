@@ -1,17 +1,31 @@
 
 
 #include "model/Room.h"
-
+#include "exceptions/RoomError.h"
 #include <sstream>
-Room::Room(int roomNumber, double basePricePerNight, int bedCount, extraBonusType extraBonus)
-: roomNumber(roomNumber),basePricePerNight(basePricePerNight),bedCount(bedCount),extraBonus(extraBonus) {}
-
-Room::~Room() {
+Room::Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, extraBonusType initial_extraBonus)
+try: roomNumber(initial_roomNumber), basePricePerNight(initial_basePricePerNight), bedCount(initial_bedCount), extraBonus(initial_extraBonus) {
+    if(initial_basePricePerNight<=0){
+        throw RoomError("ERROR Wrong base price");
+    }
+    if(initial_roomNumber<=0){
+        throw RoomError("ERROR Wrong room number");
+    }
+    if(initial_bedCount<=0){
+        throw RoomError("ERROR Wrong bed count");
+    }
+}catch (const RoomError &e){
 
 }
 
+Room::~Room() = default;
+
 int Room::getRoomNumber() const {
     return roomNumber;
+}
+
+int Room::getId() const {
+    return getRoomNumber();
 }
 double Room::getBasePricePerNight() const {
     return basePricePerNight;
@@ -28,14 +42,14 @@ extraBonusType Room::getExtraBonus() const {
     return extraBonus;
 }
 
-void Room::setBasePricePerNight(double basePricePerNight) {
-    if(basePricePerNight<=0) return;
-    Room::basePricePerNight = basePricePerNight;
-}
+//void Room::setBasePricePerNight(double initial_basePricePerNight) {
+//    if(initial_basePricePerNight <= 0)  throw RoomError("ERROR Wrong base price");
+//    Room::basePricePerNight = initial_basePricePerNight;
+//}
 
-void Room::setBedCount(int bedCount) {
-    if(bedCount <= 0) return;
-    Room::bedCount = bedCount;
+void Room::setBedCount(int initial_bedCount) {
+    if(initial_bedCount <= 0)  throw RoomError("ERROR Wrong bed count");
+    Room::bedCount = initial_bedCount;
 }
 
 std::string Room::getInfo() const {
@@ -45,6 +59,6 @@ std::string Room::getInfo() const {
     return ss.str();
 }
 
-void Room::setExtraBonus(extraBonusType extraBonus) {
-    Room::extraBonus = extraBonus;
+void Room::setExtraBonus(extraBonusType initial_extraBonus) {
+    Room::extraBonus = initial_extraBonus;
 }

@@ -4,9 +4,7 @@
 
 #include "model/RoomWithoutTerrace.h"
 
-RoomWithoutTerrace::~RoomWithoutTerrace() {
-
-}
+RoomWithoutTerrace::~RoomWithoutTerrace() = default;
 
 std::string RoomWithoutTerrace::getInfo() const {
     return Room::getInfo()+", no terrace";

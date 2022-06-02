@@ -24,17 +24,18 @@ public:
 
 
 public:
-    Room(int roomNumber, double basePricePerNight, int bedCount, extraBonusType extraBonus);
+    Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, extraBonusType initial_extraBonus);
     virtual ~Room();
 
     int getRoomNumber() const;
+    int getId() const;
     double getBasePricePerNight() const;
     double getPricePerNight() const;
     int getBedCount() const;
     extraBonusType getExtraBonus() const;
-    void setBasePricePerNight(double basePricePerNight);
-    void setBedCount(int bedCount);
-    void setExtraBonus(extraBonusType extraBonus);
+    //void setBasePricePerNight(double initial_basePricePerNight);
+    void setBedCount(int initial_bedCount);
+    void setExtraBonus(extraBonusType initial_extraBonus);
 
 
     virtual std::string getInfo() const;

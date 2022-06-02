@@ -3,3 +3,9 @@
 //
 
 #include "repositories/RoomRepository.h"
+RoomRepository::~RoomRepository() noexcept
+{
+
+}
+
+RoomRepository::RoomRepository() {}

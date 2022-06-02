@@ -7,37 +7,38 @@
 #include "model/Room.h"
 #include <sstream>
 #include <boost/uuid/uuid_io.hpp>
+#include "exceptions/ReservationError.h"
+#include "exceptions/RoomError.h"
+#include "exceptions/ClientError.h"
 
-Reservation::Reservation(const ClientPtr &client, const RoomPtr &room, int guestCount, const ud::uuid &id,
-                         const pt::ptime &beginTime, const pt::ptime &endTime)
-                         : client(client), room(room),guestCount(guestCount), id(id),
-                         beginTime(beginTime),endTime(endTime)
+Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, int initial_guestCount, const ud::uuid &initial_id,
+                         const pt::ptime &initial_beginTime, const pt::ptime &initial_endTime)
+                         : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
+                           beginTime(initial_beginTime), endTime(initial_endTime)
 {
-    if(client == nullptr){
-//        throw ClientError("NULL CLIENT ERROR");
+    if(initial_client == nullptr){
+        throw ClientError("ERROR Null client");
     }
-    if(room == nullptr){
-//        throw ClientError("NULL ROOM ERROR");
+    if(initial_room == nullptr){
+        throw RoomError("Error Null room");
     }
-    if(guestCount <= 0){
-//        throw ReservationError("INVALID GUEST COUNT");
+    if(initial_guestCount <= 0){
+        throw ReservationError("ERROR Wrong guest count");
     }
-    if(beginTime == pt::not_a_date_time){
-//        throw ReservationError("BEGIN TIME NOT GIVEN");
+    if(initial_beginTime == pt::not_a_date_time){
+       throw ReservationError("Error Begin time not given");
     }
-    if(endTime == pt::not_a_date_time || endTime < beginTime){
-//        throw ReservationError("END TIME NOT GIVEN");
+    if(initial_endTime == pt::not_a_date_time || initial_endTime < initial_beginTime){
+        throw ReservationError("Error End time not given");
     }
-    if(guestCount > room->getBedCount())
+    if(initial_guestCount > initial_room->getBedCount())
     {
-//        throw ReservationError("TOO MANY GUESTS")
+        throw ReservationError("Error Too many guests");
     }
-    calculateReservationCost();
+    setTotalReservationCost(calculateBaseReservationCost());
 }
 
-Reservation::~Reservation() {
-
-}
+Reservation::~Reservation() = default;
 
 const ClientPtr &Reservation::getClient() const {
     return client;
@@ -67,9 +68,10 @@ double Reservation::getTotalReservationCost() const {
     return totalReservationCost;
 }
 
-//void Reservation::setTotalReservationCost(double totalReservationCost) {
-//    totalReservationCost = totalReservationCost;
-//}
+void Reservation::setTotalReservationCost(double initial_totalReservationCost) {
+    if(initial_totalReservationCost<=0) throw ReservationError("Error Wrong reservation cost");
+    totalReservationCost = initial_totalReservationCost;
+}
 
 std::string Reservation::getInfo() const {
     std::stringstream ss;
@@ -83,8 +85,7 @@ std::string Reservation::getInfo() const {
 }
 
 int Reservation::getReservationDays() const {
-//    if(endTime == pt::not_a_date_time)
-//        return 0;
+
     pt::time_period period(beginTime,endTime);
 //    if(endTime-beginTime<=pt::seconds(59))
 //        return 0;
@@ -92,7 +93,7 @@ int Reservation::getReservationDays() const {
     return period.length().hours()/24 + 1;
 }
 
-void Reservation::calculateReservationCost() {
-    totalReservationCost = client->getBill()+room->getFinalPricePerNight()*getReservationDays();
-//    return totalReservationCost;
+double Reservation::calculateBaseReservationCost() {
+    double s= client->getBill()+room->getFinalPricePerNight()*getReservationDays();
+    return s;
 }
