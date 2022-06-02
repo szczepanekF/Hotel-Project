@@ -27,10 +27,10 @@ struct RepositoryFixture {
 
     RepositoryFixture() {
         testClient = std::make_shared<Client>("Jan","Ktos","242544",testType);
-        testRoom = std::make_shared<RoomWithoutTerrace>(1,400,2,A);
+        testRoom = std::make_shared<RoomWithoutTerrace>(1,400,2);
         testRes = std::make_shared<Reservation>(testClient,testRoom,testGuestCount,testId,testBeginTime,testEndTime);
         testClient2= std::make_shared<Client>("Stanislaw","Kowalski","242567",testType);
-        testRoom2 = std::make_shared<RoomWithoutTerrace>(2,500,3,B);
+        testRoom2 = std::make_shared<RoomWithoutTerrace>(2,500,3);
         testRes2= std::make_shared<Reservation>(testClient2,testRoom2,testGuestCount2,testId2,testBeginTime,testEndTime);
 
     }
