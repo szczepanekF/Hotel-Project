@@ -7,7 +7,7 @@
 
 Client::Client(const std::string &initial_firtsName, const std::string &initial_lastName, const std::string &initial_personalId,
                const ClientTypePtr &initial_clientType) try: firstName(initial_firtsName), lastName(initial_lastName), personalID(initial_personalId),
-                                                             ClientType(initial_clientType), archive(false) {
+                                                             ClientType(initial_clientType), archive(false),bill(0) {
 
     if(initial_firtsName.empty()){
         throw ClientError("ERROR Empty first name");
@@ -21,13 +21,13 @@ Client::Client(const std::string &initial_firtsName, const std::string &initial_
     if(initial_clientType== nullptr){
         throw ClientError("ERROR Null client type");
     }
-    if(initial_clientType->getMaxDays() == 30){
-        bill=300;
-    }else if(initial_clientType->getMaxDays() == 7){
-        bill=100;
-    }else{
-        bill=0;
-    }
+//    if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
+//        bill=300;
+//    }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
+//        bill=100;
+//    }else{
+//        bill=0;
+//    }
     }catch(const ClientError &e){
     }
 
@@ -43,11 +43,8 @@ const std::string &Client::getLastName() const {
     return lastName;
 }
 
-const std::string &Client::getPersonalId() const {
-    return personalID;
-}
 const std::string &Client::getId() const {
-    return getPersonalId();
+    return personalID;
 }
 
 const ClientTypePtr &Client::getClientType() const {
@@ -80,16 +77,16 @@ void Client::setClientType(const ClientTypePtr &initial_clientType) {
     if(initial_clientType== nullptr){
         throw ClientError("ERROR Null client type");
     }
-    if(initial_clientType->getMaxDays() > getClientType()->getMaxDays()){
+    //if(initial_clientType->getMaxDays() > getClientType()->getMaxDays()){
         ClientType=initial_clientType;
-        double s=getBill();
-        if(initial_clientType->getMaxDays() == 30){
-            s+=300;
-        }else if(initial_clientType->getMaxDays() == 7){
-            s+=100;
-        }
-        setBill(s);
-    }
+//        double s=getBill();
+//        if(initial_clientType->getMaxDays() == 30){
+//            s+=300;
+//        }else if(initial_clientType->getMaxDays() == 7){
+//            s+=100;
+//        }
+//        setBill(s);
+//    }
 
 }
 
@@ -110,5 +107,5 @@ bool Client::acceptDiscount() const {
 }
 
 std::string Client::getInfo() const {
-    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getPersonalId() + " bill equal: " + std::to_string(getBill());
+    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " bill equal: " + std::to_string(getBill());
 }

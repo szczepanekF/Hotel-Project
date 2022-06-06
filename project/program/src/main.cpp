@@ -4,9 +4,11 @@
 #include "model/Client.h"
 //#include "model/shortTerm.h"
 #include "model/Standard.h"
-//#include "model/longTerm.h"
+#include "model/longTerm.h"
 #include "model/RoomWithoutTerrace.h"
 #include "repositories/RoomRepository.h"
+#include "repositories/ClientRepository.h"
+#include "managers/ClientManager.h"
 using namespace std;
 int main(){
 
@@ -25,6 +27,15 @@ int main(){
 //    cout<<res.getInfo();
 //    RoomRepository repo;
 //    repo.add(testRoom);
+
+//    ClientTypePtr typ= make_shared<longTerm>();
+//    ClientRepositoryPtr CR= make_shared<ClientRepository>();
+//    ClientManager CM(CR);
+//    CM.regiterClient("Milo","woj","232",typ);
+//    CM.regiterClient("dalo","fds","242",typ);
+    //CR->findById("432");
+    //CM.unregisterClient("282");
+    //cout<<CM.findAllClients().size();
 
     return 0;
 };
