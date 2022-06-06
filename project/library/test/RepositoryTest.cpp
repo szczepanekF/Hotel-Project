@@ -11,7 +11,7 @@
 #include "repositories/ReservationRepository.h"
 
 struct RepositoryFixture {
-    ClientTypePtr testType=std::make_shared<Standard>();
+    ClientTypePtr testType;
     ClientPtr testClient;
     RoomPtr testRoom;
     ReservationPtr testRes;
@@ -23,15 +23,17 @@ struct RepositoryFixture {
     int testGuestCount = 2;
     int testGuestCount2 = 3;
     pt::ptime testBeginTime = pt::second_clock::local_time();
-    pt::ptime testEndTime = pt::second_clock::local_time()+pt::hours(50);
+   // pt::ptime testEndTime = pt::second_clock::local_time()+pt::hours(50);
 
     RepositoryFixture() {
+        testType=std::make_shared<Standard>();
         testClient = std::make_shared<Client>("Jan","Ktos","242544",testType);
         testRoom = std::make_shared<RoomWithoutTerrace>(1,400,2);
         testRes = std::make_shared<Reservation>(testClient,testRoom,testGuestCount,testId,testBeginTime,4,A);
         testClient2= std::make_shared<Client>("Stanislaw","Kowalski","242567",testType);
         testRoom2 = std::make_shared<RoomWithoutTerrace>(2,500,3);
         testRes2= std::make_shared<Reservation>(testClient2,testRoom2,testGuestCount2,testId2,testBeginTime,4,A);
+
 
     }
 
@@ -149,7 +151,12 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRepository,RepositoryFixture)
         BOOST_CHECK_EXCEPTION(CR.remove(nullptr),ClientError,
                               [] (const ClientError &e){return e.information().compare("ERROR Null pointer")==0;});
 
-
+        BOOST_CHECK_THROW(CR.findById("432"),ClientError);
+        BOOST_CHECK_EXCEPTION(CR.findById("432"),ClientError,
+                              [] (const ClientError &e){return e.information().compare("ERROR No Object")==0;});
+        BOOST_CHECK_THROW(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");}),ClientError);
+        BOOST_CHECK_EXCEPTION(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");}),ClientError,
+                              [] (const ClientError &e){return e.information().compare("ERROR No Objects")==0;});
 
     }
 

@@ -51,6 +51,9 @@ public:
                 found.push_back(exist);
             }
         }
+        if(found.empty()){
+            throw P("ERROR No Objects");
+        }
         return found;
     };
     virtual std::vector<std::shared_ptr<T>> findAll() const{

@@ -18,8 +18,8 @@ public:
     virtual ~Client();
     const std::string &getFirstName() const;
     const std::string &getLastName() const;
-    const std::string &getPersonalId() const;
     const std::string &getId() const;
+
     const ClientTypePtr &getClientType() const;
     bool isArchive() const;
     double getBill() const;

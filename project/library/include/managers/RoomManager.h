@@ -10,10 +10,10 @@
 #include <memory>
 class RoomManager {
 private:
-    RoomRepository rooms;
+    RoomRepositoryPtr rooms;
 public:
     RoomManager();
-    RoomManager(RoomRepository init_rooms);
+    RoomManager(RoomRepositoryPtr init_rooms);
     ~RoomManager();
 
     RoomPtr RegisterRoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
