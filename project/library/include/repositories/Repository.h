@@ -64,7 +64,7 @@ public:
                 return object;
             }
         }
-        return nullptr;
+        throw P("ERROR No Object");
     };
 
 };

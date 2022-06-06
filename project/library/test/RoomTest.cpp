@@ -29,13 +29,13 @@ BOOST_FIXTURE_TEST_SUITE(RoomTestSuite,TestSuiteRoomFixture)
 BOOST_AUTO_TEST_CASE(RoomConstructorTest)
 {
     RoomWithTerrace room1(num1,baseprice1,bedcount1,terrace1);
-    BOOST_TEST(room1.getRoomNumber() == num1);
+    BOOST_TEST(room1.getId() == num1);
     BOOST_TEST(room1.getBasePricePerNight() == baseprice1);
     BOOST_TEST(room1.getBedCount() == bedcount1);
     BOOST_TEST(room1.getTerraceSurface() == terrace1);
 
     RoomWithoutTerrace room2(num1,baseprice1,bedcount1);
-    BOOST_TEST(room2.getRoomNumber() == num1);
+    BOOST_TEST(room2.getId() == num1);
     BOOST_TEST(room2.getBasePricePerNight() == baseprice1);
     BOOST_TEST(room2.getBedCount() == bedcount1);
    ;

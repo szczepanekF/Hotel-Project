@@ -16,7 +16,6 @@ private:
 public:
     Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
     virtual ~Room();
-    int getRoomNumber() const;
     int getId() const;
     double getBasePricePerNight() const;
     int getBedCount() const;

@@ -20,13 +20,11 @@ try: roomNumber(initial_roomNumber), basePricePerNight(initial_basePricePerNight
 
 Room::~Room() = default;
 
-int Room::getRoomNumber() const {
+int Room::getId() const {
     return roomNumber;
 }
 
-int Room::getId() const {
-    return getRoomNumber();
-}
+
 double Room::getBasePricePerNight() const {
     return basePricePerNight;
 }

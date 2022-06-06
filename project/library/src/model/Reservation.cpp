@@ -15,7 +15,7 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
                          const ud::uuid &initial_id, const pt::ptime &initial_beginTime,
                          unsigned int initial_reservationDays,
                          extraBonusType initial_bonus)
-                         : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
+                         try : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
                            beginTime(initial_beginTime), reservationsDays(initial_reservationDays),extraBonus(initial_bonus)
 {
     if(initial_client == nullptr){
@@ -38,7 +38,9 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
         throw ReservationError("Error Too many guests");
     }
     setTotalReservationCost(calculateBaseReservationCost());
-}
+}catch(const ReservationError &e){
+
+                         }
 
 Reservation::~Reservation() = default;
 
