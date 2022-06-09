@@ -8,8 +8,8 @@
 
 class ClientError :public HotelError{
 public:
-    ClientError(const std::string &arg);
-    virtual ~ClientError();
+    explicit ClientError(const std::string &arg);
+    ~ClientError() override;
 };
 
 

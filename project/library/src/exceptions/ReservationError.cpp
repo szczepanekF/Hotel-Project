@@ -6,6 +6,4 @@
 
 ReservationError::ReservationError(const std::string &arg) : HotelError(arg) {}
 
-ReservationError::~ReservationError() {
-
-}
+ReservationError::~ReservationError() = default;

@@ -3,14 +3,13 @@
 //
 
 #include "model/longTerm.h"
+#include "model/ClientType.h"
 
-longTerm::longTerm() {}
+longTerm::longTerm() = default;
 
-longTerm::~longTerm() {
+longTerm::~longTerm() = default;
 
-}
-
-int longTerm::getMaxDays() const {
+unsigned int longTerm::getMaxDays() const {
     return 30;
 }
 

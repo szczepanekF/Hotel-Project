@@ -4,8 +4,6 @@
 
 #include "model/ClientType.h"
 
-ClientType::ClientType() {}
+ClientType::ClientType() = default;
 
-ClientType::~ClientType() {
-
-}
+ClientType::~ClientType() = default;

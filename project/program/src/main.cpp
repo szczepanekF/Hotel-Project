@@ -36,6 +36,14 @@ int main(){
     //CR->findById("432");
     //CM.unregisterClient("282");
     //cout<<CM.findAllClients().size();
+   // RoomWithoutTerrace RF(-1,)
+
+//    unsigned int i=-1;
+//    cout<<i;
+//    //    unsigned int g=-2;
+//    if(i>0){
+//        cout<<"JEST";
+//    }
 
     return 0;
 };

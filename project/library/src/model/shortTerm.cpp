@@ -4,11 +4,9 @@
 
 #include "model/shortTerm.h"
 
-shortTerm::~shortTerm() {
+shortTerm::~shortTerm() = default;
 
-}
-
-int shortTerm::getMaxDays() const {
+unsigned int shortTerm::getMaxDays() const {
     return 2;
 }
 
@@ -20,4 +18,4 @@ std::string shortTerm::getClientTypeInfo() const {
     return "Short Term Client";
 }
 
-shortTerm::shortTerm() {}
+shortTerm::shortTerm() = default;

@@ -1,7 +1,6 @@
 #include "model/Client.h"
 #include "model/ClientType.h"
 #include "exceptions/ClientError.h"
-#include <iostream>
 
 
 
@@ -98,7 +97,7 @@ void Client::setBill(double initial_bill) {
     Client::bill = initial_bill;
 }
 
-int Client::getMaxDays() const {
+unsigned int Client::getMaxDays() const {
     return getClientType()->getMaxDays();
 }
 

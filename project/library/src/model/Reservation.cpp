@@ -11,9 +11,9 @@
 #include "exceptions/RoomError.h"
 #include "exceptions/ClientError.h"
 
-Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, unsigned int initial_guestCount,
+Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, int initial_guestCount,
                          const ud::uuid &initial_id, const pt::ptime &initial_beginTime,
-                         unsigned int initial_reservationDays,
+                         int initial_reservationDays,
                          extraBonusType initial_bonus)
                          try : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
                            beginTime(initial_beginTime), reservationsDays(initial_reservationDays),extraBonus(initial_bonus)
@@ -37,7 +37,7 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
     {
         throw ReservationError("Error Too many guests");
     }
-    setTotalReservationCost(calculateBaseReservationCost());
+    totalReservationCost=calculateBaseReservationCost();
 }catch(const ReservationError &e){
 
                          }
@@ -52,7 +52,7 @@ const RoomPtr &Reservation::getRoom() const {
     return room;
 }
 
-unsigned int Reservation::getGuestCount() const {
+int Reservation::getGuestCount() const {
     return guestCount;
 }
 
@@ -94,7 +94,7 @@ std::string Reservation::getInfo() const {
     return ss.str();
 }
 
-unsigned int Reservation::getReservationDays() const {
+int Reservation::getReservationDays() const {
     return reservationsDays;
 }
 
@@ -107,8 +107,8 @@ extraBonusType Reservation::getExtraBonus() const {
     return extraBonus;
 }
 
-void Reservation::setExtraBonus(extraBonusType extraBonus) {
-    Reservation::extraBonus = extraBonus;
+void Reservation::setExtraBonus(extraBonusType new_extraBonus) {
+    Reservation::extraBonus = new_extraBonus;
 }
 
 double Reservation::getPricePerNight() const {

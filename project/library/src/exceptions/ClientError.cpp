@@ -6,6 +6,4 @@
 
 ClientError::ClientError(const std::string &arg) : HotelError(arg) {}
 
-ClientError::~ClientError() {
-
-}
+ClientError::~ClientError() = default;

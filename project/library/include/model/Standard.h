@@ -5,7 +5,7 @@
 class Standard : public ClientType{
 public:
     ~Standard() override;
-    int getMaxDays() const override;
+    unsigned int getMaxDays() const override;
     bool applyDiscount() const override;
     std::string getClientTypeInfo() const override;
     Standard();

@@ -2,11 +2,12 @@
 #define HOTELPROJECT_LONGTERM_H
 #include "ClientType.h"
 
+
 class longTerm :public ClientType{
 public:
     longTerm();
     ~longTerm() override;
-    int getMaxDays() const override;
+    unsigned int getMaxDays() const override;
     bool applyDiscount() const override;
     std::string getClientTypeInfo() const override;
 };

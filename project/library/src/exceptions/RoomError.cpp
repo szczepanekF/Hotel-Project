@@ -6,6 +6,4 @@
 
 RoomError::RoomError(const std::string &arg) : HotelError(arg) {}
 
-RoomError::~RoomError() {
-
-}
+RoomError::~RoomError() = default;

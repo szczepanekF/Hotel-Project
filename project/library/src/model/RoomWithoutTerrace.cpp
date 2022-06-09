@@ -14,5 +14,5 @@ double RoomWithoutTerrace::getFinalPricePerNight() const {
     return getBasePricePerNight();
 }
 
-RoomWithoutTerrace::RoomWithoutTerrace(int roomNumber, double basePricePerNight, int bedCount)
-: Room(roomNumber, basePricePerNight, bedCount) {}
+RoomWithoutTerrace::RoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount)
+: Room(initial_roomNumber, initial_basePricePerNight, initial_bedCount) {}

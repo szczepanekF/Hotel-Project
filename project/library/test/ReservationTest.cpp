@@ -9,6 +9,7 @@
 #include "exceptions/RoomError.h"
 #include "exceptions/ClientError.h"
 #include "exceptions/HotelError.h"
+
 namespace gr = boost::gregorian;
 
 struct ReservationFixture {
@@ -18,15 +19,13 @@ struct ReservationFixture {
     ud::uuid testId = {1};
     int testGuestCount = 2;
     pt::ptime testBeginTime = pt::second_clock::local_time();
-    pt::ptime testEndTime = pt::second_clock::local_time()+pt::hours(50);
+   // pt::ptime testEndTime = pt::second_clock::local_time()+pt::hours(50);
     ReservationFixture() {
         testClient = std::make_shared<Client>("Jan","Ktos","242544",testType);
         testRoom = std::make_shared<RoomWithoutTerrace>(1,400,2);
     }
 
-     ~ReservationFixture() {
-
-     }
+     ~ReservationFixture() = default;
 
 };
 
@@ -41,6 +40,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
         BOOST_TEST(res.getBeginTime()==testBeginTime);
         BOOST_TEST(res.getReservationDays()==1);
         BOOST_TEST(res.getExtraBonus()==A);
+        BOOST_TEST(res.calculateBaseReservationCost()==testClient->getBill()+res.getPricePerNight()*res.getReservationDays());
         BOOST_TEST(res.getTotalReservationCost()==testClient->getBill()+res.getPricePerNight()*res.getReservationDays());
 
 
@@ -49,25 +49,25 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
 
         BOOST_CHECK_THROW(Reservation res(nullptr, testRoom, testGuestCount, testId, testBeginTime, 1, B), ClientError);
         BOOST_CHECK_EXCEPTION(Reservation res(nullptr, testRoom, testGuestCount, testId, testBeginTime, 1, B), ClientError,
-                              [](const HotelError &e){return e.information().compare("ERROR Null client")==0;});
+                              [](const HotelError &e){return e.information()=="ERROR Null client";});
         BOOST_CHECK_THROW(Reservation res(testClient, nullptr, testGuestCount, testId, testBeginTime, 1, B), RoomError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, nullptr, testGuestCount, testId, testBeginTime, 1, B), RoomError,
-                              [](const HotelError &e){return e.information().compare("Error Null room")==0;});
+                              [](const HotelError &e){return e.information()=="Error Null room";});
         BOOST_CHECK_THROW(Reservation res(testClient, testRoom, 0, testId, testBeginTime, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, testRoom, 0, testId, testBeginTime, 1, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("ERROR Wrong guest count")==0;});
+                              [](const HotelError &e){return e.information()=="ERROR Wrong guest count";});
         BOOST_CHECK_THROW(Reservation res(testClient, testRoom, testGuestCount, testId, pt::not_a_date_time, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, testRoom, testGuestCount, testId, pt::not_a_date_time, 1, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Begin time not given")==0;});
+                              [](const HotelError &e){return e.information()=="Error Begin time not given";});
         BOOST_CHECK_THROW(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 1, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Too many guests")==0;});
+                              [](const HotelError &e){return e.information()=="Error Too many guests";});
         BOOST_CHECK_THROW(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 0, B), ReservationError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 0, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Wrong reservation days")==0;});
+                              [](const HotelError &e){return e.information()=="Error Wrong reservation days";});
         BOOST_CHECK_THROW(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 8, B), ReservationError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, testRoom, 3, testId, testBeginTime, 8, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Wrong reservation days")==0;});
+                              [](const HotelError &e){return e.information()=="Error Wrong reservation days";});
     }
 
     BOOST_AUTO_TEST_CASE(GetEndTimeTest) {
@@ -85,7 +85,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
 
 
     }
-    BOOST_AUTO_TEST_CASE(GetPricePerNight) {
+    BOOST_AUTO_TEST_CASE(GetPricePerNightTest) {
         Reservation res(testClient, testRoom, testGuestCount, testId, testBeginTime, 1, A);
         BOOST_TEST(res.getPricePerNight() == 400);
         res.setExtraBonus(B);
@@ -97,7 +97,20 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
         res.setExtraBonus(E);
         BOOST_TEST(res.getPricePerNight() == 1400);
 }
-
+    BOOST_AUTO_TEST_CASE(SetTotalReservationCostTest) {
+        Reservation res(testClient, testRoom, testGuestCount, testId, testBeginTime, 1, A);
+        BOOST_TEST(res.getTotalReservationCost()!=20);
+        res.setTotalReservationCost(20);
+        BOOST_TEST(res.getTotalReservationCost()==20);
+        BOOST_REQUIRE_THROW(res.setTotalReservationCost(0),ReservationError);
+        BOOST_CHECK_EXCEPTION(res.setTotalReservationCost(0), ReservationError,
+                              [](const HotelError &e){return e.information()=="Error Wrong reservation cost";});
+        BOOST_TEST(res.getTotalReservationCost()==20);
+        BOOST_REQUIRE_THROW(res.setTotalReservationCost(-1),ReservationError);
+        BOOST_CHECK_EXCEPTION(res.setTotalReservationCost(-1), ReservationError,
+                              [](const HotelError &e){return e.information()=="Error Wrong reservation cost";});
+        BOOST_TEST(res.getTotalReservationCost()==20);
+    }
 
 
 

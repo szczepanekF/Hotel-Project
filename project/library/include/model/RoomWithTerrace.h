@@ -15,7 +15,7 @@ public:
     double getTerraceSurface() const;
     double getFinalPricePerNight() const override;
 
-    virtual ~RoomWithTerrace();
+    ~RoomWithTerrace() override;
 };
 
 
