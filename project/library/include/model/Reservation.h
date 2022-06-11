@@ -16,8 +16,6 @@ enum extraBonusType{
     A=0,
     B=100,
     C=250,
-
-
 };
 
 
