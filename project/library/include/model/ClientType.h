@@ -6,7 +6,7 @@ class ClientType {
 public:
     ClientType();
     virtual ~ClientType();
-    virtual int getMaxDays() const=0;
+    virtual unsigned int getMaxDays() const=0;
     virtual bool applyDiscount() const=0;
     virtual std::string getClientTypeInfo() const=0;
 };

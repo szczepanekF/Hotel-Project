@@ -25,18 +25,18 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestExceptions) {
         ClientTypePtr T1=std::make_shared<shortTerm>();
 
-        BOOST_CHECK_THROW(Client c("","ktos","242567",T1),ClientError);
+        BOOST_REQUIRE_THROW(Client c("","ktos","242567",T1),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("","ktos","242567",T1),ClientError,
-                            [] (const ClientError &e){return e.information().compare("ERROR Empty first name")==0;});
-        BOOST_CHECK_THROW(Client c("Jan","","242567",T1),ClientError);
+                            [] (const ClientError &e){return e.information()=="ERROR Empty first name";});
+        BOOST_REQUIRE_THROW(Client c("Jan","","242567",T1),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("Jan","","242567",T1),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Empty last name")==0;});
-        BOOST_CHECK_THROW(Client c("Jan","ktos","",T1),ClientError);
+                              [] (const ClientError &e){return e.information()=="ERROR Empty last name";});
+        BOOST_REQUIRE_THROW(Client c("Jan","ktos","",T1),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("Jan","ktos","",T1),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Empty personalId")==0;});
-        BOOST_CHECK_THROW(Client c("Jan","ktos","242567",nullptr),ClientError);
+                              [] (const ClientError &e){return e.information()=="ERROR Empty personalId";});
+        BOOST_REQUIRE_THROW(Client c("Jan","ktos","242567",nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("Jan","ktos","242567",nullptr),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Null client type")==0;});
+                              [] (const ClientError &e){return e.information()=="ERROR Null client type";});
 
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestNotDefaultAndClientTypes) {
@@ -82,9 +82,20 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
     BOOST_AUTO_TEST_CASE(SetterTestExceptions) {
         ClientTypePtr T1=std::make_shared<shortTerm>();
         Client c("Jan","ktos","242567",T1);
-        BOOST_CHECK_THROW(c.setClientType(nullptr),ClientError);
-        BOOST_CHECK_THROW(c.setFirstName(""),ClientError);
-        BOOST_CHECK_THROW(c.setLastName(""),ClientError);
+        BOOST_REQUIRE_THROW(c.setClientType(nullptr),ClientError);
+        BOOST_CHECK_EXCEPTION(c.setClientType(nullptr),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR Null client type";});
+        BOOST_REQUIRE(c.getClientType()==T1);
+
+        BOOST_REQUIRE_THROW(c.setFirstName(""),ClientError);
+        BOOST_CHECK_EXCEPTION(c.setFirstName(""),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR Empty first name";});
+        BOOST_REQUIRE(c.getFirstName()=="Jan");
+
+        BOOST_REQUIRE_THROW(c.setLastName(""),ClientError);
+        BOOST_CHECK_EXCEPTION(c.setLastName(""),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR Empty last name";});
+        BOOST_REQUIRE(c.getLastName().compare("ktos")==0);
 
     }
 

@@ -8,9 +8,9 @@
 
 class RoomError : public HotelError{
 public:
-    RoomError(const std::string &arg);
+    explicit RoomError(const std::string &arg);
 
-    virtual ~RoomError();
+    ~RoomError() override;
 };
 
 

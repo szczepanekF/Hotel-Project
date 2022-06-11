@@ -1,8 +1,7 @@
-
-
 #include "model/Room.h"
 #include "exceptions/RoomError.h"
 #include <sstream>
+
 Room::Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount)
 try: roomNumber(initial_roomNumber), basePricePerNight(initial_basePricePerNight), bedCount(initial_bedCount) {
     if(initial_basePricePerNight<=0){

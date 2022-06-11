@@ -5,10 +5,11 @@
 #include "model/Standard.h"
 //#include "model/longTerm.h"
 #include "model/RoomWithoutTerrace.h"
-#include "repositories/Repository.h"
+//#include "repositories/Repository.h"
 #include "repositories/ClientRepository.h"
 #include "repositories/RoomRepository.h"
 #include "repositories/ReservationRepository.h"
+#include <vector>
 
 struct RepositoryFixture {
     ClientTypePtr testType;
@@ -37,9 +38,7 @@ struct RepositoryFixture {
 
     }
 
-    ~RepositoryFixture() {
-
-    }
+    ~RepositoryFixture() = default;
 
 };
 
@@ -106,8 +105,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRepository,RepositoryFixture)
         BOOST_TEST(CR.findAll().size() == 2);
         BOOST_TEST(CR.findAll()[0] == testClient);
         BOOST_TEST(CR.findAll()[1] == testClient2);
-        BOOST_TEST(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");}).size() == 1);
-        BOOST_TEST(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");})[0] == testClient);
+        BOOST_TEST(CR.findBy([](const ClientPtr &ptr)->bool{return ptr->getFirstName()=="Jan";}).size() == 1);
+        BOOST_TEST(CR.findBy([](const ClientPtr &ptr)->bool{return ptr->getFirstName()=="Jan";})[0] == testClient);
         BOOST_TEST(CR.findById("242567") == testClient2);
 
 
@@ -117,8 +116,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRepository,RepositoryFixture)
         BOOST_TEST(RoomR.findAll().size() == 2);
         BOOST_TEST(RoomR.findAll()[0] == testRoom);
         BOOST_TEST(RoomR.findAll()[1] == testRoom2);
-        BOOST_TEST(RoomR.findBy([](RoomPtr ptr)->bool{return ptr->getBedCount()==2;}).size() == 1);
-        BOOST_TEST(RoomR.findBy([](RoomPtr ptr)->bool{return ptr->getBedCount()==2;})[0] == testRoom);
+        BOOST_TEST(RoomR.findBy([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;}).size() == 1);
+        BOOST_TEST(RoomR.findBy([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;})[0] == testRoom);
         BOOST_TEST(RoomR.findById(2) == testRoom2);
 
         ReservationRepository ResR;
@@ -127,36 +126,45 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteRepository,RepositoryFixture)
         BOOST_TEST(ResR.findAll().size() == 2);
         BOOST_TEST(ResR.findAll()[0] == testRes);
         BOOST_TEST(ResR.findAll()[1] == testRes2);
-        BOOST_TEST(ResR.findBy([](ReservationPtr ptr)->bool{return ptr->getGuestCount()==2;}).size() == 1);
-        BOOST_TEST(ResR.findBy([](ReservationPtr ptr)->bool{return ptr->getGuestCount()==2;})[0] == testRes);
+        BOOST_TEST(ResR.findBy([](const ReservationPtr &ptr)->bool{return ptr->getGuestCount()==2;}).size() == 1);
+        BOOST_TEST(ResR.findBy([](const ReservationPtr &ptr)->bool{return ptr->getGuestCount()==2;})[0] == testRes);
         BOOST_TEST(ResR.findById(testId2) == testRes2);
     }
-    BOOST_AUTO_TEST_CASE(TestExceptions) {
+    BOOST_AUTO_TEST_CASE(ExceptionsTest) {
         ClientRepository CR;
-        BOOST_CHECK_THROW(CR.add(nullptr),ClientError);
+        CR.add(testClient2);
+
+        BOOST_REQUIRE_THROW(CR.add(nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(CR.add(nullptr),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Null pointer")==0;});
+                              [] (const ClientError &e){return e.information()=="ERROR Null pointer";});
+        BOOST_TEST(CR.size()==1);
 
+        ClientPtr testClient3=nullptr;
+        BOOST_REQUIRE_THROW(testClient3=CR.get(1),ClientError);
+        BOOST_CHECK_EXCEPTION(CR.get(1),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR Invalid index";});
+        BOOST_TEST(testClient3==nullptr);
 
-        BOOST_CHECK_THROW(CR.get(0),ClientError);
-        BOOST_CHECK_EXCEPTION(CR.get(0),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Invalid index")==0;});
-
-        BOOST_CHECK_THROW(CR.get(-1),ClientError);
+        BOOST_REQUIRE_THROW(testClient3=CR.get(-1),ClientError);
         BOOST_CHECK_EXCEPTION(CR.get(-1),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Invalid index")==0;});
+                              [] (const ClientError &e){return e.information()=="ERROR Invalid index";});
+        BOOST_TEST(testClient3==nullptr);
 
-
-        BOOST_CHECK_THROW(CR.remove(nullptr),ClientError);
+        BOOST_REQUIRE_THROW(CR.remove(nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(CR.remove(nullptr),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR Null pointer")==0;});
+                              [] (const ClientError &e){return e.information()=="ERROR Null pointer";});
+        BOOST_TEST(CR.size()==1);
 
-        BOOST_CHECK_THROW(CR.findById("432"),ClientError);
+        BOOST_REQUIRE_THROW(testClient3=CR.findById("432"),ClientError);
         BOOST_CHECK_EXCEPTION(CR.findById("432"),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR No Object")==0;});
-        BOOST_CHECK_THROW(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");}),ClientError);
-        BOOST_CHECK_EXCEPTION(CR.findBy([](ClientPtr ptr)->bool{return !ptr->getFirstName().compare("Jan");}),ClientError,
-                              [] (const ClientError &e){return e.information().compare("ERROR No Objects")==0;});
+                              [] (const ClientError &e){return e.information()=="ERROR No Object";});
+        BOOST_TEST(testClient3==nullptr);
+
+        std::vector<ClientPtr> testClients;
+        BOOST_REQUIRE_THROW(testClients=CR.findBy([](const ClientPtr &ptr)->bool{return ptr->getFirstName()=="Jan";}),ClientError);
+        BOOST_CHECK_EXCEPTION(CR.findBy([](const ClientPtr &ptr)->bool{return ptr->getFirstName()=="Jan";}),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR No Objects";});
+        BOOST_TEST(testClients.size()==0);
 
     }
 

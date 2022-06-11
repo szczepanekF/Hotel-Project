@@ -4,7 +4,7 @@
 
 #include "managers/ClientManager.h"
 
-#include <utility>
+
 #include "model/Client.h"
 #include "model/Standard.h"
 #include "model/longTerm.h"
@@ -26,21 +26,21 @@ ClientManager::~ClientManager(){
 
 ClientManager::ClientManager() = default;
 
-ClientPtr ClientManager::regiterClient(const std::string &firstName, const std::string &lastName, const std::string &personalID,
-                             const ClientTypePtr &clientType) {
+ClientPtr ClientManager::regiterClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID,
+                                       const ClientTypePtr &initial_clientType) {
     try{
-        getClient(personalID);
+        getClient(initial_personalID);
     }catch(const ClientError &e){
-        ClientPtr client= std::make_shared<Client>(firstName,lastName,personalID,clientType);
-        if(clientType->getClientTypeInfo() == "Long Term Client"){
+        ClientPtr client= std::make_shared<Client>(initial_firstName, initial_lastName, initial_personalID, initial_clientType);
+        if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
             client->setBill(300);
-        }else if(clientType->getClientTypeInfo() == "Standard Client"){
+        }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
             client->setBill(100);
         }
         clients->add(client);
         return client;
     }
-    throw ClientError("ERROR already exists: "+getClient(personalID)->getInfo());
+    throw ClientError("ERROR already exists: "+getClient(initial_personalID)->getInfo());
 
 }
 
@@ -52,7 +52,7 @@ void ClientManager::unregisterClient(const std::string &personalID) const {
     return clients->findById(personalID);
 }
 
-std::vector<ClientPtr> ClientManager::findClients(ClientPredicate predicate) const {
+std::vector<ClientPtr> ClientManager::findClients(const ClientPredicate &predicate) const {
     return clients->findBy(predicate);
 }
 

@@ -41,12 +41,23 @@ int main(){
 
 //    ClientRepositoryPtr CR= make_shared<ClientRepository>();
 //    ClientManager CM(CR);
-//    CM.regiterClient("Milo","woj","232",testType);
-//    CM.regiterClient("dalo","fds","242",testType);
-//    CR->findById("242");
-//    CM.unregisterClient("232");
-//    cout<<CM.findAllClients().size();
 
+
+
+
+//    CM.regiterClient("Milo","woj","232",typ);
+//    CM.regiterClient("dalo","fds","242",typ);
+    //CR->findById("432");
+    //CM.unregisterClient("282");
+    //cout<<CM.findAllClients().size();
+   // RoomWithoutTerrace RF(-1,)
+
+//    unsigned int i=-1;
+//    cout<<i;
+//    //    unsigned int g=-2;
+//    if(i>0){
+//        cout<<"JEST";
+//    }
 
 
     ReservationRepositoryPtr RR1= make_shared<ReservationRepository>();

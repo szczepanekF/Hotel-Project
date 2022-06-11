@@ -14,8 +14,8 @@ template<class T,class P> class Repository
 protected:
     std::vector<std::shared_ptr<T>> objects;
 public:
-    Repository(){};
-    virtual ~Repository(){};
+    Repository()= default;;
+    virtual ~Repository()= default;;
 
     virtual std::shared_ptr<T> get(unsigned int i) const
     {
@@ -24,7 +24,7 @@ public:
         return objects[i];
     };
 
-    virtual const unsigned int size() const
+    virtual unsigned int size() const
     {
         return objects.size();
     };

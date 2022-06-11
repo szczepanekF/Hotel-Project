@@ -6,14 +6,18 @@
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
 #include <vector>
+
 #include <fstream>
-RoomManager::RoomManager() {
 
+
+
+RoomManager::RoomManager() = default;
+
+
+RoomManager::RoomManager(const RoomRepositoryPtr &initial_rooms) : rooms(initial_rooms){
 }
 
-RoomManager::RoomManager(const RoomRepositoryPtr &init_rooms) :rooms(init_rooms){
 
-}
 
 RoomManager::~RoomManager() {
     std::ofstream plik("../../application_status/rooms.txt");
@@ -26,7 +30,9 @@ RoomManager::~RoomManager() {
 
 }
 
-RoomPtr RoomManager::RegisterRoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight,
+
+
+RoomPtr RoomManager::registerRoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight,
                                                 int initial_bedCount) {
 
     try{
@@ -40,8 +46,8 @@ RoomPtr RoomManager::RegisterRoomWithoutTerrace(int initial_roomNumber, double i
     throw RoomError("ERROR already exists: "+getRoom(initial_roomNumber)->getInfo());
 }
 
-RoomPtr RoomManager::RegisterRoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,
-                                     double initial_terraceSurface) {
+RoomPtr RoomManager::registerRoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,
+                                             double initial_terraceSurface) {
     try{
         getRoom(initial_roomNumber);
     }catch(const RoomError &e){
@@ -68,6 +74,6 @@ std::vector<RoomPtr> RoomManager::findAllRooms() {
     return rooms->findAll();
 }
 
-std::vector<RoomPtr> RoomManager::findRooms(std::function<bool(RoomPtr)> predicate) {
+std::vector<RoomPtr> RoomManager::findRooms(const RoomPredicate &predicate) {
     return rooms->findBy(predicate);
 }

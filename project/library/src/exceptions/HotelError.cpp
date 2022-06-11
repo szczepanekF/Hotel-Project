@@ -3,13 +3,10 @@
 //
 
 #include "exceptions/HotelError.h"
-#include <sstream>
 
 HotelError::HotelError(const std::string &arg) : logic_error(arg) {}
 
-HotelError::~HotelError() {
-
-}
+HotelError::~HotelError() = default;
 
 std::string HotelError::information() const {
 

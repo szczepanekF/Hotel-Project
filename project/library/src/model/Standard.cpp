@@ -1,10 +1,8 @@
 #include "model/Standard.h"
 
-Standard::~Standard() {
+Standard::~Standard() = default;
 
-}
-
-int Standard::getMaxDays() const {
+unsigned int Standard::getMaxDays() const {
     return 7;
 }
 
@@ -16,4 +14,4 @@ std::string Standard::getClientTypeInfo() const {
     return "Standard Client";
 }
 
-Standard::Standard() {}
+Standard::Standard() = default;

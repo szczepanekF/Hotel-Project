@@ -17,11 +17,14 @@ private:
 public:
     Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
     virtual ~Room();
+
     int getId() const;
     double getBasePricePerNight() const;
     int getBedCount() const;
+
     //void setBasePricePerNight(double initial_basePricePerNight);
     void setBedCount(int initial_bedCount);
+
     virtual std::string getInfo() const;
     virtual double getFinalPricePerNight() const=0;
 

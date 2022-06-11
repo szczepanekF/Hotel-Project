@@ -24,8 +24,8 @@ class Reservation {
 private:
     ClientPtr client;
     RoomPtr  room;
-    unsigned int guestCount;
-    unsigned int reservationsDays;
+    int guestCount;
+    int reservationsDays;
     ud::uuid id;
     pt::ptime beginTime;
     //pt::ptime endTime;
@@ -36,22 +36,24 @@ private:
 public:
 
 
-    Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, unsigned int initial_guestCount,
-                const ud::uuid &initial_id, const pt::ptime &initial_beginTime, unsigned int initial_reservationDays,
+    Reservation(const ClientPtr &initial_client, const RoomPtr &initial_room, int initial_guestCount,
+                const ud::uuid &initial_id, const pt::ptime &initial_beginTime, int initial_reservationDays,
                 extraBonusType initial_bonus);
 
     ~Reservation();
+
     const ClientPtr &getClient() const;
     const RoomPtr &getRoom() const;
-    unsigned int getGuestCount() const;
+    int getGuestCount() const;
     const ud::uuid &getId() const;
     const pt::ptime &getBeginTime() const;
     pt::ptime getEndTime() const;
     double getTotalReservationCost() const;
-    void setExtraBonus(extraBonusType extraBonus);
+
+    void setExtraBonus(extraBonusType new_extraBonus);
     extraBonusType getExtraBonus() const;
     std::string getInfo() const;
-    unsigned int getReservationDays() const;
+    int getReservationDays() const;
     double calculateBaseReservationCost();
     void setTotalReservationCost(double initial_totalReservationCost);
     double getPricePerNight() const;

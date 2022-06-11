@@ -99,16 +99,17 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_TEST(currentRR->size()==2);
         BOOST_CHECK_THROW(RM.findRoomReservation(testRoom3),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.findRoomReservation(testRoom3),ReservationError,
-                              [] (const ReservationError &e){return e.information()=="ERROR No Objects";});
+                              [] (const HotelError &e){return e.information()=="ERROR No Objects";});
         BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom, 3, testId3, testBeginTime-pt::hours(30), 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom, 3, testId3, testBeginTime-pt::hours(30), 1, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Wrong begin time")==0;});
+                              [](const HotelError &e){return e.information()=="Error Wrong begin time";});
         BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom, 4, testId3, testBeginTime, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom, 4, testId3, testBeginTime, 1, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Too many guests")==0;});
+                              [](const HotelError &e){return e.information()=="Error Too many guests";});
+
         BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom, 3, testId3, testBeginTime, 8, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom, 3, testId3, testBeginTime, 8, B), ReservationError,
-                              [](const HotelError &e){return e.information().compare("Error Wrong reservation days")==0;});
+                              [](const HotelError &e){return e.information()=="Error Wrong reservation days";});
     }
     BOOST_AUTO_TEST_CASE(TestEnd) {
         ReservationManager RM(currentRR,archiveRR);
