@@ -12,6 +12,7 @@ private:
     int roomNumber;
     double basePricePerNight;
     int bedCount;
+//    bool inUse=0;
 
 public:
     Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
@@ -23,6 +24,9 @@ public:
     void setBedCount(int initial_bedCount);
     virtual std::string getInfo() const;
     virtual double getFinalPricePerNight() const=0;
+
+//    bool isInUse() const;
+//    void setInUse(bool inUse);
 
 
 };

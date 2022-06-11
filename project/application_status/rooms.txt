@@ -1,0 +1,3 @@
+ROOMS: 
+Room number: 1, bed count: 2, base price per night: 400, no terrace
+Room number: 2, bed count: 2, base price per night: 900 surface of a terrace: 500

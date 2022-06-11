@@ -10,11 +10,19 @@
 #include "model/longTerm.h"
 #include "model/ClientType.h"
 #include "repositories/ClientRepository.h"
-
+#include <fstream>
 
 ClientManager::ClientManager(const ClientRepositoryPtr &initial_clients) : clients(initial_clients) {}
 
-ClientManager::~ClientManager() = default;
+ClientManager::~ClientManager(){
+    std::ofstream plik("../../application_status/Clients.txt");
+    plik<<"CLIENTS: \n";
+    for(int i=0;i<clients->size();i++)
+    {
+        plik<<clients->get(i)->getInfo()<<'\n';
+    }
+    plik.close();
+};
 
 ClientManager::ClientManager() = default;
 

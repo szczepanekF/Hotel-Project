@@ -8,7 +8,7 @@
 struct RoomManagerFixture {
     RoomPtr testRoom;
     RoomPtr testRoom2;
-    
+
     RoomRepositoryPtr RP;
     RoomManagerFixture() {
         RP =  std::make_shared<RoomRepository>();
@@ -63,12 +63,12 @@ BOOST_AUTO_TEST_CASE(ExceptionsTestDefault) {
         std::string information = testRoom->getInfo();
         BOOST_CHECK_THROW(RM.RegisterRoomWithoutTerrace(1,100,10),RoomError);
         BOOST_CHECK_EXCEPTION(RM.RegisterRoomWithoutTerrace(1,100,10),RoomError,
-        [information] (const RoomError &e){return e.information().compare("ERROR Room already exists: "+information)==0;});
+        [information] (const RoomError &e){return e.information().compare("ERROR already exists: "+information)==0;});
         testRoom2 = RM.RegisterRoomWithTerrace(2,900,2,500);
-        information = testRoom2->getInfo();
+        std::string information2 = testRoom2->getInfo();
         BOOST_CHECK_THROW(RM.RegisterRoomWithTerrace(2,100,10,1),RoomError);
         BOOST_CHECK_EXCEPTION(RM.RegisterRoomWithTerrace(2,100,10,1),RoomError,
-        [information] (const RoomError &e){return e.information().compare("ERROR Room already exists: "+information)==0;});
+                     [information2] (const RoomError &e){return e.information().compare("ERROR already exists: "+information2)==0;});
         BOOST_CHECK_THROW(RM.getRoom(4),RoomError);
         BOOST_CHECK_EXCEPTION(RM.getRoom(4),RoomError,
                               [] (const RoomError &e){return e.information().compare("ERROR No Object")==0;});

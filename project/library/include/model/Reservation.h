@@ -10,14 +10,14 @@
 #include <boost/uuid/uuid.hpp>
 namespace pt = boost::posix_time;
 namespace ud = boost::uuids;
-
+namespace gr = boost::gregorian;
 
 enum extraBonusType{
     A=0,
     B=100,
     C=250,
-    D=500,
-    E=1000
+
+
 };
 
 

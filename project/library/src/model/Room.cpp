@@ -51,3 +51,11 @@ std::string Room::getInfo() const {
     return ss.str();
 }
 
+//bool Room::isInUse() const {
+//    return inUse;
+//}
+//
+//void Room::setInUse(bool inUse) {
+//    Room::inUse = inUse;
+//}
+

@@ -1,0 +1,3 @@
+CLIENTS: 
+Long Term Client Jan Ktos 242544 bill equal: 300.000000
+Standard Client Jan Kowalski 242567 bill equal: 100.000000

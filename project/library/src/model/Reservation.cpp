@@ -30,14 +30,10 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
     if(initial_beginTime == pt::not_a_date_time){
        throw ReservationError("Error Begin time not given");
     }
-    if(initial_reservationDays <=0 || initial_reservationDays>initial_client->getMaxDays()){
+    if(initial_reservationDays <=0){
         throw ReservationError("Error Wrong reservation days");
     }
-    if(initial_guestCount > initial_room->getBedCount())
-    {
-        throw ReservationError("Error Too many guests");
-    }
-    setTotalReservationCost(calculateBaseReservationCost());
+
 }catch(const ReservationError &e){
 
                          }
@@ -99,7 +95,7 @@ unsigned int Reservation::getReservationDays() const {
 }
 
 double Reservation::calculateBaseReservationCost() {
-    double s= client->getBill()+getPricePerNight()*getReservationDays();
+    double s= getPricePerNight()*getReservationDays();
     return s;
 }
 

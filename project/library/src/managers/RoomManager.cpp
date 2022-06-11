@@ -6,16 +6,23 @@
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
 #include <vector>
-
+#include <fstream>
 RoomManager::RoomManager() {
 
 }
 
-RoomManager::RoomManager(RoomRepositoryPtr init_rooms) :rooms(init_rooms){
+RoomManager::RoomManager(const RoomRepositoryPtr &init_rooms) :rooms(init_rooms){
 
 }
 
 RoomManager::~RoomManager() {
+    std::ofstream plik("../../application_status/rooms.txt");
+    plik<<"ROOMS: \n";
+    for(int i=0;i<rooms->size();i++)
+    {
+        plik<<rooms->get(i)->getInfo()<<'\n';
+    }
+    plik.close();
 
 }
 
@@ -30,7 +37,7 @@ RoomPtr RoomManager::RegisterRoomWithoutTerrace(int initial_roomNumber, double i
         return new_room;
     }
 
-    throw RoomError("ERROR Room already exists: "+getRoom(initial_roomNumber)->getInfo());
+    throw RoomError("ERROR already exists: "+getRoom(initial_roomNumber)->getInfo());
 }
 
 RoomPtr RoomManager::RegisterRoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,
@@ -42,7 +49,7 @@ RoomPtr RoomManager::RegisterRoomWithTerrace(int initial_roomNumber, double init
         rooms->add(new_room);
         return new_room;
     }
-    throw RoomError("ERROR Room already exists: "+getRoom(initial_roomNumber)->getInfo());
+    throw RoomError("ERROR already exists: "+getRoom(initial_roomNumber)->getInfo());
 }
 
 //void RoomManager::unregisterRoom(int roomNumber) {

@@ -15,7 +15,7 @@ RoomWithTerrace::~RoomWithTerrace() = default;
 
 std::string RoomWithTerrace::getInfo() const {
     std::stringstream ss;
-    ss<<Room::getInfo()+" surface of a terrace: "+std::to_string(terraceSurface);
+    ss<<Room::getInfo()<<" surface of a terrace: "<<terraceSurface;
     return ss.str();
 }
 
