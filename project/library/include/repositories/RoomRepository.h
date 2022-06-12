@@ -5,15 +5,15 @@
 #ifndef HOTELPROJECT_ROOMREPOSITORY_H
 #define HOTELPROJECT_ROOMREPOSITORY_H
 #include "repositories/Repository.h"
-#include "exceptions/RoomError.h"
 
 class Room;
+class RoomError;
 
 class RoomRepository:public Repository<Room,RoomError> {
 
 public:
     RoomRepository();
-    virtual ~RoomRepository() override;
+    ~RoomRepository() override;
 };
 
 

@@ -1,15 +1,15 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Reservation.h"
 #include "model/Client.h"
-//#include "model/shortTerm.h"
 #include "model/Standard.h"
-//#include "model/longTerm.h"
 #include "model/RoomWithoutTerrace.h"
-//#include "repositories/Repository.h"
 #include "repositories/ClientRepository.h"
 #include "repositories/RoomRepository.h"
 #include "repositories/ReservationRepository.h"
 #include <vector>
+#include "exceptions/RoomError.h"
+#include "exceptions/ReservationError.h"
+#include "exceptions/ClientError.h"
 
 struct RepositoryFixture {
     ClientTypePtr testType;
@@ -24,7 +24,7 @@ struct RepositoryFixture {
     int testGuestCount = 2;
     int testGuestCount2 = 3;
     pt::ptime testBeginTime = pt::second_clock::local_time();
-   // pt::ptime testEndTime = pt::second_clock::local_time()+pt::hours(50);
+
 
     RepositoryFixture() {
         testType=std::make_shared<Standard>();

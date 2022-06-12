@@ -5,21 +5,24 @@
 #ifndef HOTELPROJECT_ROOMMANAGER_H
 #define HOTELPROJECT_ROOMMANAGER_H
 
-#include "repositories/RoomRepository.h"
 #include "model/typedefs.h"
-#include <memory>
+#include <vector>
+
+class RoomRepository;
 
 class RoomManager {
 private:
     RoomRepositoryPtr rooms;
 public:
-    RoomManager();
     explicit RoomManager(const RoomRepositoryPtr &initial_rooms);
     ~RoomManager();
 
     RoomPtr registerRoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
+    ///przyjmuje wartości potrzebne do utworzenia pokoju bez tarasu, sprawdza czy pokój o takim numerze jest już w repozytorium, jeżeli tak rzuca wyjątek,
+    ///w przeciwnym wypadku tworzy obiekt pokoju bez tarasu, dodaje go do repozutorium i zwraca wskaźnik na niego
     RoomPtr registerRoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount, double initial_terraceSurface);
-//    void unregisterRoom(int roomNumber);
+    ///przyjmuje wartości potrzebne do utworzenia pokoju z tarasem, sprawdza czy pokój o takim numerze jest już w repozytorium, jeżeli tak rzuca wyjątek,
+    ///w przeciwnym wypadku tworzy obiekt pokoju z tarasem, dodaje go do repozutorium i zwraca wskaźnik na niego
     RoomPtr getRoom(int roomNumber) const;
 
     std::vector<RoomPtr> findRooms(const RoomPredicate &predicate);

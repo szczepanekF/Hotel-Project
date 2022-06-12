@@ -5,9 +5,11 @@
 #ifndef HOTELPROJECT_RESERVATIONREPOSITORY_H
 #define HOTELPROJECT_RESERVATIONREPOSITORY_H
 #include "repositories/Repository.h"
-#include "exceptions/ReservationError.h"
+
 
 class Reservation;
+class ReservationError;
+
 class ReservationRepository: public Repository<Reservation,ReservationError>{
 public:
     ReservationRepository();

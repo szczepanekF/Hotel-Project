@@ -12,25 +12,18 @@ private:
     int roomNumber;
     double basePricePerNight;
     int bedCount;
-//    bool inUse=0;
-
 public:
-    Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
+    Room(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);///rzuca wyjątek gdy którakolwiek z wartości jest mniejsza lub równa 0
     virtual ~Room();
 
-    int getId() const;
+    int getId() const; ///zwraca numer pokoju
     double getBasePricePerNight() const;
     int getBedCount() const;
 
-    //void setBasePricePerNight(double initial_basePricePerNight);
-    void setBedCount(int initial_bedCount);
+    void setBedCount(int new_bedCount);
 
     virtual std::string getInfo() const;
-    virtual double getFinalPricePerNight() const=0;
-
-//    bool isInUse() const;
-//    void setInUse(bool inUse);
-
+    virtual double getFinalPricePerNight() const=0;///cena bazowa za noc zależna jest również od tego czy pokój ma taras i od jego rozmiaru
 
 };
 

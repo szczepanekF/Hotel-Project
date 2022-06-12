@@ -11,14 +11,14 @@ namespace btt = boost::test_tools;
 struct TestSuiteRoomFixture{
     int num1=1;
     double baseprice1=100;
-    //double baseprice2=150;
+
     int bedcount1=1;
     int bedcount2=2;
     int bedcount3=-1;
-    double terrace1=50;
-    double terrace2=150;
+    double terrace1=0.5;
+    double terrace2=1.5;
     double terrace3=350;
-//    double terrace4=550;
+
 
 
     TestSuiteRoomFixture()= default;

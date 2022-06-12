@@ -5,14 +5,9 @@
 #include "managers/RoomManager.h"
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
+#include "exceptions/RoomError.h"
 #include <vector>
-
-#include <fstream>
-
-
-
-RoomManager::RoomManager() = default;
-
+#include "repositories/RoomRepository.h"
 
 RoomManager::RoomManager(const RoomRepositoryPtr &initial_rooms) : rooms(initial_rooms){
 }
@@ -20,14 +15,7 @@ RoomManager::RoomManager(const RoomRepositoryPtr &initial_rooms) : rooms(initial
 
 
 RoomManager::~RoomManager() {
-    std::ofstream plik("../../application_status/rooms.txt");
-    plik<<"ROOMS: \n";
-    for(int i=0;i<rooms->size();i++)
-    {
-        plik<<rooms->get(i)->getInfo()<<'\n';
-    }
-    plik.close();
-
+   rooms->saveInformations("../../application_status/rooms.txt","ROOMS");
 }
 
 
@@ -57,14 +45,6 @@ RoomPtr RoomManager::registerRoomWithTerrace(int initial_roomNumber, double init
     }
     throw RoomError("ERROR already exists: "+getRoom(initial_roomNumber)->getInfo());
 }
-
-//void RoomManager::unregisterRoom(int roomNumber) {
-//    RoomPtr remove_room = getRoom(roomNumber);
-//    if(remove_room == nullptr)
-//        throw RoomError("ERROR Null room");
-//
-//    rooms.remove(rooms.findById(roomNumber));
-//}
 
 RoomPtr RoomManager::getRoom(int roomNumber) const {
     return rooms->findById(roomNumber);

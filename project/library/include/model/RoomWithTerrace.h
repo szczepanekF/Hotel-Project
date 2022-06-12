@@ -10,11 +10,10 @@ class RoomWithTerrace: public Room{
 private:
     double terraceSurface;
 public:
-    RoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,double initial_terraceSurface);
+    RoomWithTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount,double initial_terraceSurface);///rzuca również wyjątek gdy rozmiar tarasu jest mniejszy lub równy zero
     std::string getInfo() const override;
     double getTerraceSurface() const;
-    double getFinalPricePerNight() const override;
-
+    double getFinalPricePerNight() const override;///zwraca bazową cenę pomnożoną przez ułamek zależny od wielkości tarasu
     ~RoomWithTerrace() override;
 };
 

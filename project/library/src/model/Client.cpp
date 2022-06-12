@@ -20,13 +20,6 @@ Client::Client(const std::string &initial_firtsName, const std::string &initial_
     if(initial_clientType== nullptr){
         throw ClientError("ERROR Null client type");
     }
-//    if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
-//        bill=300;
-//    }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
-//        bill=100;
-//    }else{
-//        bill=0;
-//    }
     }catch(const ClientError &e){
     }
 
@@ -58,43 +51,33 @@ double Client::getBill() const {
     return bill;
 }
 
-void Client::setFirstName(const std::string &initial_firtsName) {
-    if(initial_firtsName.empty()){
+void Client::setFirstName(const std::string &new_firstName) {
+    if(new_firstName.empty()){
         throw ClientError("ERROR Empty first name");
     }
-    Client::firstName = initial_firtsName;
+    Client::firstName = new_firstName;
 }
 
-void Client::setLastName(const std::string &initial_lastName) {
-    if(initial_lastName.empty()){
+void Client::setLastName(const std::string &new_lastName) {
+    if(new_lastName.empty()){
         throw ClientError("ERROR Empty last name");
     }
-    Client::lastName = initial_lastName;
+    Client::lastName = new_lastName;
 }
 
-void Client::setClientType(const ClientTypePtr &initial_clientType) {
-    if(initial_clientType== nullptr){
+void Client::setClientType(const ClientTypePtr &new_clientType) {
+    if(new_clientType == nullptr){
         throw ClientError("ERROR Null client type");
     }
-    //if(initial_clientType->getMaxDays() > getClientType()->getMaxDays()){
-        ClientType=initial_clientType;
-//        double s=getBill();
-//        if(initial_clientType->getMaxDays() == 30){
-//            s+=300;
-//        }else if(initial_clientType->getMaxDays() == 7){
-//            s+=100;
-//        }
-//        setBill(s);
-//    }
-
+        ClientType=new_clientType;
 }
 
-void Client::setArchive(bool initial_archive) {
-    Client::archive = initial_archive;
+void Client::setArchive(bool new_archive) {
+    Client::archive = new_archive;
 }
 
-void Client::setBill(double initial_bill) {
-    Client::bill = initial_bill;
+void Client::setBill(double new_bill) {
+    Client::bill = new_bill;
 }
 
 unsigned int Client::getMaxDays() const {
@@ -106,5 +89,11 @@ bool Client::acceptDiscount() const {
 }
 
 std::string Client::getInfo() const {
-    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " bill equal: " + std::to_string(getBill());
+    std::string ArchiveInfo;
+    if(isArchive()){
+        ArchiveInfo="is archive";
+    }else{
+        ArchiveInfo="is not archive";
+    }
+    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " bill equal: " + std::to_string(getBill()) + " " + ArchiveInfo ;
 }

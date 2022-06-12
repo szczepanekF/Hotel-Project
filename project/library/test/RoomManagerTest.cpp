@@ -4,6 +4,7 @@
 
 #include "repositories/RoomRepository.h"
 #include "managers/RoomManager.h"
+#include "exceptions/RoomError.h"
 
 struct RoomManagerFixture {
     RoomPtr testRoom;
@@ -11,12 +12,9 @@ struct RoomManagerFixture {
     RoomPtr testRoom3;
 
     RoomRepositoryPtr RP;
+
     RoomManagerFixture() {
         RP =  std::make_shared<RoomRepository>();
-//        testRoom = std::make_shared<RoomWithoutTerrace>(1,400,2);
-//        testRoom2 = std::make_shared<RoomWithTerrace>(2,500,3,200);
-//        testRoom3 = std::make_shared<RoomWithoutTerrace>(3,500,3);
-
     }
 
     ~RoomManagerFixture() = default;
@@ -49,8 +47,6 @@ BOOST_AUTO_TEST_CASE(FindRoomsAndFindAllRoomsTest) {
         BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;}).size()==2);
         BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;})[0]==testRoom);
         BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;})[1]==testRoom2);
-//        BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;})[0]->getId() == 1);
-//        BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBedCount()==2;})[1]->getId() == 2);
         BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBasePricePerNight()==900;}).size()==1);
         BOOST_TEST(RM.findRooms([](const RoomPtr &ptr)->bool{return ptr->getBasePricePerNight()==900;})[0] == testRoom2);
 

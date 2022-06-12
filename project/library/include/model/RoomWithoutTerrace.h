@@ -11,7 +11,7 @@ public:
     RoomWithoutTerrace(int initial_roomNumber, double initial_basePricePerNight, int initial_bedCount);
     ~RoomWithoutTerrace() override;
     std::string getInfo() const override;
-    double getFinalPricePerNight() const override;
+    double getFinalPricePerNight() const override; ///zwraca bazową cenę bo ten typ pokoju nie ma tarasu
 };
 
 

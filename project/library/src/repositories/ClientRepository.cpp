@@ -3,9 +3,9 @@
 //
 
 #include "repositories/ClientRepository.h"
+#include "model/Client.h"
+#include "exceptions/ClientError.h"
 
-ClientRepository::~ClientRepository() noexcept
-{
-}
-ClientRepository::ClientRepository() {
-}
+ClientRepository::~ClientRepository()=default;
+ClientRepository::ClientRepository()=default;
+

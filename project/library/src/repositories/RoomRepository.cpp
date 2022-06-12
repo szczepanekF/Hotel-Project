@@ -3,9 +3,9 @@
 //
 
 #include "repositories/RoomRepository.h"
-RoomRepository::~RoomRepository() noexcept
-{
+#include "model/Room.h"
+#include "exceptions/RoomError.h"
 
-}
+RoomRepository::~RoomRepository()=default;
 
-RoomRepository::RoomRepository() {}
+RoomRepository::RoomRepository()=default;

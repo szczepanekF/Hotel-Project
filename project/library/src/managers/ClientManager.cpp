@@ -4,27 +4,20 @@
 
 #include "managers/ClientManager.h"
 
-
+#include "exceptions/ClientError.h"
 #include "model/Client.h"
 #include "model/Standard.h"
 #include "model/longTerm.h"
 #include "model/ClientType.h"
 #include "repositories/ClientRepository.h"
-#include <fstream>
+
 
 ClientManager::ClientManager(const ClientRepositoryPtr &initial_clients) : clients(initial_clients) {}
 
 ClientManager::~ClientManager(){
-    std::ofstream plik("../../application_status/Clients.txt");
-    plik<<"CLIENTS: \n";
-    for(int i=0;i<clients->size();i++)
-    {
-        plik<<clients->get(i)->getInfo()<<'\n';
-    }
-    plik.close();
-};
+    clients->saveInformations("../../application_status/Clients.txt","CLIENTS");
+}
 
-ClientManager::ClientManager() = default;
 
 ClientPtr ClientManager::regiterClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID,
                                        const ClientTypePtr &initial_clientType) {

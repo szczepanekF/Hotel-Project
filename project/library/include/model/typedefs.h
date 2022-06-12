@@ -6,7 +6,7 @@ class Client;
 class ClientType;
 class Room;
 class Reservation;
-//class Repository;
+
 class ClientRepository;
 class RoomRepository;
 class ReservationRepository;
@@ -15,7 +15,7 @@ typedef std::shared_ptr<Client> ClientPtr;
 typedef std::shared_ptr<ClientType> ClientTypePtr;
 typedef std::shared_ptr<Room> RoomPtr;
 typedef std::shared_ptr<Reservation> ReservationPtr;
-//typedef std::shared_ptr<Repository> RepositoryPtr;
+
 typedef std::shared_ptr<ClientRepository> ClientRepositoryPtr;
 typedef std::shared_ptr<RoomRepository> RoomRepositoryPtr;
 typedef std::shared_ptr<ReservationRepository> ReservationRepositoryPtr;

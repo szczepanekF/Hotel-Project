@@ -16,7 +16,8 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
                          int initial_reservationDays,
                          extraBonusType initial_bonus)
                          try : client(initial_client), room(initial_room), guestCount(initial_guestCount), id(initial_id),
-                           beginTime(initial_beginTime), reservationsDays(initial_reservationDays),extraBonus(initial_bonus)
+                           beginTime(initial_beginTime), reservationsDays(initial_reservationDays),extraBonus(initial_bonus),
+                           totalReservationCost(0)
 {
     if(initial_client == nullptr){
         throw ClientError("ERROR Null client");
@@ -34,9 +35,7 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
         throw ReservationError("Error Wrong reservation days");
     }
 
-}catch(const ReservationError &e){
-
-                         }
+}catch(const ReservationError &e){}
 
 Reservation::~Reservation() = default;
 
@@ -73,9 +72,9 @@ double Reservation::getTotalReservationCost() const {
     return totalReservationCost;
 }
 
-void Reservation::setTotalReservationCost(double initial_totalReservationCost) {
-    if(initial_totalReservationCost<0) throw ReservationError("Error Wrong reservation cost");
-    totalReservationCost = initial_totalReservationCost;
+void Reservation::setTotalReservationCost(double new_totalReservationCost) {
+    if(new_totalReservationCost < 0) throw ReservationError("Error Wrong reservation cost");
+    totalReservationCost = new_totalReservationCost;
 }
 
 std::string Reservation::getInfo() const {
@@ -94,7 +93,7 @@ int Reservation::getReservationDays() const {
     return reservationsDays;
 }
 
-double Reservation::calculateBaseReservationCost() {
+double Reservation::calculateBaseReservationCost() const {
     double s= getPricePerNight()*getReservationDays();
     return s;
 }

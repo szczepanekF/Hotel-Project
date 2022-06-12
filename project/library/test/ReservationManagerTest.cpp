@@ -11,6 +11,7 @@
 #include "managers/ReservationManager.h"
 #include "exceptions/ReservationError.h"
 
+namespace gr = boost::gregorian;
 
 struct ReservationManagerFixture {
     ReservationRepositoryPtr currentRR;
@@ -39,6 +40,9 @@ struct ReservationManagerFixture {
     ReservationPtr testReservation2;
     ReservationPtr testReservation3;
 
+    std::vector<ReservationPtr> testReservations;
+    ReservationPtr nullReservation=nullptr;
+
     ReservationManagerFixture() {
         currentRR = std::make_shared<ReservationRepository>();
         archiveRR = std::make_shared<ReservationRepository>();
@@ -55,22 +59,17 @@ struct ReservationManagerFixture {
 
     }
 
-    ~ReservationManagerFixture() {
-
-    }
+    ~ReservationManagerFixture() = default;
 
 };
 BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
-    BOOST_AUTO_TEST_CASE(TestStartAndFindRoomReservation) {
+    BOOST_AUTO_TEST_CASE(StartAndFindRoomReservationTest) {
         ReservationManager RM(currentRR,archiveRR);
-        BOOST_TEST(currentRR->size() == 0);
+        BOOST_REQUIRE(currentRR->size() == 0);
         testClient->setBill(100);
         testClient2->setBill(2000);
         testClient3->setBill(3000);
-        BOOST_TEST(testClient->getBill() != 0);
-        BOOST_TEST(testClient2->getBill() != 0);
-        BOOST_TEST(testClient3->getBill() != 0);
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
                                               A);
         testReservation2 = RM.startReservation(testClient2, testRoom2, testGuestCount, testBeginTime,
@@ -80,8 +79,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_TEST(testReservation->getId()!=testReservation2->getId());
         BOOST_TEST(testReservation2->getId()!=testReservation3->getId());
         BOOST_TEST(testReservation->getId()!=testReservation3->getId());
-        BOOST_TEST(currentRR->size() == 3);
-        BOOST_TEST(archiveRR->size() == 0);
+        BOOST_REQUIRE(currentRR->size() == 3);
+        BOOST_REQUIRE(archiveRR->size() == 0);
         BOOST_TEST(RM.findRoomReservation(testRoom) == testReservation);
         BOOST_TEST(RM.findRoomReservation(testRoom2) == testReservation2);
         BOOST_TEST(RM.findRoomReservation(testRoom3) == testReservation3);
@@ -95,7 +94,6 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         testClient3->setBill(-3000);
         ReservationPtr res=RM.startReservation(testClient3, testRoom3, testGuestCount, testBeginTime,
                             1, C);
-        BOOST_TEST(-testClient3->getBill()<=res->calculateBaseReservationCost());
         BOOST_TEST(res->getTotalReservationCost()==0);
         BOOST_TEST(testClient3->getBill()==0);
 
@@ -103,34 +101,41 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
 
     }
-    BOOST_AUTO_TEST_CASE(TestStartAndFindRoomReservationError) {
+    BOOST_AUTO_TEST_CASE(StartAndFindRoomReservationErrorTest) {
         ReservationManager RM(currentRR,archiveRR);
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
                                               A);
         testReservation2 = RM.startReservation(testClient2, testRoom2, testGuestCount, testBeginTime,
                                                testReservationDays2, B);
         std::string information = testReservation->getInfo();
-        BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
+        BOOST_REQUIRE_THROW(RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
                                               A), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime,
                                                   testReservationDays1, A), ReservationError,
                               [information] (const ReservationError &e){return e.information()=="ERROR already exists: "+information;});
         BOOST_TEST(currentRR->size()==2);
-        BOOST_CHECK_THROW(RM.findRoomReservation(testRoom3),ReservationError);
+
+        BOOST_REQUIRE_THROW(nullReservation=RM.findRoomReservation(testRoom3),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.findRoomReservation(testRoom3),ReservationError,
                               [] (const HotelError &e){return e.information()=="ERROR No Objects";});
-        BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError);
+        BOOST_TEST(nullReservation==nullptr);
+
+        BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError,
                               [](const HotelError &e){return e.information()=="Error Wrong begin time";});
-        BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom3, 4, testBeginTime, 1, B), ReservationError);
+        BOOST_TEST(nullReservation==nullptr);
+
+        BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 4, testBeginTime, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 4, testBeginTime, 1, B), ReservationError,
                               [](const HotelError &e){return e.information()=="Error Too many guests";});
+        BOOST_TEST(nullReservation==nullptr);
 
-        BOOST_CHECK_THROW(RM.startReservation(testClient, testRoom3, 3, testBeginTime, 8, B), ReservationError);
+        BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 3, testBeginTime, 8, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 3, testBeginTime, 8, B), ReservationError,
                               [](const HotelError &e){return e.information()=="Error Wrong reservation days";});
+        BOOST_TEST(nullReservation==nullptr);
     }
-    BOOST_AUTO_TEST_CASE(TestEnd) {
+    BOOST_AUTO_TEST_CASE(EndTest) {
         ReservationManager RM(currentRR,archiveRR);
 
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
@@ -204,7 +209,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         RM.endReservation(testId3);
         BOOST_TEST(res7->getClient()->getBill()==help2-0.07*res7->getTotalReservationCost());
     }
-    BOOST_AUTO_TEST_CASE(TestEndError) {
+    BOOST_AUTO_TEST_CASE(EndErrorTest) {
         ReservationManager RM(currentRR,archiveRR);
         testReservation3 = RM.startReservation(testClient3, testRoom3, testGuestCount, testBeginTime,
                                                testReservationDays3, C);
@@ -214,7 +219,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
     }
 
-    BOOST_AUTO_TEST_CASE(TestFind){
+    BOOST_AUTO_TEST_CASE(FindTest){
         ReservationManager RM(currentRR,archiveRR);
         BOOST_TEST(currentRR->size() == 0);
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
@@ -240,7 +245,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_TEST(RM.findReservations([](const ReservationPtr &ptr){return ptr->getExtraBonus()==C;}).size()==1);
         BOOST_TEST(RM.findClientReservations(testClient).size()==2);
     }
-    BOOST_AUTO_TEST_CASE(TestErrorFind){
+    BOOST_AUTO_TEST_CASE(ErrorFindTest){
         ReservationManager RM(currentRR,archiveRR);
 
         testReservation = std::make_shared<Reservation>(testClient, testRoom, testGuestCount,testId1, testBeginTime, testReservationDays1,
@@ -252,21 +257,28 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         currentRR->add(testReservation);
         currentRR->add(testReservation2);
         currentRR->add(testReservation3);
-        BOOST_REQUIRE_THROW(RM.findClientReservations(testClient2),ReservationError);
+
+        BOOST_REQUIRE_THROW(testReservations=RM.findClientReservations(testClient2),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.findClientReservations(testClient2),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR No Objects")==0;});
-        BOOST_REQUIRE_THROW(RM.findReservations([](const ReservationPtr &ptr){return ptr->getReservationDays()==30;}),ReservationError);
+                              [] (const ReservationError &e){return e.information()=="ERROR No Objects";});
+        BOOST_TEST(testReservations.size()==0);
+
+        BOOST_REQUIRE_THROW(testReservations=RM.findReservations([](const ReservationPtr &ptr){return ptr->getReservationDays()==30;}),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.findReservations([](const ReservationPtr &ptr){return ptr->getReservationDays()==30;}),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR No Objects")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR No Objects";});
+        BOOST_TEST(testReservations.size()==0);
+
         RM.endReservation(testId1);
         RM.endReservation(testId2);
         RM.endReservation(testId3);
-        BOOST_REQUIRE_THROW(RM.findAllReservations(),ReservationError);
+
+        BOOST_REQUIRE_THROW(testReservations=RM.findAllReservations(),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.findAllReservations(),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR No Objects")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR No Objects";});
+        BOOST_TEST(testReservations.size()==0);
     }
 
-    BOOST_AUTO_TEST_CASE(TestChangeExtraBonusToB){
+    BOOST_AUTO_TEST_CASE(ChangeExtraBonusToBTest){
         ReservationManager RM(currentRR,archiveRR);
         pt::ptime localTimeSecondDay(pt::second_clock::local_time().date()-gr::days(1),pt::hours(12));
         pt::ptime localTimeLastDay(pt::second_clock::local_time().date()-gr::days(3),pt::hours(12));
@@ -319,7 +331,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
 
     }
-    BOOST_AUTO_TEST_CASE(TestErrorChangeExtraBonusToB){
+    BOOST_AUTO_TEST_CASE(ErrorChangeExtraBonusToBTest){
         ReservationManager RM(currentRR,archiveRR);
         pt::ptime localTimeReservationEnded(pt::second_clock::local_time().date()-gr::days(5),pt::hours(12));
         pt::ptime localTimeSecondDay(pt::second_clock::local_time().date()-gr::days(1),pt::hours(12));
@@ -339,19 +351,21 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         currentRR->add(testReservation2);
         BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToB(testId3),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToB(testId3),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR No Object")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR No Object";});
+
         BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToB(testId2),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToB(testId2),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR cant change to lower extra bonus")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR cant change to lower extra bonus";});
+
         BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToB(testId1),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToB(testId1),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR Reservation ended")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR Reservation ended";});
 
 
     }
 
 
-    BOOST_AUTO_TEST_CASE(TestChangeExtraBonusToC){
+    BOOST_AUTO_TEST_CASE(ChangeExtraBonusToCTest){
         ReservationManager RM(currentRR,archiveRR);
         pt::ptime localTimeSecondDay(pt::second_clock::local_time().date()-gr::days(1),pt::hours(12));
         pt::ptime localTimeLastDay(pt::second_clock::local_time().date()-gr::days(2),pt::hours(12));
@@ -453,7 +467,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
 
     }
-    BOOST_AUTO_TEST_CASE(TestErrorChangeExtraBonusToC){
+    BOOST_AUTO_TEST_CASE(ErrorChangeExtraBonusToCTest){
         ReservationManager RM(currentRR,archiveRR);
         pt::ptime localTimeReservationEnded(pt::second_clock::local_time().date()-gr::days(5),pt::hours(12));
         pt::ptime localTimeSecondDay(pt::second_clock::local_time().date()-gr::days(1),pt::hours(12));
@@ -472,10 +486,11 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
         BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToC(testId3),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToC(testId3),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR No Object")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR No Object";});
+
         BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToC(testId1),ReservationError);
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToC(testId1),ReservationError,
-                              [] (const ReservationError &e){return e.information().compare("ERROR Reservation ended")==0;});
+                              [] (const ReservationError &e){return e.information()=="ERROR Reservation ended";});
     }
 
 
