@@ -10,7 +10,7 @@ class HotelError : public std::logic_error{
 public:
     HotelError(const std::string &arg);
     virtual std::string information() const;
-    virtual ~HotelError();
+    virtual ~HotelError()=0;
 };
 
 

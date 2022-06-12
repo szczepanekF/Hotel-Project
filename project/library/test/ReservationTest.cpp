@@ -95,9 +95,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
         BOOST_TEST(res.getTotalReservationCost()!=20);
         res.setTotalReservationCost(20);
         BOOST_TEST(res.getTotalReservationCost()==20);
-        BOOST_REQUIRE_THROW(res.setTotalReservationCost(0),ReservationError);
-        BOOST_CHECK_EXCEPTION(res.setTotalReservationCost(0), ReservationError,
-                              [](const HotelError &e){return e.information()=="Error Wrong reservation cost";});
+
+
         BOOST_TEST(res.getTotalReservationCost()==20);
         BOOST_REQUIRE_THROW(res.setTotalReservationCost(-1),ReservationError);
         BOOST_CHECK_EXCEPTION(res.setTotalReservationCost(-1), ReservationError,

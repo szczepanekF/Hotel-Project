@@ -75,7 +75,13 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
         }
         ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,init_id,beginTime,reservationDays,bonus);
 //        room->setInUse(true);
-        new_reservation->setTotalReservationCost(client->getBill()+new_reservation->calculateBaseReservationCost());
+        if(client->getBill()+new_reservation->calculateBaseReservationCost()<0)
+        {
+            new_reservation->setTotalReservationCost(0);
+        }else{
+            new_reservation->setTotalReservationCost(client->getBill()+new_reservation->calculateBaseReservationCost());
+        }
+
         client->setBill(0);
         currentReservations->add(new_reservation);
 
@@ -88,6 +94,8 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
 void ReservationManager::endReservation(const ud::uuid id) {
     ReservationPtr reservation = currentReservations->findById(id);
 //    reservation->getRoom()->setInUse(false);
+    ClientPtr client = reservation->getClient();
+    client->setBill(client->getBill()-calculateDiscount(client)*reservation->getTotalReservationCost());
     archiveReservations->add(reservation);
     currentReservations->remove(reservation);
 }
@@ -111,17 +119,23 @@ ReservationPtr ReservationManager::findRoomReservation(const RoomPtr &room) cons
 double ReservationManager::calculateDiscount(const ClientPtr &client) const {
     double discount = 0;
     int days = 0;
-    std::vector<ReservationPtr> clientReservations = archiveReservations->findBy([client](const ReservationPtr &ptr){return ptr->getClient()==client;});
+    std::vector<ReservationPtr> clientReservations;
+    try{
+        clientReservations = archiveReservations->findBy([client](const ReservationPtr &ptr){return ptr->getClient()==client;});
+    }catch(const HotelError &e){
+        return 0;
+    }
+
     for(int i=0;i<clientReservations.size();i++)
     {
         days += clientReservations[i]->getReservationDays();
     }
-    if(days>=7)
-        discount = 100;
-    else if(days>=21)
-        discount = 250;
     if(days>=60)
-        discount = 500;
+        discount = 0.07;
+    else if(days>=21)
+        discount = 0.05;
+    else if(days>=7)
+        discount = 0.02;
     return discount;
 }
 

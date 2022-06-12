@@ -74,7 +74,7 @@ double Reservation::getTotalReservationCost() const {
 }
 
 void Reservation::setTotalReservationCost(double initial_totalReservationCost) {
-    if(initial_totalReservationCost<=0) throw ReservationError("Error Wrong reservation cost");
+    if(initial_totalReservationCost<0) throw ReservationError("Error Wrong reservation cost");
     totalReservationCost = initial_totalReservationCost;
 }
 

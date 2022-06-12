@@ -30,12 +30,9 @@ public:
     std::vector<ReservationPtr> findClientReservations(const ClientPtr &client) const;
     ReservationPtr findRoomReservation(const RoomPtr &room) const;
     double calculateDiscount(const ClientPtr &client) const;
-    void changeReservationExtraBonusToA(const ud::uuid id);
     void changeReservationExtraBonusToB(const ud::uuid id);
     void changeReservationExtraBonusToC(const ud::uuid id);
-    void changeReservationExtraBonusToD(const ud::uuid id);
-    void changeReservationExtraBonusToE(const ud::uuid id);
-    void calculateTotalReservationPrice();
+
 
 };
 
