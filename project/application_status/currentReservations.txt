@@ -1,7 +1,7 @@
 CURRENT RENTS: 
 --------------------------------------------------------------------------------------------------
 Reservation id: 01000000-0000-0000-0000-000000000000, number of guests: 3
-From: 2022-Jun-06 12:00:00  To: 2022-Jun-08 12:00:00
+From: 2022-Jun-07 12:00:00  To: 2022-Jun-09 12:00:00
 Client info: Short Term Client Jan Ktos 242544 bill equal: 0.000000
 Room info: Room number: 1, bed count: 3, base price per night: 400, no terrace
 Extra bonuses: 0 Final price per night: 400

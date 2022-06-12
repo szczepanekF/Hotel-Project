@@ -22,9 +22,8 @@ public:
     ReservationManager();
     virtual ~ReservationManager();
 
-    ReservationPtr startReservation(const ClientPtr &client,const RoomPtr &room,unsigned int guestCount,
-                                    const ud::uuid id,const pt::ptime beginTime,unsigned int reservationDays,
-                                    extraBonusType bonus);
+    ReservationPtr startReservation(const ClientPtr &client, const RoomPtr &room, unsigned int guestCount,
+                                    const pt::ptime beginTime, unsigned int reservationDays, extraBonusType bonus);
     void endReservation(const ud::uuid id);
     std::vector<ReservationPtr> findReservations(ReservationPredicate predicate) const;
     std::vector<ReservationPtr> findAllReservations() const;

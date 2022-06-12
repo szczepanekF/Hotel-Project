@@ -8,7 +8,7 @@
 #include "model/Room.h"
 #include "model/Client.h"
 #include <fstream>
-
+#include "boost/uuid/random_generator.hpp"
 ReservationManager::ReservationManager(const ReservationRepositoryPtr &currentReservations,
                                        const ReservationRepositoryPtr &archiveReservations) : currentReservations(
         currentReservations), archiveReservations(archiveReservations) {}
@@ -35,12 +35,33 @@ ReservationManager::~ReservationManager() {
 
 ReservationPtr
 ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &room, unsigned int guestCount,
-                                     const ud::uuid id, const pt::ptime beginTime, unsigned int reservationDays,
-                                     extraBonusType bonus) {
+                                     const pt::ptime beginTime, unsigned int reservationDays, extraBonusType bonus) {
     if(client->isArchive()) throw ReservationError("ERROR Client is archive");
+
+
+
     try{
-        currentReservations->findById(id);
+
+//        while(currentReservations->findById(init_id) != nullptr){
+//            ud::random_generator gen;
+//            ud::uuid init_id =gen();
+//        }
+        findRoomReservation(room);
     }catch (const ReservationError &e){
+        ud::random_generator gen;
+        ud::uuid init_id =gen();
+        while(true)
+        {
+            try{
+                currentReservations->findById(init_id);
+                archiveReservations->findById(init_id);
+            }
+            catch(const ReservationError &e){
+                break;
+            }
+            ud::random_generator gen;
+            ud::uuid init_id =gen();
+        }
         if(beginTime<pt::second_clock::local_time())
         {
             throw ReservationError("Error Wrong begin time");
@@ -52,7 +73,7 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
         if(reservationDays>client->getMaxDays()){
             throw ReservationError("Error Wrong reservation days");
         }
-        ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,id,beginTime,reservationDays,bonus);
+        ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,init_id,beginTime,reservationDays,bonus);
 //        room->setInUse(true);
         new_reservation->setTotalReservationCost(client->getBill()+new_reservation->calculateBaseReservationCost());
         client->setBill(0);
@@ -111,16 +132,19 @@ void ReservationManager::changeReservationExtraBonusToB(const ud::uuid id) {
     if(reservation->getExtraBonus()==C) throw ReservationError("ERROR cant change to lower extra bonus");
 
     if(pt::second_clock::local_time()>reservation->getEndTime()) throw ReservationError("ERROR Reservation ended");
-    pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
 
     int new_cost=0;
-    if(pt::second_clock::local_time()<ideal){
-        new_cost=(-reservation->getPricePerNight()*reservation->getReservationDays());
+    if(pt::second_clock::local_time()<=reservation->getBeginTime()){
+        new_cost=(reservation->getTotalReservationCost()-reservation->getPricePerNight()*reservation->getReservationDays());
         reservation->setExtraBonus(B);
         new_cost+=reservation->getPricePerNight()*reservation->getReservationDays();
-        reservation->setTotalReservationCost(reservation->getTotalReservationCost()+new_cost);
+        reservation->setTotalReservationCost(new_cost);
         return;
     }
+
+    pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
+    if(ideal>reservation->getBeginTime())
+        ideal -=gr::days(1);
     pt::time_period period(ideal,pt::second_clock::local_time());
 
 

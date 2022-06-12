@@ -65,8 +65,8 @@ int main(){
 //    ReservationManager RM;
     ReservationManager *RM=new ReservationManager(RR1,RR2);
     try {
-        RM->startReservation(testClient, testRoom, testGuestCount, testId, testBeginTime, 4, A);
-        RM->startReservation(testClient2, testRoom2, testGuestCount, testId2, testBeginTime, 6, B);
+        RM->startReservation(testClient, testRoom, testGuestCount, testBeginTime, 4, A);
+        RM->startReservation(testClient2, testRoom2, testGuestCount, testBeginTime, 6, B);
     }catch(const ReservationError &e){
         cout<<e.information();
     }
