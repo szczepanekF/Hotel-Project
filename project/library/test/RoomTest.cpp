@@ -15,9 +15,9 @@ struct TestSuiteRoomFixture{
     int bedcount1=1;
     int bedcount2=2;
     int bedcount3=-1;
-    double terrace1=0.5;
-    double terrace2=1.5;
-    double terrace3=350;
+    double terrace1=4;
+    double terrace2=9;
+    double terrace3=11;
 
 
 

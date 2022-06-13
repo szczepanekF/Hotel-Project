@@ -141,7 +141,7 @@ void ReservationManager::changeReservationExtraBonusToB(const ud::uuid &id) {
     ReservationPtr reservation = currentReservations->findById(id);
     if(reservation->getExtraBonus()==C) throw ReservationError("ERROR cant change to lower extra bonus");
 
-    if(pt::second_clock::local_time()>reservation->getEndTime()) throw ReservationError("ERROR Reservation ended");
+
 
     double new_cost;
     if(pt::second_clock::local_time()<=reservation->getBeginTime()){
@@ -172,7 +172,7 @@ void ReservationManager::changeReservationExtraBonusToB(const ud::uuid &id) {
 
 void ReservationManager::changeReservationExtraBonusToC(const ud::uuid &id) {
     ReservationPtr reservation = currentReservations->findById(id);
-    if(pt::second_clock::local_time()>reservation->getEndTime()) throw ReservationError("ERROR Reservation ended");
+
     pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
 
 

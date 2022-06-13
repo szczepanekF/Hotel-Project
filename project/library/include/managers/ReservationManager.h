@@ -35,8 +35,7 @@ public:
     ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji,
     /// rzuca wyjątek przy próbie zmiany bonusu na mniejszy
     void changeReservationExtraBonusToC(const ud::uuid &id);
-    ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji,
-    /// rzuca wyjątek przy próbie zmiany bonusu na mniejszy
+    ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji.
 
 
 };

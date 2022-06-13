@@ -25,9 +25,9 @@ double RoomWithTerrace::getTerraceSurface() const {
 }
 
 double RoomWithTerrace::getFinalPricePerNight() const {
-    if(terraceSurface<1)
+    if(terraceSurface<5)
         return getBasePricePerNight();
-    else if(terraceSurface<2)
+    else if(terraceSurface<10)
         return getBasePricePerNight()*1.2;
     else
         return getBasePricePerNight()*1.5;

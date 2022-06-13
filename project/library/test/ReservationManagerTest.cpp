@@ -357,9 +357,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToB(testId2),ReservationError,
                               [] (const ReservationError &e){return e.information()=="ERROR cant change to lower extra bonus";});
 
-        BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToB(testId1),ReservationError);
-        BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToB(testId1),ReservationError,
-                              [] (const ReservationError &e){return e.information()=="ERROR Reservation ended";});
+
 
 
     }
@@ -488,9 +486,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToC(testId3),ReservationError,
                               [] (const ReservationError &e){return e.information()=="ERROR No Object";});
 
-        BOOST_REQUIRE_THROW(RM.changeReservationExtraBonusToC(testId1),ReservationError);
-        BOOST_CHECK_EXCEPTION(RM.changeReservationExtraBonusToC(testId1),ReservationError,
-                              [] (const ReservationError &e){return e.information()=="ERROR Reservation ended";});
+
     }
 
 
