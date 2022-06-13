@@ -3,8 +3,8 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/Standard.h"
-#include "model/shortTerm.h"
-#include "model/longTerm.h"
+#include "model/ShortTerm.h"
+#include "model/LongTerm.h"
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
 #include "repositories/ReservationRepository.h"
@@ -47,8 +47,8 @@ struct ReservationManagerFixture {
         currentRR = std::make_shared<ReservationRepository>();
         archiveRR = std::make_shared<ReservationRepository>();
         testType2=std::make_shared<Standard>();
-        testType=std::make_shared<shortTerm>();
-        testType3=std::make_shared<longTerm>();
+        testType=std::make_shared<ShortTerm>();
+        testType3=std::make_shared<LongTerm>();
         testClient = std::make_shared<Client>("Jan","Ktos","242544",testType);
         testClient2 = std::make_shared<Client>("Stanislaw","Kowalski","242567",testType2);
         testClient3 = std::make_shared<Client>("Ktos","Ziemowit","444091",testType3);

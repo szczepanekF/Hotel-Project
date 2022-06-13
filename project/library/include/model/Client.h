@@ -9,7 +9,7 @@ private:
     std::string firstName;
     std::string lastName;
     std::string personalID;
-    ClientTypePtr ClientType; ///typ klienta określa czy jest dopuszczony do zniżki i ile dni może trwać pojedyńcza rezerwacja (short_term, Standard i longTerm)
+    ClientTypePtr ClientType; ///typ klienta określa czy jest dopuszczony do zniżki i ile dni może trwać pojedyńcza rezerwacja (short_term, Standard i LongTerm)
     bool archive;
     double bill; ///rachunek klienta, który wlicza się do ceny rezerwacji w trakcie jej rozpoczęcia. Może być zarówno ujemny (co oznacza zniżkę otrzymaną
                  ///po porzedniej rezerwacji lub dodatni, gdy zmienia się jego typ

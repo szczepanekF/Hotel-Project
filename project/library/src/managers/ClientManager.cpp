@@ -7,7 +7,7 @@
 #include "exceptions/ClientError.h"
 #include "model/Client.h"
 #include "model/Standard.h"
-#include "model/longTerm.h"
+#include "model/LongTerm.h"
 #include "model/ClientType.h"
 #include "repositories/ClientRepository.h"
 
@@ -71,7 +71,7 @@ void ClientManager::changeClientTypetoStandard(const std::string &personalID) co
 }
 
 void ClientManager::changeClientTypetoLongTerm(const std::string &personalID) const {
-    ClientTypePtr type= std::make_shared<longTerm>();
+    ClientTypePtr type= std::make_shared<LongTerm>();
     ClientPtr client= getClient(personalID);
     if(client->getMaxDays()<type->getMaxDays()){
         client->setClientType(type);

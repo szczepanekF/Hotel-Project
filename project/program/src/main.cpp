@@ -1,10 +1,11 @@
 #include <iostream>
+#include <boost/uuid/uuid_io.hpp>
 
 #include "model/Reservation.h"
 #include "model/Client.h"
-//#include "model/shortTerm.h"
+//#include "model/ShortTerm.h"
 #include "model/Standard.h"
-#include "model/longTerm.h"
+#include "model/LongTerm.h"
 #include "model/RoomWithoutTerrace.h"
 #include "repositories/RoomRepository.h"
 #include "repositories/ClientRepository.h"
@@ -15,6 +16,7 @@
 #include "exceptions/ReservationError.h"
 using namespace std;
 namespace gr=boost::gregorian;
+namespace ud=boost::uuids;
 int main(){
 
 
@@ -38,12 +40,12 @@ int main(){
 //    RoomRepository repo;
 //    repo.add(testRoom);
 
+    ud::uuid testId3 = {132,233,32,111,32,32,23,32,23,23,23,32,32};
 
 //    ClientRepositoryPtr CR= make_shared<ClientRepository>();
 //    ClientManager CM(CR);
 
-
-
+    cout<<ud::to_string(testId3);
 
 //    CM.regiterClient("Milo","woj","232",typ);
 //    CM.regiterClient("dalo","fds","242",typ);
@@ -60,17 +62,17 @@ int main(){
 //    }
 
 
-    ReservationRepositoryPtr RR1= make_shared<ReservationRepository>();
-    ReservationRepositoryPtr RR2= make_shared<ReservationRepository>();
-//    ReservationManager RM;
-    ReservationManager *RM=new ReservationManager(RR1,RR2);
-    try {
-        RM->startReservation(testClient, testRoom, testGuestCount, testBeginTime, 4, A);
-        RM->startReservation(testClient2, testRoom2, testGuestCount, testBeginTime, 6, B);
-    }catch(const ReservationError &e){
-        cout<<e.information();
-    }
-    RM->endReservation(testId2);
-    delete RM;
+//    ReservationRepositoryPtr RR1= make_shared<ReservationRepository>();
+//    ReservationRepositoryPtr RR2= make_shared<ReservationRepository>();
+////    ReservationManager RM;
+//    ReservationManager *RM=new ReservationManager(RR1,RR2);
+//    try {
+//        RM->startReservation(testClient, testRoom, testGuestCount, testBeginTime, 4, A);
+//        RM->startReservation(testClient2, testRoom2, testGuestCount, testBeginTime, 6, B);
+//    }catch(const ReservationError &e){
+//        cout<<e.information();
+//    }
+//    RM->endReservation(testId2);
+//    delete RM;
     return 0;
 };

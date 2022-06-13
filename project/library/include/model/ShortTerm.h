@@ -2,10 +2,10 @@
 #define HOTELPROJECT_SHORTTERM_H
 #include "ClientType.h"
 
-class shortTerm: public ClientType{
+class ShortTerm: public ClientType{
 public:
-    shortTerm();
-    ~shortTerm() override;
+    ShortTerm();
+    ~ShortTerm() override;
     unsigned int getMaxDays() const override;
     bool applyDiscount() const override;
     std::string getClientTypeInfo() const override;

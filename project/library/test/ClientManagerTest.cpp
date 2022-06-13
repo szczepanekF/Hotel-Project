@@ -5,8 +5,8 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/Standard.h"
-#include "model/shortTerm.h"
-#include "model/longTerm.h"
+#include "model/ShortTerm.h"
+#include "model/LongTerm.h"
 #include "model/RoomWithoutTerrace.h"
 #include "repositories/ClientRepository.h"
 #include "managers/ClientManager.h"
@@ -26,8 +26,8 @@ struct ClientManagerFixture {
     ClientManagerFixture() {
         CR= std::make_shared<ClientRepository>();
         testType2=std::make_shared<Standard>();
-        testType=std::make_shared<shortTerm>();
-        testType3=std::make_shared<longTerm>();
+        testType=std::make_shared<ShortTerm>();
+        testType3=std::make_shared<LongTerm>();
 
     }
 

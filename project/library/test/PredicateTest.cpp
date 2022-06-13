@@ -4,7 +4,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
-#include "model/shortTerm.h"
+#include "model/ShortTerm.h"
 #include "model/RoomWithoutTerrace.h"
 #include "repositories/ClientRepository.h"
 #include "managers/ClientManager.h"

@@ -3,10 +3,10 @@
 #include "ClientType.h"
 
 
-class longTerm :public ClientType{
+class LongTerm : public ClientType{
 public:
-    longTerm();
-    ~longTerm() override;
+    LongTerm();
+    ~LongTerm() override;
     unsigned int getMaxDays() const override;
     bool applyDiscount() const override;
     std::string getClientTypeInfo() const override;

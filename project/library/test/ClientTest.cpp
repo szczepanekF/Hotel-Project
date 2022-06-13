@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/ClientType.h"
-#include "model/shortTerm.h"
+#include "model/ShortTerm.h"
 #include "model/Standard.h"
-#include "model/longTerm.h"
+#include "model/LongTerm.h"
 #include "exceptions/ClientError.h"
 
 
@@ -11,7 +11,7 @@
 BOOST_AUTO_TEST_SUITE(TestSuiteClient)
 
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestDefault) {
-        ClientTypePtr T1=std::make_shared<shortTerm>();
+        ClientTypePtr T1=std::make_shared<ShortTerm>();
 
         Client c("Jan","ktos","242567",T1);
         BOOST_TEST(c.getFirstName()=="Jan");
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         BOOST_TEST(c.acceptDiscount()==0);
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestExceptions) {
-        ClientTypePtr T1=std::make_shared<shortTerm>();
+        ClientTypePtr T1=std::make_shared<ShortTerm>();
 
         BOOST_REQUIRE_THROW(Client c("","ktos","242567",T1),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("","ktos","242567",T1),ClientError,
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestNotDefaultAndClientTypes) {
         ClientTypePtr T2=std::make_shared<Standard>();
-        ClientTypePtr T3=std::make_shared<longTerm>();
+        ClientTypePtr T3=std::make_shared<LongTerm>();
         Client c1("Jan","ktos","242567",T2);
         Client c2("Jan","ktos","242567",T3);
         BOOST_TEST(c1.getBill()==0);
@@ -52,9 +52,9 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         BOOST_TEST(c2.acceptDiscount()==1);
     }
     BOOST_AUTO_TEST_CASE(SetterTest) {
-        ClientTypePtr T1=std::make_shared<shortTerm>();
+        ClientTypePtr T1=std::make_shared<ShortTerm>();
         ClientTypePtr T2=std::make_shared<Standard>();
-        ClientTypePtr T3=std::make_shared<longTerm>();
+        ClientTypePtr T3=std::make_shared<LongTerm>();
         Client c("Jan","ktos","242567",T1);
         c.setFirstName("Naj");
         c.setLastName("sotk");
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
 
     }
     BOOST_AUTO_TEST_CASE(SetterTestExceptions) {
-        ClientTypePtr T1=std::make_shared<shortTerm>();
+        ClientTypePtr T1=std::make_shared<ShortTerm>();
         Client c("Jan","ktos","242567",T1);
         BOOST_REQUIRE_THROW(c.setClientType(nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(c.setClientType(nullptr),ClientError,
