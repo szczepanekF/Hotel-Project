@@ -1,4 +1,5 @@
 CLIENTS 
-Standard Client Jan Wojtaszczyk 242544 bill equal: 100.000000 is not archive
-Standard Client NieJan Wojtasik 242567 bill equal: 100.000000 is not archive
-Standard Client Jan Walaszek 444091 bill equal: 100.000000 is not archive
+Short Term Client Filip Szczepanek 242544 bill equal: 0.000000 is not archive
+Short Term Client Milosz Wojtaszczyk 242567 bill equal: 0.000000 is not archive
+Short Term Client Ktokolwiek komukolwiek 000000 bill equal: 0.000000 is not archive
+Short Term Client Hyzio Dyzio 402000 bill equal: 0.000000 is not archive

@@ -72,9 +72,9 @@ BOOST_FIXTURE_TEST_SUITE(TestSuitePredicate,PredicateFixture)
     BOOST_AUTO_TEST_CASE(ClientLastNamePredicateTest){
 
         ClientManager CM(CR);
-        ClientPtr testClient = CM.regiterClient("Jan", "Wojtaszczyk", "242544", testType);
-        ClientPtr testClient2 = CM.regiterClient("NieJan", "Wojtasik", "242567", testType);
-        ClientPtr testClient3 = CM.regiterClient("Jan", "Walaszek", "444091", testType);
+        ClientPtr testClient = CM.registerClient("Jan", "Wojtaszczyk", "242544", testType);
+        ClientPtr testClient2 = CM.registerClient("NieJan", "Wojtasik", "242567", testType);
+        ClientPtr testClient3 = CM.registerClient("Jan", "Walaszek", "444091", testType);
 
         BOOST_TEST(CM.findClients(ClientLastNamePredicate("Woj")).size() == 2);
         BOOST_TEST(CM.findClients(ClientLastNamePredicate("woj")).size() == 2);

@@ -49,7 +49,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
 
         BOOST_CHECK_THROW(Reservation res(nullptr, testRoom, testGuestCount, testId, testBeginTime, 1, B), ClientError);
         BOOST_CHECK_EXCEPTION(Reservation res(nullptr, testRoom, testGuestCount, testId, testBeginTime, 1, B), ClientError,
-                              [](const HotelError &e){return e.information()=="ERROR Null client";});
+                              [](const HotelError &e){return e.information()=="ERROR Null c_client";});
         BOOST_CHECK_THROW(Reservation res(testClient, nullptr, testGuestCount, testId, testBeginTime, 1, B), RoomError);
         BOOST_CHECK_EXCEPTION(Reservation res(testClient, nullptr, testGuestCount, testId, testBeginTime, 1, B), RoomError,
                               [](const HotelError &e){return e.information()=="Error Null room";});

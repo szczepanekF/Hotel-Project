@@ -4,7 +4,7 @@
 
 #ifndef HOTELPROJECT_RESERVATION_H
 #define HOTELPROJECT_RESERVATION_H
-#include "model/typedefs.h"
+#include "typedefs.h"
 #include <string>
 #include <boost/date_time.hpp>
 #include <boost/uuid/uuid.hpp>

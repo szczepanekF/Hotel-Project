@@ -6,11 +6,12 @@
 
 #include "exceptions/ClientError.h"
 #include "model/Client.h"
+#include "model/ShortTerm.h"
 #include "model/Standard.h"
 #include "model/LongTerm.h"
 #include "model/ClientType.h"
 #include "repositories/ClientRepository.h"
-
+#include <iostream>
 
 ClientManager::ClientManager(const ClientRepositoryPtr &initial_clients) : clients(initial_clients) {}
 
@@ -19,8 +20,8 @@ ClientManager::~ClientManager(){
 }
 
 
-ClientPtr ClientManager::regiterClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID,
-                                       const ClientTypePtr &initial_clientType) {
+ClientPtr ClientManager::registerClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID,
+                                        const ClientTypePtr &initial_clientType) {
     try{
         getClient(initial_personalID);
     }catch(const ClientError &e){
@@ -84,4 +85,20 @@ void ClientManager::changeClientTypetoLongTerm(const std::string &personalID) co
         throw ClientError("ERROR cant change to lower type");
     }
 
+}
+
+void ClientManager::readClientsFromDB(c_client* conn) {
+    std::vector<std::vector<std::string>> clientsInfo = clients->readInfo(conn);
+    ClientTypePtr type;
+
+    for(int i=0;i<clientsInfo.size();i++)
+    {
+        if(clientsInfo[i][3] == "3")
+            type = std::make_shared<LongTerm>();
+        else if(clientsInfo[i][3] == "2")
+            type = std::make_shared<Standard>();
+        else
+            type = std::make_shared<ShortTerm>();
+        registerClient(clientsInfo[i][0],clientsInfo[i][1],clientsInfo[i][2],type);
+    }
 }

@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
                               [] (const ClientError &e){return e.information()=="ERROR Empty personalId";});
         BOOST_REQUIRE_THROW(Client c("Jan","ktos","242567",nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(Client c("Jan","ktos","242567",nullptr),ClientError,
-                              [] (const ClientError &e){return e.information()=="ERROR Null client type";});
+                              [] (const ClientError &e){return e.information()=="ERROR Null c_client type";});
 
     }
     BOOST_AUTO_TEST_CASE(ParameterConstrutorTestNotDefaultAndClientTypes) {
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         Client c("Jan","ktos","242567",T1);
         BOOST_REQUIRE_THROW(c.setClientType(nullptr),ClientError);
         BOOST_CHECK_EXCEPTION(c.setClientType(nullptr),ClientError,
-                              [] (const ClientError &e){return e.information()=="ERROR Null client type";});
+                              [] (const ClientError &e){return e.information()=="ERROR Null c_client type";});
         BOOST_REQUIRE(c.getClientType()==T1);
 
         BOOST_REQUIRE_THROW(c.setFirstName(""),ClientError);

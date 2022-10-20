@@ -5,7 +5,7 @@
 #ifndef HOTELPROJECT_ROOMMANAGER_H
 #define HOTELPROJECT_ROOMMANAGER_H
 
-#include "model/typedefs.h"
+#include "typedefs.h"
 #include <vector>
 
 class RoomRepository;

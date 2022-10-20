@@ -4,11 +4,11 @@
 
 
 
-Client::Client(const std::string &initial_firtsName, const std::string &initial_lastName, const std::string &initial_personalId,
-               const ClientTypePtr &initial_clientType) try: firstName(initial_firtsName), lastName(initial_lastName), personalID(initial_personalId),
+Client::Client(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalId,
+               const ClientTypePtr &initial_clientType) try: firstName(initial_firstName), lastName(initial_lastName), personalID(initial_personalId),
                                                              ClientType(initial_clientType), archive(false),bill(0) {
 
-    if(initial_firtsName.empty()){
+    if(initial_firstName.empty()){
         throw ClientError("ERROR Empty first name");
     }
     if(initial_lastName.empty()){
@@ -18,7 +18,7 @@ Client::Client(const std::string &initial_firtsName, const std::string &initial_
         throw ClientError("ERROR Empty personalId");
     }
     if(initial_clientType== nullptr){
-        throw ClientError("ERROR Null client type");
+        throw ClientError("ERROR Null c_client type");
     }
     }catch(const ClientError &e){
     }
@@ -67,7 +67,7 @@ void Client::setLastName(const std::string &new_lastName) {
 
 void Client::setClientType(const ClientTypePtr &new_clientType) {
     if(new_clientType == nullptr){
-        throw ClientError("ERROR Null client type");
+        throw ClientError("ERROR Null c_client type");
     }
         ClientType=new_clientType;
 }

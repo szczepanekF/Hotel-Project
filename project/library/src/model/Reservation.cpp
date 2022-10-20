@@ -20,7 +20,7 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
                            totalReservationCost(0)
 {
     if(initial_client == nullptr){
-        throw ClientError("ERROR Null client");
+        throw ClientError("ERROR Null c_client");
     }
     if(initial_room == nullptr){
         throw RoomError("Error Null room");
