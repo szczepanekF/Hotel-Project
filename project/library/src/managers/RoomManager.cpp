@@ -1,7 +1,3 @@
-//
-// Created by student on 05.06.2022.
-//
-
 #include "managers/RoomManager.h"
 #include "model/RoomWithTerrace.h"
 #include "model/RoomWithoutTerrace.h"
@@ -57,3 +53,26 @@ std::vector<RoomPtr> RoomManager::findAllRooms() {
 std::vector<RoomPtr> RoomManager::findRooms(const RoomPredicate &predicate) {
     return rooms->findBy(predicate);
 }
+
+void RoomManager::readRoomsFromServer(C_client* conn) {
+    std::vector<std::vector<std::string>> roomsInfo = rooms->readInfo(conn,GET_ROOMS);
+    int room_nr;
+    double price;
+    double terrace_sur;
+    int bed_count;
+
+    for(int i=0;i<roomsInfo.size();i++)
+    {
+        room_nr = std::stoi(roomsInfo[i][0]);
+        price = std::stod(roomsInfo[i][1]);
+        bed_count = std::stoi(roomsInfo[i][2]);
+        if(roomsInfo[i][3] == "0") {
+            registerRoomWithoutTerrace(room_nr, price, bed_count);
+        }
+        else{
+            terrace_sur = std::stod(roomsInfo[i][3]);
+            registerRoomWithTerrace(room_nr, price, bed_count,terrace_sur);
+        }
+    }
+}
+

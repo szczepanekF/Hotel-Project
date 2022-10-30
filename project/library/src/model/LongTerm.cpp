@@ -1,7 +1,3 @@
-//
-// Created by student on 21.05.2022.
-//
-
 #include "model/LongTerm.h"
 #include "model/ClientType.h"
 

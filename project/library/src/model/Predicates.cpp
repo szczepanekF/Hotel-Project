@@ -1,7 +1,3 @@
-//
-// Created by student on 11.06.2022.
-//
-
 #include "model/Predicates.h"
 #include <cctype>
 #include "exceptions/ClientError.h"

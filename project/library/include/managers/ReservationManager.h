@@ -1,11 +1,9 @@
-//
-// Created by student on 06.06.2022.
-//
-
 #ifndef HOTELPROJECT_RESERVATIONMANAGER_H
 #define HOTELPROJECT_RESERVATIONMANAGER_H
 #include "model/Reservation.h"
 #include <vector>
+class C_client;
+
 
 
 class ReservationManager {
@@ -36,7 +34,7 @@ public:
     /// rzuca wyjątek przy próbie zmiany bonusu na mniejszy
     void changeReservationExtraBonusToC(const ud::uuid &id);
     ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji.
-
+    void readReservationsFromServer(C_client* conn,ClientRepositoryPtr clients,RoomRepositoryPtr rooms);
 
 };
 

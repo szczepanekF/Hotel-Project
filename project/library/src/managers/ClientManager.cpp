@@ -1,7 +1,3 @@
-//
-// Created by student on 05.06.2022.
-//
-
 #include "managers/ClientManager.h"
 
 #include "exceptions/ClientError.h"
@@ -87,15 +83,15 @@ void ClientManager::changeClientTypetoLongTerm(const std::string &personalID) co
 
 }
 
-void ClientManager::readClientsFromDB(c_client* conn) {
-    std::vector<std::vector<std::string>> clientsInfo = clients->readInfo(conn);
+void ClientManager::readClientsFromServer(C_client* conn) {
+    std::vector<std::vector<std::string>> clientsInfo = clients->readInfo(conn,GET_CLIENTS);
     ClientTypePtr type;
 
     for(int i=0;i<clientsInfo.size();i++)
     {
-        if(clientsInfo[i][3] == "3")
+        if(clientsInfo[i][3] == "2")
             type = std::make_shared<LongTerm>();
-        else if(clientsInfo[i][3] == "2")
+        else if(clientsInfo[i][3] == "1")
             type = std::make_shared<Standard>();
         else
             type = std::make_shared<ShortTerm>();

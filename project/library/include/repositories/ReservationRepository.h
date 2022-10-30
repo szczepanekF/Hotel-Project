@@ -1,7 +1,3 @@
-//
-// Created by student on 30.05.2022.
-//
-
 #ifndef HOTELPROJECT_RESERVATIONREPOSITORY_H
 #define HOTELPROJECT_RESERVATIONREPOSITORY_H
 #include "repositories/Repository.h"

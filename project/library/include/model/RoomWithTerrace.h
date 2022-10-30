@@ -1,7 +1,3 @@
-//
-// Created by student on 21.05.2022.
-//
-
 #ifndef INC_6_ROOMWITHTERRACE_H
 #define INC_6_ROOMWITHTERRACE_H
 

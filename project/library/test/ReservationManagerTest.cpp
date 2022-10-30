@@ -1,5 +1,3 @@
-
-
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/Standard.h"

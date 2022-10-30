@@ -18,7 +18,7 @@ Client::Client(const std::string &initial_firstName, const std::string &initial_
         throw ClientError("ERROR Empty personalId");
     }
     if(initial_clientType== nullptr){
-        throw ClientError("ERROR Null c_client type");
+        throw ClientError("ERROR Null C_client type");
     }
     }catch(const ClientError &e){
     }
@@ -67,7 +67,7 @@ void Client::setLastName(const std::string &new_lastName) {
 
 void Client::setClientType(const ClientTypePtr &new_clientType) {
     if(new_clientType == nullptr){
-        throw ClientError("ERROR Null c_client type");
+        throw ClientError("ERROR Null C_client type");
     }
         ClientType=new_clientType;
 }

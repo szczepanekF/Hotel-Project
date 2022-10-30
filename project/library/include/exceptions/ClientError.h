@@ -1,7 +1,3 @@
-//
-// Created by student on 29.05.2022.
-//
-
 #ifndef HOTELPROJECT_CLIENTERROR_H
 #define HOTELPROJECT_CLIENTERROR_H
 #include "HotelError.h"

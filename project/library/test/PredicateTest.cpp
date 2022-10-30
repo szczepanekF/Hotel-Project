@@ -1,7 +1,3 @@
-//
-// Created by student on 11.06.2022.
-//
-
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/ShortTerm.h"

@@ -1,7 +1,3 @@
-//
-// Created by student on 29.05.2022.
-//
-
 #ifndef HOTELPROJECT_HOTELERROR_H
 #define HOTELPROJECT_HOTELERROR_H
 #include <memory>

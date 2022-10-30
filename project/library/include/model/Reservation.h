@@ -1,7 +1,3 @@
-//
-// Created by student on 24.05.2022.
-//
-
 #ifndef HOTELPROJECT_RESERVATION_H
 #define HOTELPROJECT_RESERVATION_H
 #include "typedefs.h"

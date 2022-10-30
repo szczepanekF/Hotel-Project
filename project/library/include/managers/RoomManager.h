@@ -1,14 +1,10 @@
-//
-// Created by student on 05.06.2022.
-//
-
 #ifndef HOTELPROJECT_ROOMMANAGER_H
 #define HOTELPROJECT_ROOMMANAGER_H
 
 #include "typedefs.h"
 #include <vector>
+class C_client;
 
-class RoomRepository;
 
 class RoomManager {
 private:
@@ -27,6 +23,7 @@ public:
 
     std::vector<RoomPtr> findRooms(const RoomPredicate &predicate);
     std::vector<RoomPtr> findAllRooms();
+    void readRoomsFromServer(C_client* conn);
 };
 
 

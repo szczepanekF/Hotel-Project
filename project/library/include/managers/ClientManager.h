@@ -3,9 +3,8 @@
 
 #include "typedefs.h"
 #include <vector>
-#include "socket/c_client.h"
+class C_client;
 
-class ClientRepository;
 
 class ClientManager {
 private:
@@ -24,7 +23,7 @@ public:
     std::vector<ClientPtr> findAllClients() const;
     void changeClientTypetoStandard(const std::string &personalID) const;///zmienia typ klienta, oraz zwiększa jego rachunek, rzuca wyjątek przy próbie zmiany na mniejszy lub ten sam typ
     void changeClientTypetoLongTerm(const std::string &personalID) const;///zmienia typ klienta, oraz zwiększa jego rachunek, rzuca wyjątek przy próbie zmiany na mniejszy lub ten sam typ
-    void readClientsFromDB(c_client* conn);
+    void readClientsFromServer(C_client* conn);
 };
 
 

@@ -1,7 +1,3 @@
-//
-// Created by student on 24.05.2022.
-//
-
 #include "model/Reservation.h"
 #include "model/Client.h"
 #include "model/Room.h"
@@ -20,7 +16,7 @@ Reservation::Reservation(const ClientPtr &initial_client, const RoomPtr &initial
                            totalReservationCost(0)
 {
     if(initial_client == nullptr){
-        throw ClientError("ERROR Null c_client");
+        throw ClientError("ERROR Null C_client");
     }
     if(initial_room == nullptr){
         throw RoomError("Error Null room");

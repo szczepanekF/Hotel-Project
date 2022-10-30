@@ -1,8 +1,5 @@
-//
-// Created by student on 06.09.2022.
-//
 #include "wx/wx.h"
-#include "../../library/include/socket/c_client.h"
+#include "socket/C_client.h"
 #ifndef HOTELPROJECT_GMAIN_H
 #define HOTELPROJECT_GMAIN_H
 
@@ -15,14 +12,12 @@ public:
    wxButton* m_btn1 = nullptr;
     wxTextCtrl* m_txt1 = nullptr;
     wxListBox* m_list1= nullptr;
-    c_client* connection = nullptr;
+    C_client* connection = nullptr;
     wxStaticText* text = nullptr;
     wxBoxSizer* boxsizer = nullptr;
-    int nFieldWidth = 1;
-    int nFieldHeight = 1;
-   //wxButton **btn;
+    wxBoxSizer* boxsizer2 = nullptr;
 
-
+    void errorMessage(std::string message);
     void OnButtonClicked(wxCommandEvent &evt);
     void OnTextboxWritten(wxCommandEvent &evt);
 

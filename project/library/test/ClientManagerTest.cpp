@@ -1,7 +1,3 @@
-//
-// Created by student on 06.06.2022.
-//
-
 #include <boost/test/unit_test.hpp>
 #include "model/Client.h"
 #include "model/Standard.h"
@@ -65,7 +61,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
 
         BOOST_REQUIRE_THROW(CM.registerClient("Jan", "Ktos", "242544", nullptr), ClientError);
         BOOST_CHECK_EXCEPTION(CM.registerClient("Jan", "Ktos", "242549", nullptr), ClientError,
-                              [] (const ClientError &e){return e.information()=="ERROR Null c_client type";});
+                              [] (const ClientError &e){return e.information()=="ERROR Null C_client type";});
         BOOST_TEST(CR->size()==3);
 
         BOOST_REQUIRE_THROW(testClient4=CM.getClient("1"),ClientError);

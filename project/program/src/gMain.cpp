@@ -11,40 +11,21 @@ wxBEGIN_EVENT_TABLE(gMain,wxFrame)
 wxEND_EVENT_TABLE()
 gMain::gMain() :wxFrame(nullptr,wxID_ANY,"Hotel Reservation App",wxPoint(30,30),wxSize(800,600))
 {
-
-
-
-    //wxGridSizer* grid = new wxGridSizer(nFieldWidth,nFieldHeight,wxALIGN_CENTER_HORIZONTAL,wxALIGN_CENTER_VERTICAL);
-    /*
-    for(int x= 0;x<nFieldWidth;x++)
-    {
-        for(int y=0;y<nFieldHeight;y++)
-        {
-            btn[y*nFieldWidth+x] = new wxButton(this,1000+(y*nFieldWidth+x));
-            grid->Add(btn[y*nFieldWidth+x],1,wxEXPAND | wxALL);
-        }
-    }
-    this->SetSizer(grid);
-    grid-Layout();
-    */
-
-
-    connection = new c_client();
-    if(!connection->createConnection()) {
-        text = new wxStaticText(this,wxID_ANY,"NO CONNECTION",wxPoint(0,0),wxSize(200,200),wxALIGN_CENTER_VERTICAL);
-
-        return;
-    }
-
-
-    ClientRepositoryPtr repo = std::make_shared<ClientRepository>();
-    ClientManager manager(repo);
-    manager.readClientsFromDB(connection);
+    connection = new C_client();
 
 
     m_btn1 = new wxButton(this, 10001,"Click Me",wxPoint(10,10),wxSize(150,50));
     m_txt1 = new wxTextCtrl(this, wxID_ANY,"",wxPoint(10,70),wxSize(300,30));
     m_list1 = new wxListBox(this, wxID_ANY,wxPoint(10,110),wxSize(300,300));
+
+//    if(!connection->createConnection()) {
+//        errorMessage("NO CONNECTION");
+//
+//        return;
+//    }
+
+
+
 
 
 
@@ -54,6 +35,20 @@ gMain::~gMain() {
     delete connection;
 }
 
+void gMain::errorMessage(std::string message) {
+    this->Hide();
+    const wxColour* bg= new wxColour(252, 242, 238);
+    this->SetBackgroundColour(*bg);
+    text = new wxStaticText(this,wxID_ANY,"ERROR\nNO CONNECTION",wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE_HORIZONTAL);
+    boxsizer = new wxBoxSizer(wxVERTICAL);
+    boxsizer2 = new wxBoxSizer(wxHORIZONTAL);
+    wxFont font (16,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD);
+    text->SetFont(font);
+    text->SetForegroundColour(*wxRED);
+    boxsizer->Add(text,0,wxALIGN_CENTER);
+    boxsizer2->Add(boxsizer,1,wxALIGN_CENTER|wxALL,200);
+    this->SetSizer(boxsizer2);
+}
 void gMain::OnButtonClicked(wxCommandEvent &evt) {
     m_list1->AppendString(m_txt1->GetValue());
     m_txt1->Clear();

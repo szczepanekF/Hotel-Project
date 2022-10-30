@@ -1,7 +1,3 @@
-//
-// Created by student on 11.06.2022.
-//
-
 #ifndef HOTELPROJECT_PREDICATES_H
 #define HOTELPROJECT_PREDICATES_H
 #include "typedefs.h"
