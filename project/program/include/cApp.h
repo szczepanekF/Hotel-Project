@@ -1,19 +1,23 @@
 #include "wx/wx.h"
 #include "gMain.h"
 #include "typedefs.h"
+#include "LoginPanel.h"
+#include "RegistrationPanel.h"
+#include "socket/C_client.h"
+
 
 #ifndef HOTELPROJECT_TEST_H
 #define HOTELPROJECT_TEST_H
 
 
 class cApp : public wxApp{
-private:
-        gMain* mainFrame = nullptr;
+public:
+        gMain* m_Frame = nullptr;
         ClientRepositoryPtr clients;
         RoomRepositoryPtr rooms;
         ReservationRepositoryPtr currRes;
         ReservationRepositoryPtr archRes;
-
+        C_client* connection = nullptr;
 
 public:
     cApp();

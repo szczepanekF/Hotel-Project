@@ -3,8 +3,8 @@
 
 #include "typedefs.h"
 #include <vector>
+#include "model/ShortTerm.h"
 class C_client;
-
 
 class ClientManager {
 private:
@@ -13,7 +13,7 @@ public:
     explicit ClientManager(const ClientRepositoryPtr &initial_clients);
     virtual ~ClientManager();
 
-    ClientPtr registerClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID, const ClientTypePtr &initial_clientType);
+    ClientPtr registerClient(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalID, const ClientTypePtr &initial_clientType=std::make_shared<ShortTerm>());
     ///przyjmuje wartości potrzebne do utworzenia obiektu klienta, sprawdza czy w repozytorium jest już klient o podanym personalID, jeżeli tak, rzuca wyjątek,
     ///w przeciwnym wypadku tworzony jest obiekt klienta, ustawiany jest dla niego odpowiedni rachunek zależny od typu oraz dodawany jest on do repozytorium
     ///zwraca wskaźnik na utworzony obiekt

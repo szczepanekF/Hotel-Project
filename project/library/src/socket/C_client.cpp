@@ -13,7 +13,9 @@
 #define IP "192.168.0.53"
 using namespace std;
 
-C_client::C_client() {}
+C_client::C_client() {
+    conn_success = -1;
+}
 
 C_client::~C_client() {
     sendMessage(DISCONNECT);
@@ -56,7 +58,32 @@ std::string C_client::sendMessage(std::string msg){
     string length = strs.str();
     send(sockfd,length.c_str(),length.size(),0);
     recv(sockfd,buffer,1024,0);
+    memset(buffer,0,sizeof buffer);
     send(sockfd, msg.c_str(), msg.size(), 0);
     recv(sockfd,buffer,1024,0);
     return buffer;
+}
+
+int C_client::getConnSuccess() const {
+    return conn_success;
+}
+
+int C_client::login(std::string pid, std::string passwd) {
+    if (conn_success<0) {
+        return -2;
+    }
+    std::string help = sendMessage(GET_PASSWORD);
+    std::string possiblePasswd =sendMessage(pid);
+    if (possiblePasswd == NO_CLIENT) {
+        return -1;
+    } else if (possiblePasswd != passwd) {
+        return 0;
+    }
+    logged_pid = pid;
+    return 1;
+
+}
+
+void C_client::setLoggedPid(const string &loggedPid) {
+    logged_pid = loggedPid;
 }

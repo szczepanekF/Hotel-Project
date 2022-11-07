@@ -1,3 +1,7 @@
+//
+// Created by student on 06.06.2022.
+//
+
 #include "managers/ReservationManager.h"
 #include "exceptions/ReservationError.h"
 #include "exceptions/ClientError.h"
@@ -197,27 +201,27 @@ void ReservationManager::changeReservationExtraBonusToC(const ud::uuid &id) {
 }
 
 void ReservationManager::readReservationsFromServer(C_client* conn,ClientRepositoryPtr clients,RoomRepositoryPtr rooms) {
-    std::vector<std::vector<std::string>> resvsInfo = currentReservations->readInfo(conn,GET_ROOMS);
-    ClientPtr client;
-    RoomPtr  room;
-    unsigned int guest_count;
-    unsigned int days_of_res;
-    extraBonusType type;
-    for(int i=0;i<resvsInfo.size();i++) {
-        client = clients->findById(resvsInfo[i][0]);
-        room = rooms->findById(std::stoi(resvsInfo[i][1]));
-        guest_count = std::stoi(resvsInfo[i][2]);
-        pt::ptime begin_date(pt::time_from_string(resvsInfo[i][3]));
-        days_of_res = std::stoi(resvsInfo[i][4]);
-
-        if(resvsInfo[i][5] == "2")
-            type = C;
-        else if(resvsInfo[i][5] == "1")
-            type = B;
-        else
-            type = A;
-        startReservation(client,room,guest_count,begin_date,days_of_res,type);
-    }
+//    std::vector<std::vector<std::string>> resvsInfo = currentReservations->readInfo(conn,GET_ROOMS);
+//    ClientPtr client;
+//    RoomPtr  room;
+//    unsigned int guest_count;
+//    unsigned int days_of_res;
+//    extraBonusType type;
+//    for(int i=0;i<resvsInfo.size();i++) {
+//        client = clients->findById(resvsInfo[i][0]);
+//        room = rooms->findById(std::stoi(resvsInfo[i][1]));
+//        guest_count = std::stoi(resvsInfo[i][2]);
+//        pt::ptime begin_date(pt::time_from_string(resvsInfo[i][3]));
+//        days_of_res = std::stoi(resvsInfo[i][4]);
+//
+//        if(resvsInfo[i][5] == "2")
+//            type = C;
+//        else if(resvsInfo[i][5] == "1")
+//            type = B;
+//        else
+//            type = A;
+//        startReservation(client,room,guest_count,begin_date,days_of_res,type);
+//    }
 }
 
 

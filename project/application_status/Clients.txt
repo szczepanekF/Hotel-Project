@@ -1,5 +1,2 @@
 CLIENTS 
-Short Term Client Filip Szczepanek 242544 bill equal: 0.000000 is not archive
-Short Term Client Milosz Wojtaszczyk 242567 bill equal: 0.000000 is not archive
-Short Term Client Ktokolwiek komukolwiek 000000 bill equal: 0.000000 is not archive
-Short Term Client Hyzio Dyzio 402000 bill equal: 0.000000 is not archive
+Short Term Client 213213 2131 2131 bill equal: 0.000000 is not archive

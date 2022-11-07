@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.4)
 
 project(Program)
 
@@ -13,7 +13,7 @@ include_directories(
 
 )
 #Ustaw we własnej zmiennej SOURCE_FILES zbiór plików źródłowych projektu
-set(SOURCE_FILES src/cApp.cpp src/gMain.cpp src/LoginFrame.cpp include/LoginFrame.h)
+set(SOURCE_FILES src/cApp.cpp src/gMain.cpp src/LoginPanel.cpp include/LoginPanel.h src/RegistrationPanel.cpp include/RegistrationPanel.h src/baseLogRegistPanel.cpp include/baseLogRegistPanel.h)
 
 #Włącz powyższy zbiór plików do zbudowania programu wykonywalnego Program
 add_executable(Program ${SOURCE_FILES})

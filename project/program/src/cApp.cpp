@@ -8,8 +8,11 @@
 #include "exceptions/ClientError.h"
 #include "exceptions/ReservationError.h"
 #include "exceptions/RoomError.h"
+#include <boost/date_time.hpp>
+#include <boost/uuid/uuid.hpp>
 
 
+namespace gr = boost::gregorian;
 wxIMPLEMENT_APP(cApp);
 
 
@@ -18,7 +21,7 @@ cApp::cApp() {
     rooms = std::make_shared<RoomRepository>();
     archRes = std::make_shared<ReservationRepository>();
     currRes = std::make_shared<ReservationRepository>();
-
+    connection = new C_client();
 
 }
 
@@ -26,13 +29,15 @@ cApp::~cApp() {
 
 }
 bool cApp::OnInit() {
-    ClientManager cManager(clients);
-    RoomManager roomManager(rooms);
-    ReservationManager resManager(currRes,archRes);
+
+    ClientManagerPtr cManager = std::make_shared<ClientManager>(clients);
+    RoomManagerPtr roomManager = std::make_shared<RoomManager>(rooms);
+    ReservationManagerPtr resManager = std::make_shared<ReservationManager>(currRes,archRes);
 
 
-    m_frame1 = new gMain();
-    m_frame1->Show();
+    m_Frame = new gMain(connection,cManager,roomManager,resManager);
+    m_Frame->Show();
+
 
 
     return true;

@@ -1,10 +1,10 @@
 #Minimalna wersja cmake konieczna do zbudowania tego projektu
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.4)
 
 #Parametry konfiguracyjne platformy programistycznej i flagi kompilatora
 set(CMAKE_CXX_COMPILER g++)#g++ jako kompilator C++
 set(CMAKE_C_COMPILER gcc)#gcc jako kompilator C
-set(CMAKE_CXX_STANDARD 14)#Standard C++ 11, bez tego parametru g++ użyje wartości domyślnej. Dla g++ od wersji 6 jest to C++14
+set(CMAKE_CXX_STANDARD 11)#Standard C++ 11, bez tego parametru g++ użyje wartości domyślnej. Dla g++ od wersji 6 jest to C++14
 set(CMAKE_CXX_STANDARD_REQUIRED ON)#Określony wyżej standard C++ jest wymagany
 set (-Wall -Wpedantic -Wextra -Werror)
 #Profil debug i maksymalny poziom debug info g3 oraz format debug info na dwarf-4 (musi być gdb w wersji 7). BUILD_TYPE może być ustawiony na:
