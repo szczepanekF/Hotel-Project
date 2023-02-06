@@ -4,13 +4,13 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <sys/types.h>
+
 #include <sys/socket.h>
 #include <sstream>
 
 
 #define PORT "5050"
-#define IP "192.168.0.53"
+#define IP "192.168.0.55"
 using namespace std;
 
 C_client::C_client() {
@@ -35,6 +35,8 @@ bool C_client::createConnection() {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(atoi(PORT));
     inet_pton(AF_INET, IP, &(serv_addr.sin_addr.s_addr));
+
+
 
     cout << "attempting to connect to server" << endl;
 
@@ -73,7 +75,8 @@ int C_client::login(std::string pid, std::string passwd) {
         return -2;
     }
     std::string help = sendMessage(GET_PASSWORD);
-    std::string possiblePasswd =sendMessage(pid);
+    std::string possiblePasswd = sendMessage(pid);
+
     if (possiblePasswd == NO_CLIENT) {
         return -1;
     } else if (possiblePasswd != passwd) {
@@ -81,9 +84,20 @@ int C_client::login(std::string pid, std::string passwd) {
     }
     logged_pid = pid;
     return 1;
-
 }
 
 void C_client::setLoggedPid(const string &loggedPid) {
     logged_pid = loggedPid;
+}
+
+int C_client::saveInfo(std::string msg) {
+    if (conn_success<0) {
+        return -2;
+    }
+    sendMessage(SAVE_INFO);
+    std::string abc = sendMessage(msg);
+
+    if(abc == "SAVED")
+        return 1;
+    return 0;
 }

@@ -8,6 +8,7 @@
 #include "model/ClientType.h"
 #include "repositories/ClientRepository.h"
 #include <iostream>
+#include <sstream>
 
 ClientManager::ClientManager(const ClientRepositoryPtr &initial_clients) : clients(initial_clients) {}
 
@@ -21,16 +22,26 @@ ClientPtr ClientManager::registerClient(const std::string &initial_firstName, co
     try{
         getClient(initial_personalID);
     }catch(const ClientError &e){
+        std::stringstream ss;
+         ss<<initial_firstName<<", "<<initial_lastName<<", "<<initial_personalID<<", ";
+
         ClientPtr client= std::make_shared<Client>(initial_firstName, initial_lastName, initial_personalID, initial_clientType);
         if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
             client->setBill(300);
+            ss<<"2";
         }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
             client->setBill(100);
+            ss<<"1";
+        }
+        else {
+            ss<<"0";
         }
         clients->add(client);
+        std::string clientStrInfo = ss.str();
+
         return client;
     }
-    throw ClientError("ERROR already exists: "+getClient(initial_personalID)->getInfo());
+    throw ClientError("ERROR login is taken");
 
 }
 
@@ -96,5 +107,10 @@ void ClientManager::readClientsFromServer(C_client* conn) {
         else
             type = std::make_shared<ShortTerm>();
         registerClient(clientsInfo[i][0],clientsInfo[i][1],clientsInfo[i][2],type);
+        clients->findById(clientsInfo[i][2])->setBill(std::stoi(clientsInfo[i][4]));
     }
+}
+
+void ClientManager::addClientToDB(C_client* conn,std::string &msg) {
+    clients->saveInfo(conn,msg);
 }

@@ -1,6 +1,3 @@
-//
-// Created by student on 30.10.2022.
-//
 
 #ifndef HOTELPROJECT_REGISTRATIONPANEL_H
 #define HOTELPROJECT_REGISTRATIONPANEL_H
@@ -20,6 +17,7 @@ private:
     void OnSubmitClicked(wxCommandEvent &evt) override;
     void OnRegistClicked(wxCommandEvent &evt) override;
     void OnPasswdWrite(wxCommandEvent &evt) override;
+    void setHints() override;
 //wxDECLARE_EVENT_TABLE();
 };
 

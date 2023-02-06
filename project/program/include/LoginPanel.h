@@ -1,7 +1,6 @@
 
 #ifndef HOTELPROJECT_LOGINPANEL_H
 #define HOTELPROJECT_LOGINPANEL_H
-#include "wx/wx.h"
 #include "baseLogRegistPanel.h"
 class gMain;
 class LoginPanel : public baseLogRegistPanel{

@@ -34,7 +34,7 @@ public:
     unsigned int getMaxDays() const; ///zwraca maksymalną ilość dni jaką może spędzkić klient w czasie jednej rezerwacji
     bool acceptDiscount() const; ///określa czy klient kwalifikuje się do zniżki
     std::string getInfo() const;
-
+    std::string toDBInfo() const;
 };
 
 

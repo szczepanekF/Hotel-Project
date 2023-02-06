@@ -7,6 +7,7 @@
 #include <fstream>
 #include "socket/C_client.h"
 
+#include <iostream>
 
 
 
@@ -72,13 +73,13 @@ public:
     }
 
     virtual void saveInformations(const std::string &filePath, const std::string &title){ ///zapisuje informacje o wszystkich elementach repozytorium do pliku o podanej ścieżce
-        std::ofstream file(filePath);
-        file<<title<<" \n";
-        for(int i=0;i<size();i++)
-        {
-            file<<get(i)->getInfo()<<'\n';
-        }
-        file.close();
+//        std::ofstream file(filePath);
+//        file<<title<<" \n";
+//        for(int i=0;i<size();i++)
+//        {
+//            file<<get(i)->getInfo()<<'\n';
+//        }
+//        file.close();
     }
 
 private:
@@ -99,11 +100,12 @@ public:
      virtual std::vector<std::vector<std::string>> readInfo(C_client* conn,std::string what) {
         std::string infoMsg = conn->sendMessage(what);
         std::string delimiterEnter = "\n";
-        std::string delimiterComma = ",";
+        std::string delimiterComma = "#";
         std::vector<std::string> splittedMsg;
         std::vector<std::vector<std::string>> info;
 
         splittedMsg = splitByDelimeter(infoMsg,delimiterEnter);
+
 
         int size = splittedMsg.size();
 
@@ -114,7 +116,12 @@ public:
 
         return info;
     }
-
+    virtual int saveInfo(C_client* conn, std::string infos){
+        if (conn->getConnSuccess() < 0) {
+            return -2;
+        }
+        return conn->saveInfo(infos);
+    }
 
 };
 

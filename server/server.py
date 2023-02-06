@@ -7,11 +7,14 @@ class CPPcon:
     def __init__(self):
         self.DISCONNECT_MESSAGE = "!DISCONNECT"
         self.GET_CLIENT_MESSAGE = "!CLIENTS"
+        self.GET_ROOMS_MESSAGE = "!ROOMS"
+        self.GET_RESVS_MESSAGE = "!RESERVATIONS"
         self.GET_PASSWORD = "!PASSWD"
         self.NO_CLIENT = "!NO_CLIENT"
+        self.SAVE_INFO = "!SAVE"
         self.HEADER=64
         self.PORT = 5050
-        self.SERVER ="192.168.0.53"
+        self.SERVER ="192.168.0.55"
         self.ADDR = (self.SERVER,self.PORT)
         self.FORMAT = 'utf-8'
         self.server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -31,16 +34,22 @@ class CPPcon:
 
     def handle_client(self,conn,addr):
         ispasswd=0
+        isinfo=0
         print(f"[NEW CONNECTION] {addr} connected.")
         connected = True
 
         while connected:
             msg = self.get_message(conn)
-            
             if msg == self.DISCONNECT_MESSAGE:
                 connected = False
             elif msg == self.GET_CLIENT_MESSAGE:
-                conn.send(db.getClients().encode(self.FORMAT))
+                conn.send(db.getInfo(msg).encode(self.FORMAT))
+                continue
+            elif msg == self.GET_ROOMS_MESSAGE:
+                conn.send(db.getInfo(msg).encode(self.FORMAT))
+                continue
+            elif msg == self.GET_RESVS_MESSAGE:
+                conn.send(db.getInfo(msg).encode(self.FORMAT))
                 continue
             #PASSWORD HANDLING
             elif msg == self.GET_PASSWORD:
@@ -51,10 +60,20 @@ class CPPcon:
                 passwd = db.getPIDpasswd(msg.strip())
 
                 if passwd == None:
+                    print("no client")
                     conn.send(self.NO_CLIENT.encode(self.FORMAT))
                 else:
                     conn.send(passwd.encode(self.FORMAT))
                 continue
+            #CLIENT SAVING
+            elif msg == self.SAVE_INFO:
+                isinfo = 1
+            elif isinfo:
+                isinfo =0
+                db.save(msg.strip())
+                conn.send("SAVED".encode(self.FORMAT))
+                continue
+
             print(f"[{addr}] {msg}")
             conn.send("Msg recieved".encode(self.FORMAT))
 

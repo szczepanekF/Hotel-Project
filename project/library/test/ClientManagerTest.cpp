@@ -51,12 +51,12 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
         testClient= CM.registerClient("Jan", "Ktos", "242544", testType);
         testClient2= CM.registerClient("Stanislaw", "Kowalski", "242567", testType);
         testClient3= CM.registerClient("Ktos", "Ziemowit", "444091", testType);
-        std::string information=testClient->getInfo();
+//        std::string information=testClient->getInfo();
         ClientPtr testClient4 =nullptr;
 
         BOOST_REQUIRE_THROW(CM.registerClient("Jan", "Ktos", "242544", testType), ClientError);
         BOOST_CHECK_EXCEPTION(CM.registerClient("Jan", "Ktos", "242544", testType), ClientError,
-                              [information] (const ClientError &e){return e.information()=="ERROR already exists: "+information;});
+                              [] (const ClientError &e){return e.information()=="ERROR login is taken";});
         BOOST_TEST(CR->size()==3);
 
         BOOST_REQUIRE_THROW(CM.registerClient("Jan", "Ktos", "242544", nullptr), ClientError);

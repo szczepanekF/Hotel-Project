@@ -97,3 +97,17 @@ std::string Client::getInfo() const {
     }
     return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " bill equal: " + std::to_string(getBill()) + " " + ArchiveInfo ;
 }
+
+std::string Client::toDBInfo() const {
+    std::string clientTypeInt;
+    if (getClientType()->getClientTypeInfo() == "Short Term Client") {
+        clientTypeInt = "0";
+    } else if (getClientType()->getClientTypeInfo() == "Standard Client") {
+        clientTypeInt = "1";
+    } else if (getClientType()->getClientTypeInfo() == "Long Term Client") {
+        clientTypeInt = "2";
+    }
+
+
+    return getFirstName()+"#"+getLastName()+"#"+getId()+"#"+clientTypeInt;
+}

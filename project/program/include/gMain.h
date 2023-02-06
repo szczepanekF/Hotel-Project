@@ -6,13 +6,19 @@
 #include "managers/RoomManager.h"
 #include "managers/ReservationManager.h"
 #include "typedefs.h"
+
+class LoginPanel;
 class gMain : public wxFrame{
 public:
     gMain(C_client* conn,ClientManagerPtr CM,RoomManagerPtr RoomM,ReservationManagerPtr ResM);
     virtual ~gMain();
 private:
-    wxPanel* panel = nullptr;
-    wxPanel* panel2 = nullptr;
+    LoginPanel* loginP = nullptr;
+    wxPanel* registerP = nullptr;
+    wxPanel* middleP = nullptr;
+    wxPanel* reservationP = nullptr;
+    wxPanel* roomsP = nullptr;
+    wxPanel* settingsP = nullptr;
     wxBoxSizer* boxsizer2 = nullptr;
 
     ClientManagerPtr CM;

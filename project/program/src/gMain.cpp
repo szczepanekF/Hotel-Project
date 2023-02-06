@@ -6,21 +6,39 @@
 #include "model/Client.h"
 #include "RegistrationPanel.h"
 #include "LoginPanel.h"
+#include "MenuPanel.h"
+#include "ReservationPanel.h"
+#include "RoomsPanel.h"
+#include "SettingsPanel.h"
 
 gMain::gMain(C_client* conn,ClientManagerPtr CM,RoomManagerPtr RoomM,ReservationManagerPtr ResM) :connection(conn),CM(CM),
                 RoomM(RoomM),ResM(ResM),wxFrame(nullptr,wxID_ANY,"Hotel Reservation App",wxPoint(30,30),wxSize(800,600))
 {
-
-    connection->createConnection();
-    panel2 = new RegistrationPanel(this);
-    panel = new LoginPanel(this);
-    panel2->Hide();
-
+    loginP = new LoginPanel(this);
+    registerP = new RegistrationPanel(this);
+    middleP = new MenuPanel(this);
+    reservationP = new ReservationPanel(this);
+    roomsP = new RoomsPanel(this);
+    settingsP = new SettingsPanel(this);
+//
+    loginP->Show();
+    registerP->Hide();
+    middleP->Hide();
+    reservationP->Hide();
+    roomsP->Hide();
+    settingsP->Hide();
     boxsizer2 = new wxBoxSizer(wxVERTICAL);
+
+    boxsizer2->Add(loginP,1,wxGROW);
+    boxsizer2->Add(registerP,1,wxGROW);
+    boxsizer2->Add(middleP,1,wxGROW);
+    boxsizer2->Add(reservationP,1,wxGROW);
+    boxsizer2->Add(roomsP,1,wxGROW);
+    boxsizer2->Add(settingsP,1,wxGROW);
+    connection->sendMessage("242544");
+
     this->SetSizer(boxsizer2);
-    boxsizer2->Add(panel,1,wxGROW);
-    boxsizer2->Add(panel2,1,wxGROW);
-//    connection->sendMessage("242544");
+    loginP->getRegist()->SetFocus();
 }
 
 gMain::~gMain() {
@@ -48,13 +66,49 @@ void gMain::changePanels(unsigned int panelnr) {
 
     switch (panelnr) {
         case 1:
-            panel2->Hide();
-            panel->Show();
+            registerP->Hide();
+            loginP->Show();
+
+            registerP->Hide();
+            middleP->Hide();
+            reservationP->Hide();
+            roomsP->Hide();
+            settingsP->Hide();
             break;
         case 2:
-            panel->Hide();
-            panel2->Show();
+            loginP->Hide();
+            registerP->Show();
+            middleP->Hide();
+            reservationP->Hide();
+            roomsP->Hide();
+            settingsP->Hide();
             break;
+        case 3:
+            loginP->Hide();
+            registerP->Hide();
+            middleP->Show();
+            registerP->Hide();
+            reservationP->Hide();
+            roomsP->Hide();
+            settingsP->Hide();
+            break;
+        case 4:
+            middleP->Hide();
+            reservationP->Show();
+            roomsP->Hide();
+            settingsP->Hide();
+            break;
+        case 5:
+            middleP->Hide();
+            reservationP->Hide();
+            roomsP->Show();
+            settingsP->Hide();
+            break;
+        case 6:
+            middleP->Hide();
+            reservationP->Hide();
+            roomsP->Hide();
+            settingsP->Show();
         default:
             break;
     }

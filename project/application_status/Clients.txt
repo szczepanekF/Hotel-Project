@@ -1,2 +1,10 @@
 CLIENTS 
-Short Term Client 213213 2131 2131 bill equal: 0.000000 is not archive
+Short Term Client Filip Szczepanek 242544 bill equal: 0.000000 is not archive
+Short Term Client Milosz Wojtaszczyk 242567 bill equal: 500.000000 is not archive
+Short Term Client Ktokolwiek komukolwiek 000000 bill equal: 0.000000 is not archive
+Short Term Client Hyzio Dyzio 402000 bill equal: 21313.000000 is not archive
+Long Term Client Fifi Bimbambom 242222222 bill equal: -50.000000 is not archive
+Standard Client MACIEK MOPS 2137 bill equal: 321312.000000 is not archive
+Standard Client MACIEK MOPS 21237 bill equal: -5000.000000 is not archive
+Short Term Client fifi szpc 2115 bill equal: 0.000000 is not archive
+Short Term Client test test 11123 bill equal: 0.000000 is not archive

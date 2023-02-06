@@ -15,6 +15,7 @@ add_library(Library ${SOURCE_FILES})
 target_include_directories(Library PUBLIC include)
 enable_testing()
 find_package (Boost 1.60.0 COMPONENTS "unit_test_framework" REQUIRED)
+find_package (Boost 1.60.0 COMPONENTS date_time)
 
 
 include_directories(
@@ -27,13 +28,15 @@ set(SOURCE_TEST_FILES
         test/ClientTest.cpp
         test/RoomTest.cpp test/ReservationTest.cpp test/RepositoryTest.cpp test/RoomManagerTest.cpp test/ClientManagerTest.cpp test/ReservationManagerTest.cpp test/PredicateTest.cpp) # tu w przyszłości będą dodawane pliki źródłowe testów
 
-add_executable (LibraryTest ${SOURCE_TEST_FILES})
+add_executable (LibraryTest ${SOURCE_TEST_FILES} )
 
 
 #dołącz bibliotekę z testowanymi klasami oraz bibliotekę boost.cApp do programu testów
 target_link_libraries (LibraryTest
         Library
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+        ${Boost_LIBRARIES}
+        ${Boost_DATE_TIME_LIBRARY}
         )
 
 #dodaj cApp TestBiblioteki1. Instrukcji cmake add_test może być wiele.

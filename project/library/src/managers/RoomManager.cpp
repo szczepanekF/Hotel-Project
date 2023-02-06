@@ -61,12 +61,13 @@ void RoomManager::readRoomsFromServer(C_client* conn) {
     double terrace_sur;
     int bed_count;
 
-    for(int i=0;i<roomsInfo.size();i++)
-    {
+
+
+    for(int i=0;i<roomsInfo.size();i++) {
         room_nr = std::stoi(roomsInfo[i][0]);
         price = std::stod(roomsInfo[i][1]);
         bed_count = std::stoi(roomsInfo[i][2]);
-        if(roomsInfo[i][3] == "0") {
+        if(roomsInfo[i][3] == "None") {
             registerRoomWithoutTerrace(room_nr, price, bed_count);
         }
         else{

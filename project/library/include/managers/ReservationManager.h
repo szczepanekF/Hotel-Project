@@ -34,7 +34,7 @@ public:
     /// rzuca wyjątek przy próbie zmiany bonusu na mniejszy
     void changeReservationExtraBonusToC(const ud::uuid &id);
     ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji.
-    void readReservationsFromServer(C_client* conn,ClientRepositoryPtr clients,RoomRepositoryPtr rooms);
+    void readReservationsFromServer(C_client* conn,ClientManagerPtr clients,RoomManagerPtr rooms);
 
 };
 

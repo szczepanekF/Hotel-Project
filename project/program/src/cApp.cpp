@@ -11,6 +11,7 @@
 #include <boost/date_time.hpp>
 #include <boost/uuid/uuid.hpp>
 
+#include "model/Room.h"
 
 namespace gr = boost::gregorian;
 wxIMPLEMENT_APP(cApp);
@@ -34,6 +35,16 @@ bool cApp::OnInit() {
     RoomManagerPtr roomManager = std::make_shared<RoomManager>(rooms);
     ReservationManagerPtr resManager = std::make_shared<ReservationManager>(currRes,archRes);
 
+
+    connection->createConnection();
+    if(connection->getConnSuccess()>=0) {
+        cManager->readClientsFromServer(connection);
+        roomManager->readRoomsFromServer(connection);
+//        resManager->readReservationsFromServer(connection,cManager,roomManager);
+    }
+
+
+    std::cout<<to_simple_string(pt::second_clock::local_time());
 
     m_Frame = new gMain(connection,cManager,roomManager,resManager);
     m_Frame->Show();

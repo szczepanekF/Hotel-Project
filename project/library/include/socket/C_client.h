@@ -8,7 +8,7 @@
 #define GET_RESERVATIONS "!RESERVATIONS"
 #define GET_PASSWORD "!PASSWD"
 #define NO_CLIENT "!NO_CLIENT"
-
+#define SAVE_INFO "!SAVE"
 
 class C_client {
     int sockfd,conn_success;
@@ -29,6 +29,7 @@ public:
     bool createConnection();
     int login(std::string pid,std::string passwd);
     std::string sendMessage(std::string msg);
+    int saveInfo(std::string msg);
 
 
 };
