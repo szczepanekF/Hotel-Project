@@ -1,5 +1,5 @@
 #include "wx/wx.h"
-#include "gMain.h"
+#include "cMain.h"
 #include "typedefs.h"
 #include "LoginPanel.h"
 #include "RegistrationPanel.h"
@@ -12,7 +12,7 @@
 
 class cApp : public wxApp{
 public:
-        gMain* m_Frame = nullptr;
+        cMain* m_Frame = nullptr;
         ClientRepositoryPtr clients;
         RoomRepositoryPtr rooms;
         ReservationRepositoryPtr currRes;

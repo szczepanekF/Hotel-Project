@@ -9,7 +9,8 @@ def getInfo(msg):
     elif (msg == "!ROOMS"):
         c.execute("SELECT * FROM Rooms;")
     elif (msg == "!RESERVATIONS"):
-        c.execute("SELECT first,second,PID,Client_type,bill FROM Clients;")
+        c.execute("SELECT  * FROM Reservations;")
+    print(msg)
     info = c.fetchall()
     conn.close()
     delimeter = '#'
@@ -30,13 +31,14 @@ def getPIDpasswd(pid):
         int(pid)
     except:
         return None
-    print(pid)
+    print("Logging in user " + pid)
     conn = sqlite3.connect('dbs/users.db')
     c = conn.cursor()
     c.execute(f"SELECT passwd FROM Clients WHERE PID = {pid};")
     passwd = c.fetchall()
     conn.close()
     if len(passwd) == 0:
+        print("Logging unsuccessful")
         return None
     return passwd[0][0]
 
@@ -70,5 +72,21 @@ def saveInfo(msg,where):
     conn.close()
     return True
 
+def updateClient(msg):
+    splitted = msg.split("#")
+    conn = sqlite3.connect('dbs/users.db')
+    c = conn.cursor()
+    try :
+        c.execute(f'''UPDATE CLIENTS SET {splitted[2]} = {splitted[1]} 
+                     WHERE PID = {splitted[0]};''', )
+    except:
+        conn.close()
+        return False
 
+    conn.commit()
+    conn.close()
 
+    return True
+
+print(updateClient("999#0#Client_type"))
+print(updateClient("999#0#bill"))

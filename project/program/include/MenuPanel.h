@@ -5,13 +5,13 @@
 #ifndef HOTELPROJECT_MENUPANEL_H
 #define HOTELPROJECT_MENUPANEL_H
 #include "wx/wx.h"
-#include "basePanel.h"
+#include "baseLoggedPanel.h"
 
 
-class gMain;
-class MenuPanel : public basePanel {
+class cMain;
+class MenuPanel : public baseLoggedPanel {
 public:
-    MenuPanel(gMain* parent);
+    MenuPanel(cMain* parent);
     virtual ~MenuPanel();
 
 private:
@@ -20,6 +20,7 @@ private:
     void SwitchToRooms(wxCommandEvent &evt) ;
     void SwitchToSetting(wxCommandEvent &evt) ;
     wxButton** buttons;
+    wxBoxSizer* horizontalSizer2;
 wxDECLARE_EVENT_TABLE();
 };
 

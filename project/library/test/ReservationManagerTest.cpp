@@ -37,6 +37,7 @@ struct ReservationManagerFixture {
     ReservationPtr testReservation;
     ReservationPtr testReservation2;
     ReservationPtr testReservation3;
+    ReservationPtr testReservation4;
 
     std::vector<ReservationPtr> testReservations;
     ReservationPtr nullReservation=nullptr;
@@ -74,26 +75,45 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
                                                testReservationDays2, B);
         testReservation3 = RM.startReservation(testClient3, testRoom3, testGuestCount, testBeginTime,
                                                testReservationDays3, C);
+        testReservation4 = RM.startReservation(testClient3, testRoom3, testGuestCount, testBeginTime - pt::hours(testReservationDays3*24),
+                                               testReservationDays3-1, C);
         BOOST_TEST(testReservation->getId()!=testReservation2->getId());
         BOOST_TEST(testReservation2->getId()!=testReservation3->getId());
         BOOST_TEST(testReservation->getId()!=testReservation3->getId());
-        BOOST_REQUIRE(currentRR->size() == 3);
+        BOOST_REQUIRE(currentRR->size() == 4);
         BOOST_REQUIRE(archiveRR->size() == 0);
-        BOOST_TEST(RM.findRoomReservation(testRoom) == testReservation);
-        BOOST_TEST(RM.findRoomReservation(testRoom2) == testReservation2);
-        BOOST_TEST(RM.findRoomReservation(testRoom3) == testReservation3);
-        BOOST_TEST(testReservation->getTotalReservationCost()==100+testReservation->getPricePerNight()*testReservation->getReservationDays());
-        BOOST_TEST(testReservation2->getTotalReservationCost()==2000+testReservation2->getPricePerNight()*testReservation2->getReservationDays());
-        BOOST_TEST(testReservation3->getTotalReservationCost()==3000+testReservation3->getPricePerNight()*testReservation3->getReservationDays());
-        BOOST_TEST(testClient->getBill()==0);
-        BOOST_TEST(testClient2->getBill()==0);
-        BOOST_TEST(testClient3->getBill()==0);
-        RM.endReservation(testReservation3->getId());
-        testClient3->setBill(-3000);
-        ReservationPtr res=RM.startReservation(testClient3, testRoom3, testGuestCount, testBeginTime,
-                            1, C);
-        BOOST_TEST(res->getTotalReservationCost()==0);
-        BOOST_TEST(testClient3->getBill()==0);
+        BOOST_TEST(RM.findRoomReservations(testRoom)[0] == testReservation);
+        BOOST_TEST(RM.findRoomReservations(testRoom2)[0] == testReservation2);
+        BOOST_TEST(RM.findRoomReservations(testRoom3)[0] == testReservation3);
+        BOOST_TEST(RM.findRoomReservations(testRoom3)[1] == testReservation4);
+
+        BOOST_TEST(RM.isRoomOccupied(testRoom,testBeginTime,1) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom,testBeginTime-pt::hours(testReservationDays1*24),testReservationDays1) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom,testBeginTime+pt::hours(testReservationDays1*24),testReservationDays1) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom2,testBeginTime,1) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom2,testBeginTime-pt::hours(testReservationDays2*24),testReservationDays2) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom2,testBeginTime+pt::hours(testReservationDays2*24),testReservationDays2) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime-pt::hours(testReservationDays3*24),testReservationDays3) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime+pt::hours(testReservationDays3*24),testReservationDays3) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime-pt::hours((testReservationDays3*2-1)*24),testReservationDays3) == true);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime,1) == true);
+
+
+        BOOST_TEST(RM.isRoomOccupied(testRoom,testBeginTime-pt::hours(testReservationDays1*24),1) == false);
+        BOOST_TEST(RM.isRoomOccupied(testRoom,testBeginTime+pt::hours((testReservationDays1+1)*24),1) == false);
+        BOOST_TEST(RM.isRoomOccupied(testRoom2,testBeginTime-pt::hours(testReservationDays1*24),1) == false);
+        BOOST_TEST(RM.isRoomOccupied(testRoom2,testBeginTime+pt::hours((testReservationDays2+1)*24),1) == false);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime-pt::hours((testReservationDays3*2)*24),1) == false);
+        BOOST_TEST(RM.isRoomOccupied(testRoom3,testBeginTime+pt::hours((testReservationDays3+1)*24),1) == false);
+
+        BOOST_TEST(testReservation->getTotalReservationCost()==testReservation->getPricePerNight()*testReservation->getReservationDays());
+        BOOST_TEST(testReservation2->getTotalReservationCost()==testReservation2->getPricePerNight()*testReservation2->getReservationDays());
+        BOOST_TEST(testReservation3->getTotalReservationCost()==testReservation3->getPricePerNight()*testReservation3->getReservationDays());
+        BOOST_TEST(testClient->getBill()==100);
+        BOOST_TEST(testClient2->getBill()==2000);
+        BOOST_TEST(testClient3->getBill()==3000);
+
+
 
 
 
@@ -110,18 +130,18 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
                                               A), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime,
                                                   testReservationDays1, A), ReservationError,
-                              [information] (const ReservationError &e){return e.information()=="ERROR already exists: "+information;});
+                              [information] (const ReservationError &e){return e.information()=="ERROR room is occupied in this period";});
         BOOST_TEST(currentRR->size()==2);
 
-        BOOST_REQUIRE_THROW(nullReservation=RM.findRoomReservation(testRoom3),ReservationError);
-        BOOST_CHECK_EXCEPTION(RM.findRoomReservation(testRoom3),ReservationError,
+        BOOST_REQUIRE_THROW(nullReservation=RM.findRoomReservations(testRoom3)[0],ReservationError);
+        BOOST_CHECK_EXCEPTION(RM.findRoomReservations(testRoom3),ReservationError,
                               [] (const HotelError &e){return e.information()=="ERROR No Objects";});
         BOOST_TEST(nullReservation==nullptr);
 
-        BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError);
-        BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError,
-                              [](const HotelError &e){return e.information()=="Error Wrong begin time";});
-        BOOST_TEST(nullReservation==nullptr);
+//        BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError);
+//        BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 3, testBeginTime - pt::hours(30), 1, B), ReservationError,
+//                              [](const HotelError &e){return e.information()=="Error Wrong begin time";});
+//        BOOST_TEST(nullReservation==nullptr);
 
         BOOST_CHECK_THROW(nullReservation=RM.startReservation(testClient, testRoom3, 4, testBeginTime, 1, B), ReservationError);
         BOOST_CHECK_EXCEPTION(RM.startReservation(testClient, testRoom3, 4, testBeginTime, 1, B), ReservationError,

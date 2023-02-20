@@ -6,15 +6,15 @@
 #define HOTELPROJECT_BASEPANEL_H
 #include "wx/wx.h"
 
-class gMain;
+class cMain;
 
 class basePanel : public wxPanel{
 public:
-    basePanel(gMain* parent);
+    basePanel(cMain* parent);
 
     virtual ~basePanel() = 0;
 protected:
-    gMain* parent;
+    cMain* parent;
 
     wxBoxSizer* verticalSizer = nullptr;
     wxBoxSizer* horizontalSizer= nullptr;

@@ -9,27 +9,31 @@
 #define GET_PASSWORD "!PASSWD"
 #define NO_CLIENT "!NO_CLIENT"
 #define SAVE_INFO "!SAVE"
+#define UPDATE_CLIENT "!UPDATE_CLIENT"
+
+#include "typedefs.h"
 
 class C_client {
     int sockfd,conn_success;
-    std::string logged_pid;
-public:
-    void setLoggedPid(const std::string &loggedPid);
+    std::string loggedPID;
 
-public:
-    int getConnSuccess() const;
 
 private:
     struct sockaddr_in serv_addr;
     char buffer[1024] = {0};
-    //unsigned int value;
 public:
     C_client();
     ~C_client();
     bool createConnection();
-    int login(std::string pid,std::string passwd);
-    std::string sendMessage(std::string msg);
-    int saveInfo(std::string msg);
+    int login(const std::string &pid,const std::string &passwd);
+    void updateClient(const std::string &value,const std::string &what);
+    void updateType(const std::string &i);
+    void updateBill(const std::string &i);
+    std::string sendMessage(const std::string &msg);
+    int saveInfo(const std::string &msg);
+    int getConnSuccess() const;
+    std::string getLoggedPid();
+    void setLoggedPid(const std::string &loggedClient);
 
 
 };

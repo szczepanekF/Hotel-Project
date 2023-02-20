@@ -12,6 +12,7 @@ class CPPcon:
         self.GET_PASSWORD = "!PASSWD"
         self.NO_CLIENT = "!NO_CLIENT"
         self.SAVE_INFO = "!SAVE"
+        self.UPDATE_CLIENT = "!UPDATE_CLIENT"
         self.HEADER=64
         self.PORT = 5050
         self.SERVER ="192.168.0.55"
@@ -35,6 +36,7 @@ class CPPcon:
     def handle_client(self,conn,addr):
         ispasswd=0
         isinfo=0
+        isUpdate = 0
         print(f"[NEW CONNECTION] {addr} connected.")
         connected = True
 
@@ -73,7 +75,13 @@ class CPPcon:
                 db.save(msg.strip())
                 conn.send("SAVED".encode(self.FORMAT))
                 continue
-
+            elif msg == self.UPDATE_CLIENT:
+                isUpdate = 1
+            elif isUpdate:
+                isUpdate = 0
+                if db.updateClient(msg):
+                    conn.send("Client Type updated".encode(self.FORMAT))
+                continue
             print(f"[{addr}] {msg}")
             conn.send("Msg recieved".encode(self.FORMAT))
 

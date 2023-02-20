@@ -1,9 +1,9 @@
 #include "LoginPanel.h"
-#include "gMain.h"
+#include "cMain.h"
 #include "exceptions/ClientError.h"
 
 
-LoginPanel::LoginPanel(gMain* parent) : baseLogRegistPanel(parent)
+LoginPanel::LoginPanel(cMain* parent) : baseLogRegistPanel(parent)
 {
 
 
@@ -20,7 +20,7 @@ LoginPanel::LoginPanel(gMain* parent) : baseLogRegistPanel(parent)
     regist = new wxButton(this, 10003,"register",wxDefaultPosition,wxSize(125,30));
     submit = new wxButton(this, 10002,"submit",wxDefaultPosition,wxSize(125,30));
 
-
+//    regist->Disable();
 
 
 
@@ -57,33 +57,27 @@ void LoginPanel::OnSubmitClicked(wxCommandEvent &evt) {
     std::string pidstr = pid->GetValue().ToStdString();
     std::string password = passwd->GetValue().ToStdString();
 
-    int success = parent->getConnection()->login(pidstr,password);
-    if (success == -2) {
+
+    if (parent->getConnection()->getConnSuccess()) {
         info->SetLabel("no connection");
         evt.Skip();
         return;
     }
 
-    if (pidstr.length() == 0) {
+    if (pidstr.empty()) {
         info->SetLabel("fill login");
         evt.Skip();
         return;
     }
 
-    if (password.length() == 0) {
+    if (password.empty()) {
         info->SetLabel("fill password");
         evt.Skip();
         return;
     }
 
 
-
-    try{
-        parent->getCm()->getClient(pidstr);
-    } catch (const ClientError& err) {
-        success=-1;
-    }
-
+    int success = parent->getConnection()->login(pidstr, password);
 
     if(success == -1) {
         info->SetLabel("no such client");
@@ -93,6 +87,7 @@ void LoginPanel::OnSubmitClicked(wxCommandEvent &evt) {
     } else {
         info->SetForegroundColour(*wxGREEN);
         info->SetLabel("success");
+        parent->RefreshAfterLogging();
         parent->changePanels(3);
     }
 

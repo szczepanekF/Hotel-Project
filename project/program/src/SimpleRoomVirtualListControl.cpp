@@ -4,12 +4,12 @@
 
 #include <algorithm>
 #include <numeric>
-#include "SimpleVirtualListControl.h"
+#include "SimpleRoomVirtualListControl.h"
 #include <sstream>
 #include <iomanip>
 
-SimpleVirtualListControl::SimpleVirtualListControl(wxWindow *parent, wxWindowID winid, const wxPoint &pos,
-                                                   const wxSize &size) : wxListCtrl(parent, winid, pos, size, wxLC_REPORT | wxLC_VIRTUAL) {
+SimpleRoomVirtualListControl::SimpleRoomVirtualListControl(wxWindow *parent, wxWindowID winid, const wxPoint &pos,
+                                                           const wxSize &size) : wxListCtrl(parent, winid, pos, size, wxLC_REPORT | wxLC_VIRTUAL) {
     this->AppendColumn("Room nr",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Price Per night [eur]",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Bed Amount",wxLIST_FORMAT_CENTER);
@@ -45,8 +45,8 @@ SimpleVirtualListControl::SimpleVirtualListControl(wxWindow *parent, wxWindowID 
 
 
 
-wxString SimpleVirtualListControl::OnGetItemText(long index, long column) const  {
-    ItemData item  = items[orderedIndices[index]];
+wxString SimpleRoomVirtualListControl::OnGetItemText(long index, long column) const  {
+    RoomItemData item  = items[orderedIndices[index]];
     std::stringstream ss;
     ss << std::fixed << std::setprecision(2) ;
     switch (column) {
@@ -65,14 +65,14 @@ wxString SimpleVirtualListControl::OnGetItemText(long index, long column) const 
 
 }
 
-void SimpleVirtualListControl::RefreshAfterUpdate() {
+void SimpleRoomVirtualListControl::RefreshAfterUpdate() {
     this->SetItemCount(orderedIndices.size());
     this->Refresh();
 
 }
 
 
-void SimpleVirtualListControl::sortByColumn(int column) {
+void SimpleRoomVirtualListControl::sortByColumn(int column) {
     static auto genericCompare = [](auto i1,auto i2, bool ascending) {
         return ascending ? i1 < i2 : i1 > i2;
     };
@@ -97,15 +97,15 @@ void SimpleVirtualListControl::sortByColumn(int column) {
     });
 }
 
-long SimpleVirtualListControl::getFirstSelectedIndex() {
+long SimpleRoomVirtualListControl::getFirstSelectedIndex() {
     return GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 }
 
-long SimpleVirtualListControl::findIndexOfNRindex(long dataIndex) {
+long SimpleRoomVirtualListControl::findIndexOfNRindex(long dataIndex) {
     return std::find(orderedIndices.begin(),orderedIndices.end(),dataIndex)-orderedIndices.begin();
 }
 
-void SimpleVirtualListControl::setItems(std::vector<ItemData> itemsToSet) {
+void SimpleRoomVirtualListControl::setItems(std::vector<RoomItemData> itemsToSet) {
     this->items = itemsToSet;
     this->orderedIndices = std::vector<long>(items.size());
     std::iota(orderedIndices.begin(),orderedIndices.end(),0);

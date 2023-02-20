@@ -5,15 +5,23 @@
 #ifndef HOTELPROJECT_RESERVATIONPANEL_H
 #define HOTELPROJECT_RESERVATIONPANEL_H
 
-#include "basePanel.h"
+#include "baseLoggedPanel.h"
 #include "wx/wx.h"
+#include "typedefs.h"
 
-class ReservationPanel: public basePanel {
+class SimpleReservationVirtualListControl;
+class ReservationPanel: public baseLoggedPanel {
+    bool filter = true;
+    SimpleReservationVirtualListControl* list = nullptr;
+    wxButton* changeBtn = nullptr;
+    void ReturnClicked(wxCommandEvent &evt);
+    void ChangeClicked(wxCommandEvent &evt);
+    void populateListView(ReservationPredicate predicate);
 public:
-    ReservationPanel(gMain *parent);
+    ReservationPanel(cMain *parent);
 
     virtual ~ReservationPanel();
-    void ReturnClicked(wxCommandEvent &evt);
+
 wxDECLARE_EVENT_TABLE();
 };
 

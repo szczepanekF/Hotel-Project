@@ -4,10 +4,10 @@
 
 #include "baseLogRegistPanel.h"
 
-class gMain;
+class cMain;
 class RegistrationPanel : public baseLogRegistPanel {
 public:
-    RegistrationPanel(gMain* parent);;
+    RegistrationPanel(cMain* parent);;
     virtual ~RegistrationPanel();
 private:
     wxTextCtrl* firstName = nullptr;

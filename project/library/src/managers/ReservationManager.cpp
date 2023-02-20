@@ -37,7 +37,10 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
     }
 
     try{
-        findRoomReservation(room);
+        findRoomReservations(room);
+        if (!isRoomOccupied(room,beginTime,reservationDays)) {
+            throw ReservationError("go to catch block");
+        }
     }catch (const ReservationError &e){
         ud::random_generator gen;
         ud::uuid init_id =gen();
@@ -61,10 +64,11 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
 
              init_id =gen();
         }
-        if(beginTime<pt::second_clock::local_time())
-        {
-            throw ReservationError("Error Wrong begin time");
-        }
+//        if(beginTime<pt::second_clock::local_time())
+//        {
+//            throw ReservationError("Error Wrong begin time");
+//            past reservation
+//        }
         if(guestCount > room->getBedCount())
         {
             throw ReservationError("Error Too many guests");
@@ -72,22 +76,24 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
         if(reservationDays>client->getMaxDays()){
             throw ReservationError("Error Wrong reservation days");
         }
-        ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,init_id,beginTime,reservationDays,bonus);
 
-        if(client->getBill()+new_reservation->calculateBaseReservationCost()<0)
-        {
-            new_reservation->setTotalReservationCost(0);
-        }else{
-            new_reservation->setTotalReservationCost(client->getBill()+new_reservation->calculateBaseReservationCost());
-        }
+        pt::ptime ideal(beginTime.date(),pt::hours(13));
+        ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,init_id,ideal,reservationDays,bonus);
 
-        client->setBill(0);
+//        if(client->getBill()+new_reservation->calculateBaseReservationCost()<0)
+//        {
+//            new_reservation->setTotalReservationCost(0);
+//        }else{
+        new_reservation->setTotalReservationCost(new_reservation->calculateBaseReservationCost());
+//        }
+
+//        client->setBill(0);
         currentReservations->add(new_reservation);
 
 
         return new_reservation;
     }
-    throw ReservationError("ERROR already exists: "+findRoomReservation(room)->getInfo());
+    throw ReservationError("ERROR room is occupied in this period");
 }
 
 void ReservationManager::endReservation(const ud::uuid &id) {
@@ -115,8 +121,8 @@ std::vector<ReservationPtr> ReservationManager::findClientReservations(const Cli
     return currentReservations->findBy([client](const ReservationPtr &ptr){return ptr->getClient()==client;});
 }
 
-ReservationPtr ReservationManager::findRoomReservation(const RoomPtr &room) const {
-    return currentReservations->findBy([room](const ReservationPtr &ptr){return ptr->getRoom()==room;})[0];
+std::vector<ReservationPtr>  ReservationManager::findRoomReservations(const RoomPtr &room) const {
+    return currentReservations->findBy([room](const ReservationPtr &ptr){return ptr->getRoom()==room;});
 }
 
 double ReservationManager::calculateDiscount(const ClientPtr &client) const {
@@ -203,7 +209,7 @@ void ReservationManager::changeReservationExtraBonusToC(const ud::uuid &id) {
 }
 
 void ReservationManager::readReservationsFromServer(C_client* conn,ClientManagerPtr CM,RoomManagerPtr RM) {
-    std::vector<std::vector<std::string>> resvsInfo = currentReservations->readInfo(conn,GET_ROOMS);
+    std::vector<std::vector<std::string>> resvsInfo = currentReservations->readInfo(conn,GET_RESERVATIONS);
     ClientPtr client;
     RoomPtr  room;
     unsigned int guest_count;
@@ -223,9 +229,22 @@ void ReservationManager::readReservationsFromServer(C_client* conn,ClientManager
             type = B;
         else
             type = A;
-        startReservation(client,room,guest_count,begin_date,days_of_res,type);
+        try {
+            startReservation(client, room, guest_count, begin_date, days_of_res, type);
+        } catch (ReservationError &e) {
+            std::cout<< e.what();
+        }
     }
 }
 
+bool ReservationManager::isRoomOccupied(const RoomPtr &room, const pt::ptime& beginTime, unsigned int resDays) {
+    std::vector<ReservationPtr> resvs = findRoomReservations(room);
+    return std::find_if(resvs.begin(),resvs.end(),[beginTime,resDays](const ReservationPtr& ptr){
+        if (ptr->getEndTime().date() < beginTime.date() ) {
+            return false;
+        } else if ((beginTime+ pt::hours(resDays*24)).date()  < ptr->getBeginTime().date()) {
+            return false;
+        }
+        return true;}) != resvs.end();
 
-
+}

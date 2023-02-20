@@ -2,10 +2,10 @@
 #ifndef HOTELPROJECT_LOGINPANEL_H
 #define HOTELPROJECT_LOGINPANEL_H
 #include "baseLogRegistPanel.h"
-class gMain;
+class cMain;
 class LoginPanel : public baseLogRegistPanel{
 public:
-    LoginPanel(gMain* parent);
+    LoginPanel(cMain* parent);
     ~LoginPanel();
 private:
     void OnSubmitClicked(wxCommandEvent &evt) override;

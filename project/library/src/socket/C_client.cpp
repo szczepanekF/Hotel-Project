@@ -7,7 +7,7 @@
 
 #include <sys/socket.h>
 #include <sstream>
-
+#include "managers/ClientManager.h"
 
 #define PORT "5050"
 #define IP "192.168.0.55"
@@ -54,8 +54,8 @@ bool C_client::createConnection() {
 
 
 
-std::string C_client::sendMessage(std::string msg){
-    std:stringstream strs;
+string C_client::sendMessage(const string &msg){
+    stringstream strs;
     strs << msg.size();
     string length = strs.str();
     send(sockfd,length.c_str(),length.size(),0);
@@ -70,34 +70,57 @@ int C_client::getConnSuccess() const {
     return conn_success;
 }
 
-int C_client::login(std::string pid, std::string passwd) {
+int C_client::login(const string &pid,const string &passwd) {
     if (conn_success<0) {
         return -2;
     }
-    std::string help = sendMessage(GET_PASSWORD);
-    std::string possiblePasswd = sendMessage(pid);
+    string help = sendMessage(GET_PASSWORD);
+    string possiblePasswd = sendMessage(pid);
 
     if (possiblePasswd == NO_CLIENT) {
+        std::cout<<"1";
         return -1;
     } else if (possiblePasswd != passwd) {
         return 0;
     }
-    logged_pid = pid;
+    loggedPID=pid;
     return 1;
 }
 
-void C_client::setLoggedPid(const string &loggedPid) {
-    logged_pid = loggedPid;
-}
-
-int C_client::saveInfo(std::string msg) {
+int C_client::saveInfo(const string &msg) {
     if (conn_success<0) {
         return -2;
     }
     sendMessage(SAVE_INFO);
-    std::string abc = sendMessage(msg);
+    string abc = sendMessage(msg);
 
     if(abc == "SAVED")
         return 1;
     return 0;
 }
+
+void C_client::setLoggedPid(const std::string &pid) {
+    C_client::loggedPID = pid;
+}
+
+std::string C_client::getLoggedPid() {
+    return loggedPID;
+}
+
+void C_client::updateType(const std::string &i) {
+    updateClient(i,"Client_type");
+}
+
+void C_client::updateBill(const std::string &i) {
+    updateClient(i,"bill");
+}
+
+void C_client::updateClient(const string &value, const string &what) {
+    if (conn_success<0) {
+        return;
+    }
+    string updatemsg = sendMessage(UPDATE_CLIENT);
+    sendMessage(loggedPID+"#"+value+"#"+what);
+}
+
+

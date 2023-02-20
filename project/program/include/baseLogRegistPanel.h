@@ -7,10 +7,10 @@
 #include "wx/wx.h"
 #include "basePanel.h"
 
-class gMain;
+class cMain;
 class baseLogRegistPanel : public basePanel{
 public:
-    baseLogRegistPanel(gMain* parent);
+    baseLogRegistPanel(cMain* parent);
     virtual ~baseLogRegistPanel();
 protected:
 

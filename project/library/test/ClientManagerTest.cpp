@@ -43,8 +43,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
     BOOST_TEST(CM.getClient("444091")==testClient3);
     BOOST_TEST(CM.getClient("242544")==testClient);
     BOOST_TEST(testClient->getBill()==0);
-    BOOST_TEST(testClient2->getBill()==100);
-    BOOST_TEST(testClient3->getBill()==300);
+    BOOST_TEST(testClient2->getBill()==0);
+    BOOST_TEST(testClient3->getBill()==0);
 }
     BOOST_AUTO_TEST_CASE(ExcpetionsRegisterAndExceptionsGetClientTest) {
         ClientManager CM(CR);
@@ -135,11 +135,16 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
     BOOST_AUTO_TEST_CASE(ChangeTypeTest){
         ClientManager CM(CR);
         testClient= CM.registerClient("Jan", "Ktos", "242544", testType);
+        testClient->setBill(400);
         CM.changeClientTypetoStandard("242544");
+
         BOOST_CHECK(testClient->getBill()==100);
+        testClient->setBill(900);
         CM.changeClientTypetoLongTerm("242544");
         BOOST_CHECK(testClient->getBill()==400);
+
         testClient2= CM.registerClient("Jan", "Kowalski", "242567", testType);
+        testClient2->setBill(800);
         CM.changeClientTypetoLongTerm("242567");
         BOOST_CHECK(testClient2->getBill()==300);
 }
@@ -160,6 +165,11 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
         BOOST_REQUIRE_THROW(CM.changeClientTypetoStandard("242567"), ClientError);
         BOOST_CHECK_EXCEPTION(CM.changeClientTypetoStandard("242567"),ClientError,
                               [] (const ClientError &e){return e.information()=="ERROR cant change to equal type";});
+        BOOST_TEST(testClient2->getClientType()==testType2);
+
+        BOOST_REQUIRE_THROW(CM.changeClientTypetoLongTerm("242567"), ClientError);
+        BOOST_CHECK_EXCEPTION(CM.changeClientTypetoLongTerm("242567"),ClientError,
+                              [] (const ClientError &e){return e.information()=="ERROR not enough money";});
         BOOST_TEST(testClient2->getClientType()==testType2);
     }
 

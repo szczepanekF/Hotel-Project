@@ -1,5 +1,5 @@
 #include "baseLogRegistPanel.h"
-#include "gMain.h"
+#include "cMain.h"
 wxBEGIN_EVENT_TABLE(baseLogRegistPanel,wxPanel)
                 EVT_TEXT(10001,baseLogRegistPanel::OnPasswdWrite)
                 EVT_BUTTON(10002,baseLogRegistPanel::OnSubmitClicked)
@@ -7,7 +7,7 @@ wxBEGIN_EVENT_TABLE(baseLogRegistPanel,wxPanel)
 
 wxEND_EVENT_TABLE()
 
-baseLogRegistPanel::baseLogRegistPanel(gMain* parent) : basePanel(parent)
+baseLogRegistPanel::baseLogRegistPanel(cMain* parent) : basePanel(parent)
 {
     horizontalSizer2 = new wxBoxSizer(wxHORIZONTAL);
 }

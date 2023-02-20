@@ -27,7 +27,10 @@ public:
     std::vector<ReservationPtr> findReservations(const ReservationPredicate &predicate) const; ///dotyczy obecnych wypożyczeń
     std::vector<ReservationPtr> findAllReservations() const;///dotyczy obecnych wypożyczeń
     std::vector<ReservationPtr> findClientReservations(const ClientPtr &client) const;///dotyczy obecnych wypożyczeń
-    ReservationPtr findRoomReservation(const RoomPtr &room) const;///dotyczy obecnych wypożyczeń
+    std::vector<ReservationPtr>  findRoomReservations(const RoomPtr &room) const;///dotyczy obecnych wypożyczeń
+
+    bool isRoomOccupied(const RoomPtr& room,const pt::ptime &beginTime,unsigned int resDays);
+
     double calculateDiscount(const ClientPtr &client) const;///określa wartosć procentową zniżki
     void changeReservationExtraBonusToB(const ud::uuid &id);
     ///zmienia bonuxy rezerwacji, w zależności od tego kiedy zachodzi zmiana (w trakcie lub przed rozpoczęceim rezerwacji) zmieniana jest cena rezerwacji,

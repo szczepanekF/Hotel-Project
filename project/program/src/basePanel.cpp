@@ -3,10 +3,10 @@
 //
 
 #include "basePanel.h"
-#include "gMain.h"
+#include "cMain.h"
 
-basePanel::basePanel(gMain *parent) : parent(parent),wxPanel(parent) {
-    this->SetBackgroundColour(wxColour(222,244,222));
+basePanel::basePanel(cMain *parent) : parent(parent), wxPanel(parent) {
+    this->SetBackgroundColour(wxColour(237,237,233));
     verticalSizer = new wxBoxSizer(wxVERTICAL);
     horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 }

@@ -1,10 +1,10 @@
 #include "RegistrationPanel.h"
-#include "gMain.h"
+#include "cMain.h"
 #include "exceptions/ClientError.h"
 #include "model/ShortTerm.h"
 #include "model/Client.h"
 
-RegistrationPanel::RegistrationPanel(gMain* parent) : baseLogRegistPanel(parent)
+RegistrationPanel::RegistrationPanel(cMain* parent) : baseLogRegistPanel(parent)
 {
     this->SetBackgroundColour(wxColour(252, 242, 238));
     info = new wxStaticText(this,wxID_ANY,"",wxDefaultPosition,wxSize(175,30));
@@ -76,8 +76,10 @@ void RegistrationPanel::OnSubmitClicked(wxCommandEvent &evt) {
 
         std::string combined = parent->getCm()->getClient(pidStr)->toDBInfo()+"#"+passwdStr;
         parent->getCm()->addClientToDB(parent->getConnection(),combined);
+        parent->getConnection()->setLoggedPid(pidStr);
         info->SetForegroundColour(*wxGREEN);
         info->SetLabel("success");
+        parent->RefreshAfterLogging();
         parent->changePanels(3);
     } catch (const ClientError& err) {
         std::string errors = err.what();

@@ -7,18 +7,20 @@
 #include "managers/ReservationManager.h"
 #include "typedefs.h"
 
+class baseLoggedPanel;
+class SettingsPanel;
 class LoginPanel;
-class gMain : public wxFrame{
+class cMain : public wxFrame{
 public:
-    gMain(C_client* conn,ClientManagerPtr CM,RoomManagerPtr RoomM,ReservationManagerPtr ResM);
-    virtual ~gMain();
+    cMain(C_client* conn, ClientManagerPtr& CM, RoomManagerPtr& RoomM, ReservationManagerPtr& ResM);
+    virtual ~cMain();
 private:
     LoginPanel* loginP = nullptr;
     wxPanel* registerP = nullptr;
-    wxPanel* middleP = nullptr;
-    wxPanel* reservationP = nullptr;
-    wxPanel* roomsP = nullptr;
-    wxPanel* settingsP = nullptr;
+    baseLoggedPanel* middleP = nullptr;
+    baseLoggedPanel* reservationP = nullptr;
+    baseLoggedPanel* roomsP = nullptr;
+    SettingsPanel* settingsP = nullptr;
     wxBoxSizer* boxsizer2 = nullptr;
 
     ClientManagerPtr CM;
@@ -30,10 +32,10 @@ public:
     RoomManagerPtr getRoomM() const;
     ReservationManagerPtr getResM() const;
     C_client *getConnection() const;
+    void RefreshAfterLogging();
 
     //void errorMessage(std::string message);
     void changePanels(unsigned int panelnr);
-
 
 };
 

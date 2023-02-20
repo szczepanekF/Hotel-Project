@@ -22,22 +22,18 @@ ClientPtr ClientManager::registerClient(const std::string &initial_firstName, co
     try{
         getClient(initial_personalID);
     }catch(const ClientError &e){
-        std::stringstream ss;
-         ss<<initial_firstName<<", "<<initial_lastName<<", "<<initial_personalID<<", ";
+
 
         ClientPtr client= std::make_shared<Client>(initial_firstName, initial_lastName, initial_personalID, initial_clientType);
-        if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
-            client->setBill(300);
-            ss<<"2";
-        }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
-            client->setBill(100);
-            ss<<"1";
-        }
-        else {
-            ss<<"0";
-        }
+//        if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
+//            client->setBill(300);
+//
+//        }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
+//            client->setBill(100);
+//
+//        }
+
         clients->add(client);
-        std::string clientStrInfo = ss.str();
 
         return client;
     }
@@ -66,10 +62,14 @@ void ClientManager::changeClientTypetoStandard(const std::string &personalID) co
     ClientTypePtr type= std::make_shared<Standard>();
     ClientPtr client= getClient(personalID);
     if(client->getMaxDays()<type->getMaxDays()){
-        client->setClientType(type);
+
         double s=client->getBill();
-        s+=100;
+        s-=300;
+        if (s<0) {
+            throw ClientError("ERROR not enough money");
+        }
         client->setBill(s);
+        client->setClientType(type);
     }else if(client->getMaxDays()==type->getMaxDays()){
         throw ClientError("ERROR cant change to equal type");
     }else{
@@ -82,10 +82,14 @@ void ClientManager::changeClientTypetoLongTerm(const std::string &personalID) co
     ClientTypePtr type= std::make_shared<LongTerm>();
     ClientPtr client= getClient(personalID);
     if(client->getMaxDays()<type->getMaxDays()){
-        client->setClientType(type);
+
         double s=client->getBill();
-        s+=300;
+        s-=500;
+        if (s<0) {
+            throw ClientError("ERROR not enough money");
+        }
         client->setBill(s);
+        client->setClientType(type);
     }else if(client->getMaxDays()==type->getMaxDays()){
         throw ClientError("ERROR cant change to equal type");
     }else{
