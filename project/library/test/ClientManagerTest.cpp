@@ -42,9 +42,9 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
     BOOST_TEST(CM.getClient("242567")==testClient2);
     BOOST_TEST(CM.getClient("444091")==testClient3);
     BOOST_TEST(CM.getClient("242544")==testClient);
-    BOOST_TEST(testClient->getBill()==0);
-    BOOST_TEST(testClient2->getBill()==0);
-    BOOST_TEST(testClient3->getBill()==0);
+    BOOST_TEST(testClient->getBalance() == 0);
+    BOOST_TEST(testClient2->getBalance() == 0);
+    BOOST_TEST(testClient3->getBalance() == 0);
 }
     BOOST_AUTO_TEST_CASE(ExcpetionsRegisterAndExceptionsGetClientTest) {
         ClientManager CM(CR);
@@ -135,18 +135,18 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteClientManager,ClientManagerFixture)
     BOOST_AUTO_TEST_CASE(ChangeTypeTest){
         ClientManager CM(CR);
         testClient= CM.registerClient("Jan", "Ktos", "242544", testType);
-        testClient->setBill(400);
+        testClient->setBalance(400);
         CM.changeClientTypetoStandard("242544");
 
-        BOOST_CHECK(testClient->getBill()==100);
-        testClient->setBill(900);
+        BOOST_CHECK(testClient->getBalance() == 100);
+        testClient->setBalance(900);
         CM.changeClientTypetoLongTerm("242544");
-        BOOST_CHECK(testClient->getBill()==400);
+        BOOST_CHECK(testClient->getBalance() == 400);
 
         testClient2= CM.registerClient("Jan", "Kowalski", "242567", testType);
-        testClient2->setBill(800);
+        testClient2->setBalance(800);
         CM.changeClientTypetoLongTerm("242567");
-        BOOST_CHECK(testClient2->getBill()==300);
+        BOOST_CHECK(testClient2->getBalance() == 300);
 }
     BOOST_AUTO_TEST_CASE(ErrorChangeTypeTest) {
         ClientManager CM(CR);

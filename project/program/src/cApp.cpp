@@ -25,9 +25,6 @@ cApp::cApp() {
 
 }
 
-cApp::~cApp() {
-
-}
 bool cApp::OnInit() {
 
     ClientManagerPtr cManager = std::make_shared<ClientManager>(clients);

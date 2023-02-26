@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         BOOST_TEST(c.getLastName().compare("ktos")==0);
         BOOST_TEST(c.getId() == "242567");
         BOOST_TEST(c.isArchive()==0);
-        BOOST_TEST(c.getBill()==0);
+        BOOST_TEST(c.getBalance() == 0);
         BOOST_TEST(c.getMaxDays()==2);
         BOOST_TEST(c.acceptDiscount()==0);
     }
@@ -44,10 +44,10 @@ BOOST_AUTO_TEST_SUITE(TestSuiteClient)
         ClientTypePtr T3=std::make_shared<LongTerm>();
         Client c1("Jan","ktos","242567",T2);
         Client c2("Jan","ktos","242567",T3);
-        BOOST_TEST(c1.getBill()==0);
+        BOOST_TEST(c1.getBalance() == 0);
         BOOST_TEST(c1.getMaxDays()==7);
         BOOST_TEST(c1.acceptDiscount()==1);
-        BOOST_TEST(c2.getBill()==0);
+        BOOST_TEST(c2.getBalance() == 0);
         BOOST_TEST(c2.getMaxDays()==30);
         BOOST_TEST(c2.acceptDiscount()==1);
     }

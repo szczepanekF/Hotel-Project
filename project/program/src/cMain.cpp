@@ -17,29 +17,35 @@ cMain::cMain(C_client* conn, ClientManagerPtr& CM, RoomManagerPtr& RoomM, Reserv
 {
     loginP = new LoginPanel(this);
     registerP = new RegistrationPanel(this);
+
     middleP = new MenuPanel(this);
+
     reservationP = new ReservationPanel(this);
     roomsP = new RoomsPanel(this);
     settingsP = new SettingsPanel(this);
-//
+
     loginP->Show();
     registerP->Hide();
+
     middleP->Hide();
+
     reservationP->Hide();
     roomsP->Hide();
     settingsP->Hide();
-    boxsizer2 = new wxBoxSizer(wxVERTICAL);
 
-    boxsizer2->Add(loginP,1,wxGROW);
-    boxsizer2->Add(registerP,1,wxGROW);
-    boxsizer2->Add(middleP,1,wxGROW);
-    boxsizer2->Add(reservationP,1,wxGROW);
-    boxsizer2->Add(roomsP,1,wxGROW);
-    boxsizer2->Add(settingsP,1,wxGROW);
+    boxsizer = new wxBoxSizer(wxVERTICAL);
 
-    this->SetSizer(boxsizer2);
-    loginP->getRegist()->SetFocus();
+    boxsizer->Add(loginP, 1, wxGROW);
+    boxsizer->Add(registerP, 1, wxGROW);
+    boxsizer->Add(middleP, 1, wxGROW);
+    boxsizer->Add(reservationP, 1, wxGROW);
+    boxsizer->Add(roomsP, 1, wxGROW);
+    boxsizer->Add(settingsP, 1, wxGROW);
+
+
+    this->SetSizer(boxsizer);
     this->SetMinSize(wxSize(400,300));
+    loginP->setSubmitFocus();
 }
 
 cMain::~cMain() {
@@ -52,27 +58,17 @@ void cMain::changePanels(unsigned int panelnr) {
         case 1:
             registerP->Hide();
             loginP->Show();
-
-            registerP->Hide();
             middleP->Hide();
-            reservationP->Hide();
-            roomsP->Hide();
-            settingsP->Hide();
             break;
         case 2:
             loginP->Hide();
             registerP->Show();
             middleP->Hide();
-            reservationP->Hide();
-            roomsP->Hide();
-            settingsP->Hide();
             break;
         case 3:
             loginP->Hide();
             registerP->Hide();
             middleP->Show();
-
-            registerP->Hide();
             reservationP->Hide();
             roomsP->Hide();
             settingsP->Hide();
@@ -80,25 +76,19 @@ void cMain::changePanels(unsigned int panelnr) {
         case 4:
             middleP->Hide();
             reservationP->Show();
-            roomsP->Hide();
-            settingsP->Hide();
             break;
         case 5:
             middleP->Hide();
-            reservationP->Hide();
             roomsP->Show();
-            settingsP->Hide();
             break;
         case 6:
             middleP->Hide();
-            reservationP->Hide();
-            roomsP->Hide();
             settingsP->Show();
             break;
         default:
             break;
     }
-    boxsizer2->Layout();
+    boxsizer->Layout();
 }
 
 C_client *cMain::getConnection() const {
@@ -117,14 +107,20 @@ ReservationManagerPtr cMain::getResM() const {
     return ResM;
 }
 
-void cMain::RefreshAfterLogging() {
+void cMain::RefreshAllPanelsAfterLogging() {
 
 
-
-    middleP->RefreshAfterLogging();
-    roomsP->RefreshAfterLogging();
-    reservationP->RefreshAfterLogging();
-    settingsP->RefreshAfterLogging();
+    middleP->SetOnLogging();
+    roomsP->SetOnLogging();
+    reservationP->SetOnLogging();
+    settingsP->SetOnLogging();
     settingsP->setClient(CM->getClient(connection->getLoggedPid()));
     settingsP->Refresh();
+}
+
+void cMain::RefreshAllPanelsBalance() {
+    middleP->RefreshBalance();
+    roomsP->RefreshBalance();
+    reservationP->RefreshBalance();
+    settingsP->RefreshBalance();
 }

@@ -9,23 +9,25 @@
 
 class cMain;
 class baseLogRegistPanel : public basePanel{
-public:
-    baseLogRegistPanel(cMain* parent);
-    virtual ~baseLogRegistPanel();
 protected:
-
     wxBoxSizer* horizontalSizer2= nullptr;
+
     wxTextCtrl* pid = nullptr;
     wxTextCtrl* passwd = nullptr;
+
     wxButton* submit= nullptr;
     wxButton* regist= nullptr;
-public:
-    wxButton *getRegist() const;
 
-protected:
     wxStaticText* info = nullptr;
 
 
+
+public:
+    baseLogRegistPanel(cMain* parent);
+    virtual ~baseLogRegistPanel() = default;
+
+    void setSubmitFocus() const;
+protected:
     virtual void setHints();
     virtual void OnSubmitClicked(wxCommandEvent &evt)=0;
     virtual void OnRegistClicked(wxCommandEvent &evt)=0;

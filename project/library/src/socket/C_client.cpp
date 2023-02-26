@@ -111,16 +111,32 @@ void C_client::updateType(const std::string &i) {
     updateClient(i,"Client_type");
 }
 
-void C_client::updateBill(const std::string &i) {
+void C_client::updateBalance(const std::string &i) {
     updateClient(i,"bill");
 }
 
-void C_client::updateClient(const string &value, const string &what) {
+void C_client::updateClient(const string &new_value, const string &what) {
     if (conn_success<0) {
         return;
     }
     string updatemsg = sendMessage(UPDATE_CLIENT);
-    sendMessage(loggedPID+"#"+value+"#"+what);
+    sendMessage(loggedPID+"#"+new_value+"#"+what);
+}
+
+void C_client::deleteReservation(const string &i) {
+    if (conn_success<0) {
+        return;
+    }
+    string deletemsg = sendMessage(DELETE_RES);
+    sendMessage(i);
+}
+
+void C_client::updateResType(const string &new_value) {
+    if (conn_success<0) {
+        return;
+    }
+    string deletemsg = sendMessage(UPDATE_RES);
+    sendMessage(new_value);
 }
 
 

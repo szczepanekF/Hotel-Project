@@ -11,19 +11,13 @@ RegistrationPanel::RegistrationPanel(cMain* parent) : baseLogRegistPanel(parent)
     info->SetForegroundColour(*wxRED);
     pid = new wxTextCtrl(this, wxID_ANY,"",wxDefaultPosition,wxSize(175,30),wxTE_CENTRE);
     firstName = new wxTextCtrl(this, wxID_ANY,"",wxDefaultPosition,wxSize(175,30),wxTE_CENTRE);
-
     lastName = new wxTextCtrl(this, wxID_ANY,"",wxDefaultPosition,wxSize(175,30),wxTE_CENTRE);
-
-
     passwd = new wxTextCtrl(this, 10001,"",wxDefaultPosition,wxSize(175,30));
-    setHints();
-
     login = new wxButton(this, 10003,"login",wxDefaultPosition,wxSize(125,30));
-
     submit = new wxButton(this, 10002 ,"submit",wxDefaultPosition,wxSize(125,30));
-    submit->SetFocus();
 
 
+    setHints();
 
     horizontalSizer2->Add(login,1,wxALIGN_CENTER|wxALL,1);
     horizontalSizer2->Add(submit,1,wxALIGN_CENTER|wxALL,1);
@@ -37,10 +31,10 @@ RegistrationPanel::RegistrationPanel(cMain* parent) : baseLogRegistPanel(parent)
 
     this->SetSizer(horizontalSizer);
 }
-RegistrationPanel::~RegistrationPanel() {}
+
 
 void RegistrationPanel::OnSubmitClicked(wxCommandEvent &evt) {
-
+    evt.Skip();
     if(parent->getConnection()->getConnSuccess()<0) {
         info->SetForegroundColour(*wxRED);
         info->SetLabel("no connection");
@@ -58,14 +52,13 @@ void RegistrationPanel::OnSubmitClicked(wxCommandEvent &evt) {
         evt.Skip();
         return;
     }
-
-    if (pidStr.length() == 0 || fnameStr.length() == 0 || lnameStr.length() == 0 || passwdStr.length() ==0) {
+    if (pidStr.empty() || fnameStr.empty() || lnameStr.empty() || passwdStr.empty()) {
         info->SetLabel("fill all info");
         evt.Skip();
         return;
     }
 
-    if (passwdStr.length() <3) {
+    if (passwdStr.length() < 3) {
         info->SetLabel("Password is too short (min. 3 characters)");
         evt.Skip();
         return;
@@ -76,20 +69,21 @@ void RegistrationPanel::OnSubmitClicked(wxCommandEvent &evt) {
 
         std::string combined = parent->getCm()->getClient(pidStr)->toDBInfo()+"#"+passwdStr;
         parent->getCm()->addClientToDB(parent->getConnection(),combined);
+
         parent->getConnection()->setLoggedPid(pidStr);
-        info->SetForegroundColour(*wxGREEN);
-        info->SetLabel("success");
-        parent->RefreshAfterLogging();
+
+        parent->RefreshAllPanelsAfterLogging();
+
         parent->changePanels(3);
     } catch (const ClientError& err) {
         std::string errors = err.what();
-//        errors[20] = '\0';
         info->SetLabel(errors);
-    }
 
+    }
+    setHints();
     parent->Layout();
 
-    evt.Skip();
+
 }
 
 void RegistrationPanel::OnRegistClicked(wxCommandEvent &evt) {

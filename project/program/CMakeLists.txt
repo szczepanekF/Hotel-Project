@@ -13,7 +13,7 @@ include_directories(
         ${Boost_INCLUDE_DIRS}
 )
 #Ustaw we własnej zmiennej SOURCE_FILES zbiór plików źródłowych projektu
-set(SOURCE_FILES src/cApp.cpp src/cMain.cpp src/LoginPanel.cpp include/LoginPanel.h src/RegistrationPanel.cpp include/RegistrationPanel.h src/baseLogRegistPanel.cpp include/baseLogRegistPanel.h src/MenuPanel.cpp include/MenuPanel.h src/basePanel.cpp include/basePanel.h src/SettingsPanel.cpp include/SettingsPanel.h src/RoomsPanel.cpp include/RoomsPanel.h src/ReservationPanel.cpp include/ReservationPanel.h include/RoomItemData.h include/SimpleRoomVirtualListControl.h src/SimpleRoomVirtualListControl.cpp src/SimpleReservationVirtualListControl.cpp include/SimpleReservationVirtualListControl.h include/ReservationItemData.h src/baseLoggedPanel.cpp include/baseLoggedPanel.h)
+set(SOURCE_FILES src/cApp.cpp src/cMain.cpp src/LoginPanel.cpp include/LoginPanel.h src/RegistrationPanel.cpp include/RegistrationPanel.h src/baseLogRegistPanel.cpp include/baseLogRegistPanel.h src/MenuPanel.cpp include/MenuPanel.h src/basePanel.cpp include/basePanel.h src/SettingsPanel.cpp include/SettingsPanel.h src/RoomsPanel.cpp include/RoomsPanel.h src/ReservationPanel.cpp include/ReservationPanel.h include/Lists/RoomItemData.h include/Lists/SimpleRoomVirtualListControl.h src/Lists/SimpleRoomVirtualListControl.cpp src/Lists/SimpleReservationVirtualListControl.cpp include/Lists/SimpleReservationVirtualListControl.h include/Lists/ReservationItemData.h src/baseLoggedPanel.cpp include/baseLoggedPanel.h include/Lists/SimpleVirtualListBase.h)
 
 #Włącz powyższy zbiór plików do zbudowania programu wykonywalnego Program
 add_executable(Program ${SOURCE_FILES})

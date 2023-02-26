@@ -7,24 +7,21 @@ wxBEGIN_EVENT_TABLE(baseLogRegistPanel,wxPanel)
 
 wxEND_EVENT_TABLE()
 
-baseLogRegistPanel::baseLogRegistPanel(cMain* parent) : basePanel(parent)
-{
+baseLogRegistPanel::baseLogRegistPanel(cMain* parent) : basePanel(parent) {
     horizontalSizer2 = new wxBoxSizer(wxHORIZONTAL);
 }
-baseLogRegistPanel::~baseLogRegistPanel() {
-
-}
-
 void baseLogRegistPanel::setHints() {
     info->SetLabel("");
+
     pid->Clear();
     pid->SetHint("login");
+
     passwd->Clear();
     passwd->SetWindowStyleFlag(wxTE_CENTER);
     passwd->SetHint("password");
 
 }
 
-wxButton *baseLogRegistPanel::getRegist() const {
-    return regist;
+void baseLogRegistPanel::setSubmitFocus() const {
+    submit->SetFocus();
 }

@@ -11,7 +11,7 @@ bool Standard::applyDiscount() const {
 }
 
 std::string Standard::getClientTypeInfo() const {
-    return "Standard Client";
+    return "Gold account";
 }
 
 Standard::Standard() = default;

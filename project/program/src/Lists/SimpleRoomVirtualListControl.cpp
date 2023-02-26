@@ -4,12 +4,12 @@
 
 #include <algorithm>
 #include <numeric>
-#include "SimpleRoomVirtualListControl.h"
+#include "Lists/SimpleRoomVirtualListControl.h"
 #include <sstream>
 #include <iomanip>
 
 SimpleRoomVirtualListControl::SimpleRoomVirtualListControl(wxWindow *parent, wxWindowID winid, const wxPoint &pos,
-                                                           const wxSize &size) : wxListCtrl(parent, winid, pos, size, wxLC_REPORT | wxLC_VIRTUAL) {
+                                                           const wxSize &size) : SimpleVirtualListBase<RoomItemData>(parent, winid, pos, size) {
     this->AppendColumn("Room nr",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Price Per night [eur]",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Bed Amount",wxLIST_FORMAT_CENTER);
@@ -18,29 +18,6 @@ SimpleRoomVirtualListControl::SimpleRoomVirtualListControl(wxWindow *parent, wxW
     this->SetColumnWidth(1,175);
     this->SetColumnWidth(2,100);
     this->SetColumnWidth(3,175);
-
-
-    this->Bind(wxEVT_LIST_COL_CLICK,[this](wxListEvent& evt) {
-        auto selectedListIndex = getFirstSelectedIndex();
-        long selectedNrIndex;
-        if (selectedListIndex!= -1) {
-            selectedNrIndex = this->orderedIndices[selectedListIndex];
-            this->SetItemState(selectedListIndex,0,wxLIST_STATE_SELECTED);
-        }
-
-        this->sortByColumn(evt.GetColumn());
-        this->RefreshAfterUpdate();
-
-        if (selectedListIndex!= -1) {
-            auto indexToSelect = findIndexOfNRindex(selectedNrIndex);
-            this->SetItemState(indexToSelect,wxLIST_STATE_SELECTED,wxLIST_STATE_SELECTED);
-            this->EnsureVisible(indexToSelect);
-        }
-
-
-        this->sortAscending = !this->sortAscending;
-    });
-
 }
 
 
@@ -59,21 +36,13 @@ wxString SimpleRoomVirtualListControl::OnGetItemText(long index, long column) co
             ss<< item.terr;
             return item.terr == 0 ? "X" : ss.str();
         default: return "";
-
-
     }
-
 }
 
-void SimpleRoomVirtualListControl::RefreshAfterUpdate() {
-    this->SetItemCount(orderedIndices.size());
-    this->Refresh();
-
-}
 
 
 void SimpleRoomVirtualListControl::sortByColumn(int column) {
-    static auto genericCompare = [](auto i1,auto i2, bool ascending) {
+    const static auto genericCompare = [](auto i1,auto i2, bool ascending) {
         return ascending ? i1 < i2 : i1 > i2;
     };
 
@@ -97,16 +66,5 @@ void SimpleRoomVirtualListControl::sortByColumn(int column) {
     });
 }
 
-long SimpleRoomVirtualListControl::getFirstSelectedIndex() {
-    return GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-}
 
-long SimpleRoomVirtualListControl::findIndexOfNRindex(long dataIndex) {
-    return std::find(orderedIndices.begin(),orderedIndices.end(),dataIndex)-orderedIndices.begin();
-}
 
-void SimpleRoomVirtualListControl::setItems(std::vector<RoomItemData> itemsToSet) {
-    this->items = itemsToSet;
-    this->orderedIndices = std::vector<long>(items.size());
-    std::iota(orderedIndices.begin(),orderedIndices.end(),0);
-}

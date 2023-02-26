@@ -14,5 +14,5 @@ bool LongTerm::applyDiscount() const {
 }
 
 std::string LongTerm::getClientTypeInfo() const {
-    return "Long Term Client";
+    return "Diamond account";
 }

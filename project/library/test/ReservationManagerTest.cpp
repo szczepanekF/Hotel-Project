@@ -63,12 +63,14 @@ struct ReservationManagerFixture {
 };
 BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
+
+
     BOOST_AUTO_TEST_CASE(StartAndFindRoomReservationTest) {
         ReservationManager RM(currentRR,archiveRR);
         BOOST_REQUIRE(currentRR->size() == 0);
-        testClient->setBill(100);
-        testClient2->setBill(2000);
-        testClient3->setBill(3000);
+        testClient->setBalance(800);
+        testClient2->setBalance(3400);
+        testClient3->setBalance(11250);
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
                                               A);
         testReservation2 = RM.startReservation(testClient2, testRoom2, testGuestCount, testBeginTime,
@@ -109,9 +111,9 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_TEST(testReservation->getTotalReservationCost()==testReservation->getPricePerNight()*testReservation->getReservationDays());
         BOOST_TEST(testReservation2->getTotalReservationCost()==testReservation2->getPricePerNight()*testReservation2->getReservationDays());
         BOOST_TEST(testReservation3->getTotalReservationCost()==testReservation3->getPricePerNight()*testReservation3->getReservationDays());
-        BOOST_TEST(testClient->getBill()==100);
-        BOOST_TEST(testClient2->getBill()==2000);
-        BOOST_TEST(testClient3->getBill()==3000);
+        BOOST_TEST(testClient->getBalance() == 0);
+        BOOST_TEST(testClient2->getBalance() == 0);
+        BOOST_TEST(testClient3->getBalance() == 0);
 
 
 
@@ -119,6 +121,29 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
 
 
     }
+
+    BOOST_AUTO_TEST_CASE(ReadResTest) {
+        ReservationManager RM(currentRR,archiveRR);
+        BOOST_REQUIRE(currentRR->size() == 0);
+        testClient->setBalance(800);
+        testClient2->setBalance(3400);
+        testClient3->setBalance(11250);
+        testReservation = RM.readReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
+                                             A);
+        testReservation2 = RM.readReservation(testClient2, testRoom2, testGuestCount, testBeginTime,
+                                              testReservationDays2, B);
+        testReservation3 = RM.readReservation(testClient3, testRoom3, testGuestCount, testBeginTime,
+                                              testReservationDays3, C);
+        testReservation4 = RM.readReservation(testClient3, testRoom3, testGuestCount, testBeginTime - pt::hours(testReservationDays3*24),
+                                              testReservationDays3-1, C);
+        BOOST_TEST(testClient->getBalance() == 800);
+        BOOST_TEST(testClient2->getBalance() == 3400);
+        BOOST_TEST(testClient3->getBalance() == 11250);
+        BOOST_TEST(currentRR->size() == 4);
+        RM.removeReservation(testReservation->getId());
+        BOOST_TEST(currentRR->size() == 3);
+    };
+
     BOOST_AUTO_TEST_CASE(StartAndFindRoomReservationErrorTest) {
         ReservationManager RM(currentRR,archiveRR);
         testReservation = RM.startReservation(testClient, testRoom, testGuestCount, testBeginTime, testReservationDays1,
@@ -170,7 +195,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         RM.endReservation(testId3);
         BOOST_TEST(currentRR->size() == 2);
         BOOST_TEST(archiveRR->size() == 1);
-        testClient3->setBill(300);
+        testClient3->setBalance(300);
 
         archiveRR->remove(testReservation3);
         ReservationPtr res1= std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
@@ -184,7 +209,7 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         BOOST_TEST(RM.calculateDiscount(testClient3)==0);
 
         RM.endReservation(testId3);
-        BOOST_TEST(res2->getClient()->getBill()==300);
+        BOOST_TEST(res2->getClient()->getBalance() == 300);
         BOOST_TEST(RM.calculateDiscount(testClient3)==0.02);
 
         ReservationPtr res3 = std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
@@ -193,39 +218,39 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservationManager,ReservationManagerFixture)
         currentRR->add(res3);
         RM.endReservation(testId3);
 
-        BOOST_TEST(res3->getClient()->getBill()==300-0.02*res3->getTotalReservationCost());
+        BOOST_TEST(res3->getClient()->getBalance() == 300 + 0.02 * res3->getTotalReservationCost());
         ReservationPtr res4 = std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
                                                             1, C);
         res4->setTotalReservationCost(res4->calculateBaseReservationCost());
         currentRR->add(res4);
         RM.endReservation(testId3);
         BOOST_TEST(RM.calculateDiscount(testClient3)==0.05);
-        double help = 300 - 0.02*(res3->getTotalReservationCost()+res4->getTotalReservationCost());
-        BOOST_TEST(res4->getClient()->getBill()==help);
+        double help = 300 + 0.02*(res3->getTotalReservationCost()+res4->getTotalReservationCost());
+        BOOST_TEST(res4->getClient()->getBalance() == help);
         ReservationPtr res5 = std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
                                                             38, C);
         res5->setTotalReservationCost(res5->calculateBaseReservationCost());
         currentRR->add(res5);
         RM.endReservation(testId3);
 
-        BOOST_TEST(res5->getClient()->getBill()==help-0.05*res5->getTotalReservationCost());
+        BOOST_TEST(res5->getClient()->getBalance() == help + 0.05 * res5->getTotalReservationCost());
 
 
         ReservationPtr res6 = std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
                                                             1, C);
         res6->setTotalReservationCost(res5->calculateBaseReservationCost());
-        double help2 =help - 0.05*(res5->getTotalReservationCost()+res6->getTotalReservationCost());
+        double help2 =help + 0.05*(res5->getTotalReservationCost()+res6->getTotalReservationCost());
         currentRR->add(res6);
         RM.endReservation(testId3);
         BOOST_TEST(RM.calculateDiscount(testClient3)==0.07);
-        BOOST_TEST(res6->getClient()->getBill()==help2);
+        BOOST_TEST(res6->getClient()->getBalance() == help2);
         ReservationPtr res7 = std::make_shared<Reservation>(testClient3, testRoom3, testGuestCount,testId3, testBeginTime,
                                                             1, C);
         res7->setTotalReservationCost(res5->calculateBaseReservationCost());
 
         currentRR->add(res7);
         RM.endReservation(testId3);
-        BOOST_TEST(res7->getClient()->getBill()==help2-0.07*res7->getTotalReservationCost());
+        BOOST_TEST(res7->getClient()->getBalance() == help2 + 0.07 * res7->getTotalReservationCost());
     }
     BOOST_AUTO_TEST_CASE(EndErrorTest) {
         ReservationManager RM(currentRR,archiveRR);

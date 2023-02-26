@@ -10,23 +10,15 @@ LoginPanel::LoginPanel(cMain* parent) : baseLogRegistPanel(parent)
     info = new wxStaticText(this,wxID_ANY,"",wxDefaultPosition,wxSize(175,30));
     info->SetForegroundColour(*wxRED);
 
-
     pid = new wxTextCtrl(this, wxID_ANY,"",wxDefaultPosition,wxSize(175,30),wxTE_CENTRE);
 
-
     passwd = new wxTextCtrl(this, 10001,"",wxDefaultPosition,wxSize(175,30));
-
 
     regist = new wxButton(this, 10003,"register",wxDefaultPosition,wxSize(125,30));
     submit = new wxButton(this, 10002,"submit",wxDefaultPosition,wxSize(125,30));
 
-//    regist->Disable();
-
-
-
 
     setHints();
-    info->SetAutoLayout(true);
     regist->SetFocus();
     horizontalSizer2->Add(regist,1,wxALIGN_CENTER|wxALL,1);
     horizontalSizer2->Add(submit,1,wxALIGN_CENTER|wxALL,1);
@@ -37,17 +29,14 @@ LoginPanel::LoginPanel(cMain* parent) : baseLogRegistPanel(parent)
     horizontalSizer->Add(verticalSizer,1,wxALIGN_CENTER|wxALL,25);
 
     this->SetSizer(horizontalSizer);
-
 }
 
-LoginPanel::~LoginPanel()  {}
 
 
 
 void LoginPanel::OnPasswdWrite(wxCommandEvent &evt) {
     if(passwd->GetWindowStyleFlag()==wxTE_CENTER) {
         passwd->SetWindowStyleFlag(wxTE_PASSWORD | wxTE_CENTER);
-        passwd->SetHint("");
     }
 
     evt.Skip();
@@ -85,12 +74,10 @@ void LoginPanel::OnSubmitClicked(wxCommandEvent &evt) {
     {
         info->SetLabel("bad password");
     } else {
-        info->SetForegroundColour(*wxGREEN);
-        info->SetLabel("success");
-        parent->RefreshAfterLogging();
+        parent->RefreshAllPanelsAfterLogging();
         parent->changePanels(3);
     }
-
+    setHints();
     evt.Skip();
 }
 void LoginPanel::OnRegistClicked(wxCommandEvent &evt) {

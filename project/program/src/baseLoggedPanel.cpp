@@ -8,39 +8,46 @@
 #include "sstream"
 
 baseLoggedPanel::baseLoggedPanel(cMain *parent) : basePanel(parent) {
-
-
+    balanceInfoSizer = new wxBoxSizer(wxHORIZONTAL);
+    verticalSizer->Add(horizontalSizer,0,wxALIGN_RIGHT|wxRIGHT|wxTOP,10);
+    verticalSizer->Add(balanceInfoSizer,0,wxALIGN_RIGHT|wxRIGHT,10);
 }
 
-baseLoggedPanel::~baseLoggedPanel() {
 
-}
-
-void baseLoggedPanel::RefreshAfterLogging() {
+void baseLoggedPanel::SetOnLogging() {
+    horizontalSizer->Clear(true);
+    balanceInfoSizer->Clear(true);
     std::string log = parent->getConnection()->getLoggedPid();
     ClientPtr ptr = parent->getCm()->getClient(log);
     std::string Fname = ptr->getFirstName();
-    std::string Lname = ptr->getLastName();
+    std::string ClientType = ptr->getClientType()->getClientTypeInfo();
     std::stringstream ss;
-    ss << std::fixed << std::setprecision(2) << ptr->getBill();
+    ss << std::fixed << std::setprecision(2) << ptr->getBalance();
 
     wxStaticText* helpText = new wxStaticText(this,wxID_ANY,"Your balance: ");
 
-    balanceInfoSizer = new wxBoxSizer(wxHORIZONTAL);
+
     fname = new wxStaticText(this,wxID_ANY,Fname);
-    lname = new wxStaticText(this,wxID_ANY,Lname);
+    cType = new wxStaticText(this,wxID_ANY,ClientType);
+    cType->SetForegroundColour(*wxBLUE);
     balance = new wxStaticText(this,wxID_ANY,ss.str());
 
 
-
+    horizontalSizer->Add(cType,0,wxALIGN_CENTER|wxALL,2);
     horizontalSizer->Add(fname,0,wxALIGN_CENTER|wxALL,2);
-    horizontalSizer->Add(lname,0,wxALIGN_CENTER|wxALL,2);
+
     balanceInfoSizer->Add(helpText,0,wxALIGN_CENTER|wxALL,2);
     balanceInfoSizer->Add(balance,0,wxALIGN_CENTER|wxALL,2);
+}
 
-    verticalSizer->Prepend(balanceInfoSizer,0,wxALIGN_RIGHT|wxRIGHT,10);
-    verticalSizer->Prepend(horizontalSizer,0,wxALIGN_RIGHT|wxRIGHT|wxTOP,10);
+void baseLoggedPanel::RefreshBalance() {
+    std::string log = parent->getConnection()->getLoggedPid();
+    ClientPtr ptr = parent->getCm()->getClient(log);
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << ptr->getBalance();
+    std::string ClientType = ptr->getClientType()->getClientTypeInfo();
+    balance->SetLabel(ss.str());
+    cType->SetLabel(ClientType);
 
-
-
+    this->Layout();
 }

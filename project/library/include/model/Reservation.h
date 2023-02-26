@@ -48,7 +48,7 @@ public:
     double calculateBaseReservationCost() const; ///oblicza koszt rezerwacji, który jest iloczynem ceny za noc i ilością nocy
     void setTotalReservationCost(double new_totalReservationCost);
     double getPricePerNight() const; ///zwraca sumę ceny pokoju i bonusu, która jest ostateczną ceną za jedną noc rezerwacji
-
+    std::string toDBInfo() const;
 };
 
 

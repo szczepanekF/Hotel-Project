@@ -9,16 +9,19 @@
 
 class cMain;
 class baseLoggedPanel: public basePanel {
-public:
-    baseLoggedPanel(cMain *parent);
-    virtual ~baseLoggedPanel();
-
-    void RefreshAfterLogging();
 protected:
     wxStaticText* fname;
-    wxStaticText* lname;
+    wxStaticText* cType;
     wxStaticText* balance;
+
     wxBoxSizer* balanceInfoSizer;
+public:
+    baseLoggedPanel(cMain *parent);
+    virtual ~baseLoggedPanel() = default;
+
+    void SetOnLogging();
+    void RefreshBalance();
+
 
 
 };

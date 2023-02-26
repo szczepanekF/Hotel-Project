@@ -41,7 +41,8 @@ BOOST_FIXTURE_TEST_SUITE(TestSuiteReservation,ReservationFixture)
         BOOST_TEST(res.getBeginTime()==testBeginTime);
         BOOST_TEST(res.getReservationDays()==1);
         BOOST_TEST(res.getExtraBonus()==A);
-        BOOST_TEST(res.calculateBaseReservationCost()==testClient->getBill()+res.getPricePerNight()*res.getReservationDays());
+        BOOST_TEST(res.calculateBaseReservationCost()==
+                           testClient->getBalance() + res.getPricePerNight() * res.getReservationDays());
 
 
     }

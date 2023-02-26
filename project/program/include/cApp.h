@@ -11,17 +11,18 @@
 
 
 class cApp : public wxApp{
-public:
+private:
         cMain* m_Frame = nullptr;
+        C_client* connection = nullptr;
         ClientRepositoryPtr clients;
         RoomRepositoryPtr rooms;
         ReservationRepositoryPtr currRes;
         ReservationRepositoryPtr archRes;
-        C_client* connection = nullptr;
+
 
 public:
     cApp();
-    ~cApp();
+    ~cApp() = default;
 
     bool OnInit() override;
 };

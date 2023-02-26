@@ -7,8 +7,8 @@
 
 basePanel::basePanel(cMain *parent) : parent(parent), wxPanel(parent) {
     this->SetBackgroundColour(wxColour(237,237,233));
+
     verticalSizer = new wxBoxSizer(wxVERTICAL);
     horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 }
 
-basePanel::~basePanel(){};

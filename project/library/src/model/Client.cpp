@@ -6,7 +6,7 @@
 
 Client::Client(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalId,
                const ClientTypePtr &initial_clientType) try: firstName(initial_firstName), lastName(initial_lastName), personalID(initial_personalId),
-                                                             ClientType(initial_clientType), archive(false),bill(0) {
+                                                             ClientType(initial_clientType), archive(false), balance(0) {
 
     if(initial_firstName.empty()){
         throw ClientError("ERROR Empty first name");
@@ -47,8 +47,8 @@ bool Client::isArchive() const {
     return archive;
 }
 
-double Client::getBill() const {
-    return bill;
+double Client::getBalance() const {
+    return balance;
 }
 
 void Client::setFirstName(const std::string &new_firstName) {
@@ -76,8 +76,8 @@ void Client::setArchive(bool new_archive) {
     Client::archive = new_archive;
 }
 
-void Client::setBill(double new_bill) {
-    Client::bill = new_bill;
+void Client::setBalance(double new_bill) {
+    Client::balance = new_bill;
 }
 
 unsigned int Client::getMaxDays() const {
@@ -95,16 +95,17 @@ std::string Client::getInfo() const {
     }else{
         ArchiveInfo="is not archive";
     }
-    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " bill equal: " + std::to_string(getBill()) + " " + ArchiveInfo ;
+    return getClientType()->getClientTypeInfo() + " " + getFirstName() + " " + getLastName() + " " + getId() + " balance equal: " + std::to_string(
+            getBalance()) + " " + ArchiveInfo ;
 }
 
 std::string Client::toDBInfo() const {
     std::string clientTypeInt;
-    if (getClientType()->getClientTypeInfo() == "Short Term Client") {
+    if (getClientType()->getClientTypeInfo() == "Base account") {
         clientTypeInt = "0";
-    } else if (getClientType()->getClientTypeInfo() == "Standard Client") {
+    } else if (getClientType()->getClientTypeInfo() == "Gold account") {
         clientTypeInt = "1";
-    } else if (getClientType()->getClientTypeInfo() == "Long Term Client") {
+    } else if (getClientType()->getClientTypeInfo() == "Diamond account") {
         clientTypeInt = "2";
     }
 

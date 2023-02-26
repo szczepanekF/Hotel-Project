@@ -13,29 +13,32 @@ private:
 
     wxButton* removeMoney = nullptr;
     wxButton* addMoney = nullptr;
-    wxBoxSizer* changeMoneyAmountSizer = nullptr;
-    wxStaticText* value = nullptr;
     wxButton* standard = nullptr;
     wxButton* longTerm = nullptr;
+
+    wxBoxSizer* changeMoneyAmountSizer = nullptr;
+    wxBoxSizer* clientTypeInfoSizer = nullptr;
+
     wxBoxSizer* clientTypeSizer = nullptr;
+
+    wxStaticText* errInfoMsg = nullptr;
     ClientPtr client;
 
 
+public:
+    SettingsPanel(cMain *parent);
+    virtual ~SettingsPanel() = default;
 
+    void setClient(const ClientPtr &client);
+    void Refresh();
+private:
     void add(wxCommandEvent &evt);
     void remove(wxCommandEvent &evt);
     void standardClicked(wxCommandEvent &evt);
     void longClicked(wxCommandEvent &evt);
     void ReturnClicked(wxCommandEvent &evt);
+    void accountTypeInfo(wxCommandEvent &evt);
     void RefreshValue();
-
-public:
-    SettingsPanel(cMain *parent);
-
-    void setClient(const ClientPtr &client);
-
-    virtual ~SettingsPanel();
-    void Refresh();
 
 
 wxDECLARE_EVENT_TABLE();

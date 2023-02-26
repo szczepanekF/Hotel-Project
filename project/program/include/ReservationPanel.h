@@ -11,16 +11,39 @@
 
 class SimpleReservationVirtualListControl;
 class ReservationPanel: public baseLoggedPanel {
-    bool filter = true;
+    bool filter = false;
     SimpleReservationVirtualListControl* list = nullptr;
     wxButton* changeBtn = nullptr;
-    void ReturnClicked(wxCommandEvent &evt);
-    void ChangeClicked(wxCommandEvent &evt);
-    void populateListView(ReservationPredicate predicate);
+    wxButton* cancelResButton = nullptr;
+    wxButton* changeTypeOfMaintenance = nullptr;
+    wxButton* submit = nullptr;
+    wxButton* submit2 = nullptr;
+
+    wxBoxSizer* manageResSizer = nullptr;
+    wxBoxSizer* changeTypeSizer = nullptr;
+    wxBoxSizer* priceSizer = nullptr;
+    wxCheckBox* medium = nullptr;
+    wxCheckBox* extra = nullptr;
+    wxStaticText* priceInfo = nullptr;
+    wxStaticText* price = nullptr;
+
 public:
     ReservationPanel(cMain *parent);
+    virtual ~ReservationPanel() = default;
+private:
+    void ReturnClicked(wxCommandEvent &evt);
+    void ChangeClicked(wxCommandEvent &evt);
+    void ChangeType(wxCommandEvent &evt);
+    void CancelReservation(wxCommandEvent &evt);
+    void Submit(wxCommandEvent &evt);
+    void Submit2(wxCommandEvent &evt);
 
-    virtual ~ReservationPanel();
+    void populateListView(ReservationPredicate predicate);
+
+    void RefreshPrice();
+    void RefreshRefund();
+    void HideOptions();
+    ReservationPtr getSelectedRes();
 
 wxDECLARE_EVENT_TABLE();
 };

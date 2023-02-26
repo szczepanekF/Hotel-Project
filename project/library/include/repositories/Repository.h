@@ -6,7 +6,6 @@
 #include <functional>
 #include <fstream>
 #include "socket/C_client.h"
-
 #include <iostream>
 
 
@@ -116,12 +115,7 @@ public:
 
         return info;
     }
-    virtual int saveInfo(C_client* conn, std::string infos){
-        if (conn->getConnSuccess() < 0) {
-            return -2;
-        }
-        return conn->saveInfo(infos);
-    }
+
 
 };
 

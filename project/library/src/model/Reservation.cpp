@@ -90,8 +90,7 @@ int Reservation::getReservationDays() const {
 }
 
 double Reservation::calculateBaseReservationCost() const {
-    double s= getPricePerNight()*getReservationDays();
-    return s;
+    return getPricePerNight()*getReservationDays();
 }
 
 extraBonusType Reservation::getExtraBonus() const {
@@ -104,4 +103,23 @@ void Reservation::setExtraBonus(extraBonusType new_extraBonus) {
 
 double Reservation::getPricePerNight() const {
     return room->getFinalPricePerNight()+getExtraBonus();
+}
+
+std::string Reservation::toDBInfo() const {
+    std::string x;
+
+    if (extraBonus == A) {
+        x = '0';
+    } else if (extraBonus == B) {
+        x = '1';
+    } else {
+        x = '2';
+    }
+
+
+    std::stringstream ss;
+    ss << client->getId() << "#" << room->getId() << "#" << room->getBedCount() << "#" << to_simple_string(beginTime)
+       << "#" << reservationsDays << "#" <<x ;
+
+    return ss.str();
 }

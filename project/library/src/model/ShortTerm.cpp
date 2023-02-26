@@ -11,7 +11,7 @@ bool ShortTerm::applyDiscount() const {
 }
 
 std::string ShortTerm::getClientTypeInfo() const {
-    return "Short Term Client";
+    return "Base account";
 }
 
 ShortTerm::ShortTerm() = default;

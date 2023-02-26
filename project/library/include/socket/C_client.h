@@ -10,6 +10,9 @@
 #define NO_CLIENT "!NO_CLIENT"
 #define SAVE_INFO "!SAVE"
 #define UPDATE_CLIENT "!UPDATE_CLIENT"
+#define DELETE_RES "!DELETE_RES"
+#define UPDATE_RES "!UPDATE_RES"
+
 
 #include "typedefs.h"
 
@@ -26,9 +29,11 @@ public:
     ~C_client();
     bool createConnection();
     int login(const std::string &pid,const std::string &passwd);
-    void updateClient(const std::string &value,const std::string &what);
+    void updateClient(const std::string &new_value,const std::string &what);
     void updateType(const std::string &i);
-    void updateBill(const std::string &i);
+    void updateBalance(const std::string &i);
+    void updateResType(const std::string &new_value);
+    void deleteReservation(const std::string &i);
     std::string sendMessage(const std::string &msg);
     int saveInfo(const std::string &msg);
     int getConnSuccess() const;

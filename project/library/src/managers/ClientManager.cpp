@@ -26,10 +26,10 @@ ClientPtr ClientManager::registerClient(const std::string &initial_firstName, co
 
         ClientPtr client= std::make_shared<Client>(initial_firstName, initial_lastName, initial_personalID, initial_clientType);
 //        if(initial_clientType->getClientTypeInfo() == "Long Term Client"){
-//            client->setBill(300);
+//            client->setBalance(300);
 //
 //        }else if(initial_clientType->getClientTypeInfo() == "Standard Client"){
-//            client->setBill(100);
+//            client->setBalance(100);
 //
 //        }
 
@@ -63,12 +63,12 @@ void ClientManager::changeClientTypetoStandard(const std::string &personalID) co
     ClientPtr client= getClient(personalID);
     if(client->getMaxDays()<type->getMaxDays()){
 
-        double s=client->getBill();
+        double s= client->getBalance();
         s-=300;
         if (s<0) {
             throw ClientError("ERROR not enough money");
         }
-        client->setBill(s);
+        client->setBalance(s);
         client->setClientType(type);
     }else if(client->getMaxDays()==type->getMaxDays()){
         throw ClientError("ERROR cant change to equal type");
@@ -83,12 +83,12 @@ void ClientManager::changeClientTypetoLongTerm(const std::string &personalID) co
     ClientPtr client= getClient(personalID);
     if(client->getMaxDays()<type->getMaxDays()){
 
-        double s=client->getBill();
+        double s= client->getBalance();
         s-=500;
         if (s<0) {
             throw ClientError("ERROR not enough money");
         }
-        client->setBill(s);
+        client->setBalance(s);
         client->setClientType(type);
     }else if(client->getMaxDays()==type->getMaxDays()){
         throw ClientError("ERROR cant change to equal type");
@@ -111,10 +111,13 @@ void ClientManager::readClientsFromServer(C_client* conn) {
         else
             type = std::make_shared<ShortTerm>();
         registerClient(clientsInfo[i][0],clientsInfo[i][1],clientsInfo[i][2],type);
-        clients->findById(clientsInfo[i][2])->setBill(std::stoi(clientsInfo[i][4]));
+        clients->findById(clientsInfo[i][2])->setBalance(std::stoi(clientsInfo[i][4]));
     }
 }
 
 void ClientManager::addClientToDB(C_client* conn,std::string &msg) {
-    clients->saveInfo(conn,msg);
+    if (conn->getConnSuccess() < 0) {
+        return;
+    }
+    conn->saveInfo(msg);
 }

@@ -9,15 +9,18 @@
 class cMain;
 
 class basePanel : public wxPanel{
-public:
-    basePanel(cMain* parent);
-
-    virtual ~basePanel() = 0;
 protected:
     cMain* parent;
 
     wxBoxSizer* verticalSizer = nullptr;
     wxBoxSizer* horizontalSizer= nullptr;
+
+
+public:
+    basePanel(cMain* parent);
+    virtual ~basePanel() = default;;
+
+
 
 };
 

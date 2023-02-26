@@ -10,17 +10,20 @@
 
 class cMain;
 class MenuPanel : public baseLoggedPanel {
+private:
+    wxButton** buttons;
+    wxBoxSizer* horizontalSizer2;
 public:
     MenuPanel(cMain* parent);
-    virtual ~MenuPanel();
-
+    virtual ~MenuPanel() = default;
 private:
-
     void SwitchToRes(wxCommandEvent &evt) ;
     void SwitchToRooms(wxCommandEvent &evt) ;
     void SwitchToSetting(wxCommandEvent &evt) ;
-    wxButton** buttons;
-    wxBoxSizer* horizontalSizer2;
+    void Logout(wxCommandEvent &evt) ;
+
+
+
 wxDECLARE_EVENT_TABLE();
 };
 

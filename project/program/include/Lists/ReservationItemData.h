@@ -6,6 +6,7 @@
 #define HOTELPROJECT_RESERVATIONITEMDATA_H
 
 #include <boost/date_time.hpp>
+#include "model/Reservation.h"
 
 namespace pt = boost::posix_time;
 struct ReservationItemData
@@ -14,7 +15,7 @@ struct ReservationItemData
     pt::ptime begin;
     pt::ptime end;
     int guests;
-    int type_of_res;
+    extraBonusType type_of_res;
 
 };
 #endif //HOTELPROJECT_RESERVATIONITEMDATA_H

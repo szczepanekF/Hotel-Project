@@ -10,32 +10,40 @@
 class baseLoggedPanel;
 class SettingsPanel;
 class LoginPanel;
+class RegistrationPanel;
+
 class cMain : public wxFrame{
-public:
-    cMain(C_client* conn, ClientManagerPtr& CM, RoomManagerPtr& RoomM, ReservationManagerPtr& ResM);
-    virtual ~cMain();
 private:
     LoginPanel* loginP = nullptr;
-    wxPanel* registerP = nullptr;
+    RegistrationPanel* registerP = nullptr;
+
     baseLoggedPanel* middleP = nullptr;
+
     baseLoggedPanel* reservationP = nullptr;
     baseLoggedPanel* roomsP = nullptr;
     SettingsPanel* settingsP = nullptr;
-    wxBoxSizer* boxsizer2 = nullptr;
+    wxBoxSizer* boxsizer = nullptr;
 
     ClientManagerPtr CM;
     RoomManagerPtr RoomM;
     ReservationManagerPtr ResM;
     C_client* connection;
+
+
 public:
+    cMain(C_client* conn, ClientManagerPtr& CM, RoomManagerPtr& RoomM, ReservationManagerPtr& ResM);
+    virtual ~cMain();
+
+
     ClientManagerPtr getCm() const;
     RoomManagerPtr getRoomM() const;
     ReservationManagerPtr getResM() const;
     C_client *getConnection() const;
-    void RefreshAfterLogging();
-
-    //void errorMessage(std::string message);
+    void RefreshAllPanelsAfterLogging();
+    void RefreshAllPanelsBalance();
     void changePanels(unsigned int panelnr);
+
+
 
 };
 

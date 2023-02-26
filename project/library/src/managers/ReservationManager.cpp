@@ -64,11 +64,6 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
 
              init_id =gen();
         }
-//        if(beginTime<pt::second_clock::local_time())
-//        {
-//            throw ReservationError("Error Wrong begin time");
-//            past reservation
-//        }
         if(guestCount > room->getBedCount())
         {
             throw ReservationError("Error Too many guests");
@@ -79,22 +74,35 @@ ReservationManager::startReservation(const ClientPtr &client, const RoomPtr &roo
 
         pt::ptime ideal(beginTime.date(),pt::hours(13));
         ReservationPtr new_reservation = std::make_shared<Reservation>(client,room,guestCount,init_id,ideal,reservationDays,bonus);
+        double price = new_reservation->calculateBaseReservationCost();
+        if (client->acceptDiscount()) {
+            price = price * (1 - calculateDiscount(client));
+        }
 
-//        if(client->getBill()+new_reservation->calculateBaseReservationCost()<0)
-//        {
-//            new_reservation->setTotalReservationCost(0);
-//        }else{
-        new_reservation->setTotalReservationCost(new_reservation->calculateBaseReservationCost());
-//        }
+        new_reservation->setTotalReservationCost(price);
 
-//        client->setBill(0);
         currentReservations->add(new_reservation);
-
+        if (!reading) {
+            client->setBalance(client->getBalance() - price);
+        }
 
         return new_reservation;
     }
     throw ReservationError("ERROR room is occupied in this period");
 }
+
+
+
+ReservationPtr
+ReservationManager::readReservation(const ClientPtr &client, const RoomPtr &room, unsigned int guestCount,
+                                    const pt::ptime &beginTime, unsigned int reservationDays, extraBonusType bonus) {
+    reading = true;
+    ReservationPtr ptr = startReservation(client,room,guestCount,beginTime,reservationDays,bonus);
+    reading = false;
+    return ptr;
+}
+
+
 
 void ReservationManager::endReservation(const ud::uuid &id) {
 
@@ -103,7 +111,7 @@ void ReservationManager::endReservation(const ud::uuid &id) {
     ClientPtr client = reservation->getClient();
     if(client->acceptDiscount())
     {
-        client->setBill(client->getBill()-calculateDiscount(client)*reservation->getTotalReservationCost());
+        client->setBalance(client->getBalance() + calculateDiscount(client) * reservation->getTotalReservationCost());
     }
     archiveReservations->add(reservation);
     currentReservations->remove(reservation);
@@ -152,60 +160,24 @@ double ReservationManager::calculateDiscount(const ClientPtr &client) const {
 
 void ReservationManager::changeReservationExtraBonusToB(const ud::uuid &id) {
     ReservationPtr reservation = currentReservations->findById(id);
-    if(reservation->getExtraBonus()==C) throw ReservationError("ERROR cant change to lower extra bonus");
-
-
-
-    double new_cost;
-    if(pt::second_clock::local_time()<=reservation->getBeginTime()){
-        new_cost=(reservation->getTotalReservationCost()-reservation->getPricePerNight()*reservation->getReservationDays());
-        reservation->setExtraBonus(B);
-        new_cost+=reservation->getPricePerNight()*reservation->getReservationDays();
-        reservation->setTotalReservationCost(new_cost);
-        return;
-    }
-
-    pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
-    if(ideal>reservation->getBeginTime())
-        ideal -=gr::days(1);
-    pt::time_period period(ideal,pt::second_clock::local_time());
-
-
-    long daysBeforeChange = period.length().hours()/24;
-    long daysAfterChange= reservation->getReservationDays()-daysBeforeChange;
-
-
-
-    new_cost = reservation->getTotalReservationCost()-reservation->getPricePerNight()*(double)daysAfterChange;
-    reservation->setExtraBonus(B);
-    new_cost += reservation->getPricePerNight()*(double)daysAfterChange;
-
-    reservation->setTotalReservationCost(new_cost);
+    ClientPtr client = reservation->getClient();
+    extraBonusType type = B;
+    double new_cost = calculatePriceDifferenceAfterChange(id,type);
+    client->setBalance(client->getBalance()-new_cost);
+    reservation->setExtraBonus(type);
+    reservation->setTotalReservationCost(reservation->getTotalReservationCost()+new_cost);
+    return;
 }
 
 void ReservationManager::changeReservationExtraBonusToC(const ud::uuid &id) {
     ReservationPtr reservation = currentReservations->findById(id);
-
-    pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
-
-
-    double new_cost;
-    if(pt::second_clock::local_time()<reservation->getBeginTime()){
-        new_cost=(reservation->getTotalReservationCost()-reservation->getPricePerNight()*reservation->getReservationDays());
-        reservation->setExtraBonus(C);
-        new_cost+=reservation->getPricePerNight()*reservation->getReservationDays();
-        reservation->setTotalReservationCost(new_cost);
-        return;
-    }
-    pt::time_period period(ideal,pt::second_clock::local_time());
-
-    long daysBeforeChange = period.length().hours()/24;
-    long daysAfterChange= reservation->getReservationDays()-daysBeforeChange;
-
-    new_cost = reservation->getTotalReservationCost()-reservation->getPricePerNight()*(double)daysAfterChange ;
-    reservation->setExtraBonus(C);
-    new_cost += reservation->getPricePerNight()*(double)daysAfterChange;
-    reservation->setTotalReservationCost(new_cost);
+    ClientPtr client = reservation->getClient();
+    extraBonusType type = C;
+    double new_cost = calculatePriceDifferenceAfterChange(id,type);
+    client->setBalance(client->getBalance()-new_cost);
+    reservation->setExtraBonus(type);
+    reservation->setTotalReservationCost(reservation->getTotalReservationCost()+new_cost);
+    return;
 }
 
 void ReservationManager::readReservationsFromServer(C_client* conn,ClientManagerPtr CM,RoomManagerPtr RM) {
@@ -230,7 +202,7 @@ void ReservationManager::readReservationsFromServer(C_client* conn,ClientManager
         else
             type = A;
         try {
-            startReservation(client, room, guest_count, begin_date, days_of_res, type);
+            readReservation(client, room, guest_count, begin_date, days_of_res, type);
         } catch (ReservationError &e) {
             std::cout<< e.what();
         }
@@ -248,3 +220,86 @@ bool ReservationManager::isRoomOccupied(const RoomPtr &room, const pt::ptime& be
         return true;}) != resvs.end();
 
 }
+
+
+void ReservationManager::addReservationToDB(C_client *conn, std::string &infos) {
+    if (conn->getConnSuccess() < 0) {
+        return ;
+    }
+    conn->saveInfo(infos);
+}
+
+void ReservationManager::setReservationArchive(const ud::uuid &id) {
+    ReservationPtr reservation = currentReservations->findById(id);
+    archiveReservations->add(reservation);
+    currentReservations->remove(reservation);
+}
+
+void ReservationManager::removeFromDB(C_client *conn, std::string &infos) {
+    if (conn->getConnSuccess() < 0) {
+        return ;
+    }
+    conn->deleteReservation(infos);
+}
+
+double ReservationManager::calculatePriceDifferenceAfterChange(const ud::uuid &id, extraBonusType new_Type) {
+    if (new_Type == A)
+        return 0;
+    ReservationPtr reservation = currentReservations->findById(id);
+    if(reservation->getExtraBonus() > new_Type) throw ReservationError("ERROR cant change to lower extra bonus");
+
+    extraBonusType bonus = reservation->getExtraBonus();
+
+    double new_cost;
+    double old_cost;
+    if(pt::second_clock::local_time()<=reservation->getBeginTime()){
+        old_cost = reservation->calculateBaseReservationCost();
+        reservation->setExtraBonus(new_Type);
+        new_cost = reservation->calculateBaseReservationCost();
+        reservation->setExtraBonus(bonus);
+        return new_cost - old_cost;
+    }
+
+    pt::ptime ideal(reservation->getBeginTime().date(),pt::hours(12));
+
+    if(ideal > reservation->getBeginTime())
+        ideal -= gr::days(1);
+
+    pt::time_period period(ideal,pt::second_clock::local_time());
+
+    long daysBeforeChange = period.length().hours()/24;
+    long daysAfterChange= reservation->getReservationDays()-daysBeforeChange;
+
+    old_cost = reservation->getPricePerNight()*(double)daysAfterChange;
+    reservation->setExtraBonus(new_Type);
+    new_cost = reservation->getPricePerNight()*(double)daysAfterChange;
+    reservation->setExtraBonus(bonus);
+    return new_cost-old_cost;
+}
+
+void ReservationManager::removeReservation(const ud::uuid &id) {
+    ReservationPtr ptr = currentReservations->findById(id);
+    currentReservations->remove(ptr);
+}
+
+void ReservationManager::updateExtraBonusToDB(C_client* conn,const ReservationPtr &ptr) {
+    if (conn->getConnSuccess() < 0) {
+        return ;
+    }
+    std::string type;
+
+    if (ptr->getExtraBonus() == A) {
+        type = "0";
+    } else if (ptr->getExtraBonus() == B) {
+        type = "1";
+    } else {
+        type = "2";
+    }
+
+    std::stringstream ss;
+    ss << ptr->getClient()->getId() << "#" << ptr->getRoom()->getId() << "#" << ptr->getBeginTime() << "#" << type;
+    conn->updateResType(ss.str());
+
+}
+
+
