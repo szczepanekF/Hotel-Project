@@ -70,9 +70,11 @@ void LoginPanel::OnSubmitClicked(wxCommandEvent &evt) {
 
     if(success == -1) {
         info->SetLabel("no such client");
+        return;
     } else if (success == 0)
     {
         info->SetLabel("bad password");
+        return;
     } else {
         parent->RefreshAllPanelsAfterLogging();
         parent->changePanels(3);

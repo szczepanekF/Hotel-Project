@@ -13,7 +13,7 @@ SimpleReservationVirtualListControl::SimpleReservationVirtualListControl(wxWindo
     this->AppendColumn("End date",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Beds",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Maintenance",wxLIST_FORMAT_CENTER);
-    this->SetColumnWidth(0,100);
+    this->SetColumnWidth(0,85);
     this->SetColumnWidth(1,125);
     this->SetColumnWidth(2,100);
     this->SetColumnWidth(3,75);

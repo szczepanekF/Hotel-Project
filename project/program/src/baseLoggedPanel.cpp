@@ -29,7 +29,11 @@ void baseLoggedPanel::SetOnLogging() {
 
     fname = new wxStaticText(this,wxID_ANY,Fname);
     cType = new wxStaticText(this,wxID_ANY,ClientType);
-    cType->SetForegroundColour(*wxBLUE);
+    wxFont* tekst = new wxFont();
+    tekst->SetWeight(wxFONTWEIGHT_HEAVY);
+
+    cType->SetFont(*tekst);
+    cType->SetForegroundColour(*wxRED);
     balance = new wxStaticText(this,wxID_ANY,ss.str());
 
 

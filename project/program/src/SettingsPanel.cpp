@@ -20,7 +20,9 @@ wxEND_EVENT_TABLE()
 SettingsPanel::SettingsPanel(cMain *parent) : baseLoggedPanel(parent) {
     wxStaticText* info = new wxStaticText(this,wxID_ANY,"SETTINGS");
     info->SetForegroundColour(*wxBLUE);
-
+    wxFont* tekst = new wxFont();
+    tekst->SetWeight(wxFONTWEIGHT_BOLD);
+    info->SetFont(*tekst);
     wxStaticText* moneyChangeInfo = new wxStaticText(this,wxID_ANY,"Set payment amount");
     removeMoney = new wxButton(this, 1003,"-500");
     addMoney = new wxButton(this, 1002,"+500");

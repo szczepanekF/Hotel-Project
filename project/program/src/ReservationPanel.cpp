@@ -25,6 +25,10 @@ ReservationPanel::ReservationPanel(cMain *parent) : baseLoggedPanel(parent) {
     priceSizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxStaticText* info = new wxStaticText(this,wxID_ANY,"Your Reservations");
+    wxFont* tekst = new wxFont();
+    tekst->SetWeight(wxFONTWEIGHT_BOLD);
+    info->SetFont(*tekst);
+    info->SetForegroundColour(*wxBLUE);
     wxButton* retButton = new wxButton(this,1001,"<-- MENU");
     changeBtn = new wxButton(this,1002,"Show upcoming/ongoing");
 

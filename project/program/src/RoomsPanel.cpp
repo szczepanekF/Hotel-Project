@@ -24,7 +24,12 @@ RoomsPanel::RoomsPanel(cMain *parent) : baseLoggedPanel(parent) {
 
 
     info = new wxStaticText(this,wxID_ANY,"Choose a room and make a reservation");
+    wxFont* tekst = new wxFont();
+    tekst->SetWeight(wxFONTWEIGHT_BOLD);
+    info->SetFont(*tekst);
     info->SetForegroundColour(*wxBLUE);
+
+
 
     wxStaticText* from = new wxStaticText(this,wxID_ANY,"From: ");
     begin = new wxDatePickerCtrl(this,wxID_ANY);

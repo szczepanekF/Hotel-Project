@@ -15,7 +15,7 @@ SimpleRoomVirtualListControl::SimpleRoomVirtualListControl(wxWindow *parent, wxW
     this->AppendColumn("Bed Amount",wxLIST_FORMAT_CENTER);
     this->AppendColumn("Terrace Surface [m^2]",wxLIST_FORMAT_CENTER);
     this->SetColumnWidth(0,100);
-    this->SetColumnWidth(1,175);
+    this->SetColumnWidth(1,160);
     this->SetColumnWidth(2,100);
     this->SetColumnWidth(3,175);
 }

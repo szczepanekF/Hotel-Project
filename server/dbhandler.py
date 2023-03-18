@@ -34,7 +34,7 @@ def getPIDpasswd(pid):
     print("Logging in user " + pid)
     conn = sqlite3.connect('dbs/users.db')
     c = conn.cursor()
-    c.execute(f"SELECT passwd FROM Clients WHERE PID = {pid};")
+    c.execute(f"SELECT passwd FROM Clients WHERE PID = '{pid}';")
     passwd = c.fetchall()
     conn.close()
     if len(passwd) == 0:

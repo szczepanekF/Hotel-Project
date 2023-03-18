@@ -78,7 +78,7 @@ int C_client::login(const string &pid,const string &passwd) {
     string possiblePasswd = sendMessage(pid);
 
     if (possiblePasswd == NO_CLIENT) {
-        std::cout<<"1";
+
         return -1;
     } else if (possiblePasswd != passwd) {
         return 0;
