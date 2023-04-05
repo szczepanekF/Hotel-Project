@@ -5,7 +5,7 @@ App created for making reservation in a hotel written in C++.
 - c++ BOOST library
 ### How to run it
 You have to change server/server.py CPPcon class server attribute, and project/library/src/socket/C_client.cpp server define values to your local ip address.
-Then you run the python script to enable c++ script to connect to the database through it, and later you can run the c++ program and evertyhing will be working flawlessly :).
+Then you run the python script to enable c++ script to connect to the database through it, and later you can run the c++ program (preferably on linux as wxWidgets works differently on different operating system and it was written and testen on linux) and evertyhing will be working flawlessly :).
 
 ## ScreenShots
 
