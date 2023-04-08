@@ -49,7 +49,7 @@ cMain::cMain(C_client* conn, ClientManagerPtr& CM, RoomManagerPtr& RoomM, Reserv
 }
 
 cMain::~cMain() {
-    delete connection;
+
 }
 
 void cMain::changePanels(unsigned int panelnr) {

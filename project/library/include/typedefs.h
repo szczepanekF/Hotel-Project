@@ -29,7 +29,6 @@ typedef std::shared_ptr<ClientManager> ClientManagerPtr;
 typedef std::shared_ptr<RoomManager> RoomManagerPtr;
 typedef std::shared_ptr<ReservationManager> ReservationManagerPtr;
 
-
 typedef std::function<bool(ClientPtr)> ClientPredicate;
 typedef std::function<bool(RoomPtr)> RoomPredicate;
 typedef std::function<bool(ReservationPtr)> ReservationPredicate;

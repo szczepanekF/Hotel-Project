@@ -22,7 +22,7 @@ private:
 
 public:
     cApp();
-    ~cApp() = default;
+    ~cApp();
 
     bool OnInit() override;
 };

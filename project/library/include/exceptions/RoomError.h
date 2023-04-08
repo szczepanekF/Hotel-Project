@@ -6,7 +6,7 @@ class RoomError : public HotelError{
 public:
     explicit RoomError(const std::string &arg);
 
-    ~RoomError() override;
+    ~RoomError() = default;
 };
 
 

@@ -5,22 +5,21 @@
 
 
 Client::Client(const std::string &initial_firstName, const std::string &initial_lastName, const std::string &initial_personalId,
-               const ClientTypePtr &initial_clientType) try: firstName(initial_firstName), lastName(initial_lastName), personalID(initial_personalId),
+               const ClientTypePtr &initial_clientType) :firstName(initial_firstName), lastName(initial_lastName), personalID(initial_personalId),
                                                              ClientType(initial_clientType), archive(false), balance(0) {
 
-    if(initial_firstName.empty()){
-        throw ClientError("ERROR Empty first name");
-    }
-    if(initial_lastName.empty()){
-        throw ClientError("ERROR Empty last name");
-    }
-    if(initial_personalId.empty()){
-        throw ClientError("ERROR Empty personalId");
-    }
-    if(initial_clientType== nullptr){
-        throw ClientError("ERROR Null C_client type");
-    }
-    }catch(const ClientError &e){
+        if(initial_firstName.empty()){
+            throw ClientError("ERROR Empty first name");
+        }
+        if(initial_lastName.empty()){
+            throw ClientError("ERROR Empty last name");
+        }
+        if(initial_personalId.empty()){
+            throw ClientError("ERROR Empty personalId");
+        }
+        if(initial_clientType== nullptr){
+            throw ClientError("ERROR Null C_client type");
+        }
     }
 
 

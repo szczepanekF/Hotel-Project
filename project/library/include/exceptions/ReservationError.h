@@ -6,7 +6,7 @@ class ReservationError : public HotelError{
 public:
     explicit ReservationError(const std::string &arg);
 
-    ~ReservationError() override;
+    ~ReservationError() = default;
 };
 
 

@@ -2,4 +2,3 @@
 
 ReservationError::ReservationError(const std::string &arg) : HotelError(arg) {}
 
-ReservationError::~ReservationError() = default;

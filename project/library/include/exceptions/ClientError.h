@@ -5,7 +5,7 @@
 class ClientError :public HotelError{
 public:
     explicit ClientError(const std::string &arg);
-    ~ClientError() override;
+    ~ClientError() = default;
 };
 
 

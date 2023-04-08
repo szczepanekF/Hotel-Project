@@ -47,3 +47,7 @@ bool cApp::OnInit() {
 
     return true;
 }
+
+cApp::~cApp() {
+    delete connection;
+}
