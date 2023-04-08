@@ -4,12 +4,12 @@ A desktop application which allows user to create reservations, look through old
 - c++ wxWidgets 3.0
 - c++ BOOST library
 ### How to run it
-You have to change server/server.py CPPcon class server attribute, and project/library/src/socket/C_client.cpp server define values to your local ip address.
-Then you run the python script to make connection with database possible, and later you can run the c++ program (preferably on linux as wxWidgets works differently on different operating system and it was written and testen on linux) and evertyhing should be working flawlessly :).
+You have to change server/server.py CPPcon class attribute named 'server', and project/library/src/socket/C_client.cpp define value also named 'server' to your local ip address. <br />
+Then you run the python script, which is contained in 'server' directory, to make connection with database possible, and later you run the c++ project ('program' subproject), which happens to be in 'project' directory (preferably on linux as wxWidgets works differently on different operating systems this app was written and tested on linux) and evertyhing should be working flawlessly :).
 
 ## ScreenShots
 
-
+ <br />
 ![Logging Panel](https://user-images.githubusercontent.com/107700989/226107813-239dbdba-9b44-4e03-8c65-3da465cb123d.png)
 ![Register Panel](https://user-images.githubusercontent.com/107700989/226107869-6217fe38-5053-4ce0-8f67-1244a93a5e9d.png)
 ![Menu Panel](https://user-images.githubusercontent.com/107700989/226107883-d45a0357-c623-4ed3-b098-0d1953640e25.png)
