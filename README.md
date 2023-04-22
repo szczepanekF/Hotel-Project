@@ -9,7 +9,7 @@ Then you run the python script, which is contained in 'server' directory, to mak
 
 ## ScreenShots
 
- <br />
+
 ![Logging Panel](https://user-images.githubusercontent.com/107700989/226107813-239dbdba-9b44-4e03-8c65-3da465cb123d.png)
 ![Register Panel](https://user-images.githubusercontent.com/107700989/226107869-6217fe38-5053-4ce0-8f67-1244a93a5e9d.png)
 ![Menu Panel](https://user-images.githubusercontent.com/107700989/226107883-d45a0357-c623-4ed3-b098-0d1953640e25.png)
